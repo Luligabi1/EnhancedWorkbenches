@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "id": "projecttablemod",
+  "version": "${version}",
+  "name": "ProjectTableMod",
+  "description": "dummy",
+  "authors": [
+    "Luligabi"
+  ],
+  "contributors": [
+    "gonsawa_"
+  ],
+  "contact": {
+    "website": "dummy",
+    "repo": "https://github.com/Luligabi1/ProjectTableMod"
+  },
+  "license": "Apache-2.0",
+  "icon": "assets/projecttablemod/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "me.luligabi.entitymobiles.projecttablemod.client.ProjectTableModClient"
+    ],
+    "main": [
+      "me.luligabi.entitymobiles.projecttablemod.common.ProjectTableMod"
+    ]
+  },
+  "mixins": [
+    "ProjectTableMod.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": "*",
+    "fabric": "*",
+    "minecraft": ">=1.19.4"
+  }
+}
