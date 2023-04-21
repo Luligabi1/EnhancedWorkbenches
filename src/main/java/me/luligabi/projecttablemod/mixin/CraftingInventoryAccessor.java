@@ -1,4 +1,4 @@
-package me.luligabi.entitymobiles.projecttablemod.mixin;
+package me.luligabi.projecttablemod.mixin;
 
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;

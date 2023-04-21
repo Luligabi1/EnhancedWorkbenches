@@ -1,6 +1,6 @@
-package me.luligabi.entitymobiles.projecttablemod.common.block;
+package me.luligabi.projecttablemod.common.block;
 
-import me.luligabi.entitymobiles.projecttablemod.mixin.CraftingInventoryAccessor;
+import me.luligabi.projecttablemod.mixin.CraftingInventoryAccessor;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.entity.LockableContainerBlockEntity;

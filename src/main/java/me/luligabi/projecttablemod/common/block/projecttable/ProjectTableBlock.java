@@ -1,12 +1,8 @@
-package me.luligabi.entitymobiles.projecttablemod.common.block.projecttable;
+package me.luligabi.projecttablemod.common.block.projecttable;
 
-import me.luligabi.entitymobiles.projecttablemod.common.block.BlockRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityTicker;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.block.entity.FurnaceBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.screen.NamedScreenHandlerFactory;

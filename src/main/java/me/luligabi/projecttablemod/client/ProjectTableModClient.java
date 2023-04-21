@@ -1,7 +1,7 @@
-package me.luligabi.entitymobiles.projecttablemod.client;
+package me.luligabi.projecttablemod.client;
 
-import me.luligabi.entitymobiles.projecttablemod.client.screen.ProjectTableScreen;
-import me.luligabi.entitymobiles.projecttablemod.common.screenhandler.ScreenHandlingRegistry;
+import me.luligabi.projecttablemod.client.screen.ProjectTableScreen;
+import me.luligabi.projecttablemod.common.screenhandler.ScreenHandlingRegistry;
 import net.fabricmc.api.ClientModInitializer;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
 

@@ -18,11 +18,17 @@
   "icon": "assets/projecttablemod/icon.png",
   "environment": "*",
   "entrypoints": {
-    "client": [
-      "me.luligabi.entitymobiles.projecttablemod.client.ProjectTableModClient"
-    ],
     "main": [
-      "me.luligabi.entitymobiles.projecttablemod.common.ProjectTableMod"
+      "me.luligabi.projecttablemod.common.ProjectTableMod"
+    ],
+    "client": [
+      "me.luligabi.projecttablemod.client.ProjectTableModClient"
+    ],
+    "rei_common": [
+      "me.luligabi.projecttablemod.common.compat.rei.CommonREIPlugin"
+    ],
+    "rei_client": [
+      "me.luligabi.projecttablemod.client.compat.rei.ClientREIPlugin"
     ]
   },
   "mixins": [

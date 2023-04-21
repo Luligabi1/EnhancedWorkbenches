@@ -1,8 +1,8 @@
-package me.luligabi.entitymobiles.projecttablemod.common.block.projecttable;
+package me.luligabi.projecttablemod.common.block.projecttable;
 
-import me.luligabi.entitymobiles.projecttablemod.common.block.BlockRegistry;
-import me.luligabi.entitymobiles.projecttablemod.common.block.CraftingBlockEntity;
-import me.luligabi.entitymobiles.projecttablemod.common.screenhandler.ProjectTableScreenHandler;
+import me.luligabi.projecttablemod.common.block.BlockRegistry;
+import me.luligabi.projecttablemod.common.block.CraftingBlockEntity;
+import me.luligabi.projecttablemod.common.screenhandler.ProjectTableScreenHandler;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.screen.ScreenHandler;

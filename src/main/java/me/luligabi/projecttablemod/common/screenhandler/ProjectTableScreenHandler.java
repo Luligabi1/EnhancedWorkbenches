@@ -1,6 +1,6 @@
-package me.luligabi.entitymobiles.projecttablemod.common.screenhandler;
+package me.luligabi.projecttablemod.common.screenhandler;
 
-import me.luligabi.entitymobiles.projecttablemod.common.block.SimpleCraftingInventory;
+import me.luligabi.projecttablemod.common.block.SimpleCraftingInventory;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.CraftingInventory;
@@ -8,6 +8,8 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.s2c.play.ScreenHandlerSlotUpdateS2CPacket;
 import net.minecraft.recipe.CraftingRecipe;
+import net.minecraft.recipe.RecipeManager;
+import net.minecraft.recipe.RecipeMatcher;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
@@ -124,6 +126,14 @@ public class ProjectTableScreenHandler extends ScreenHandler {
     @Override
     public ItemStack quickMove(PlayerEntity player, int slot) {
         return ItemStack.EMPTY;
+    }
+
+    public void provideRecipeInputs(RecipeMatcher matcher) {
+        inventory.provideRecipeInputs(matcher);
+    }
+
+    public SimpleCraftingInventory getInventory() {
+        return inventory;
     }
 
     private final PlayerEntity player;

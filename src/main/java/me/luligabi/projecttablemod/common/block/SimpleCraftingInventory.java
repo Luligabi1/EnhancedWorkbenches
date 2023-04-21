@@ -1,6 +1,6 @@
-package me.luligabi.entitymobiles.projecttablemod.common.block;
+package me.luligabi.projecttablemod.common.block;
 
-import me.luligabi.entitymobiles.projecttablemod.mixin.CraftingInventoryAccessor;
+import me.luligabi.projecttablemod.mixin.CraftingInventoryAccessor;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.item.ItemStack;

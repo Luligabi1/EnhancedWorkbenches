@@ -1,7 +1,7 @@
-package me.luligabi.entitymobiles.projecttablemod.common;
+package me.luligabi.projecttablemod.common;
 
-import me.luligabi.entitymobiles.projecttablemod.common.block.BlockRegistry;
-import me.luligabi.entitymobiles.projecttablemod.common.screenhandler.ScreenHandlingRegistry;
+import me.luligabi.projecttablemod.common.block.BlockRegistry;
+import me.luligabi.projecttablemod.common.screenhandler.ScreenHandlingRegistry;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.util.Identifier;
 

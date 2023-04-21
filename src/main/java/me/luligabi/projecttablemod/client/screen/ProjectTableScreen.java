@@ -1,8 +1,8 @@
-package me.luligabi.entitymobiles.projecttablemod.client.screen;
+package me.luligabi.projecttablemod.client.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import me.luligabi.entitymobiles.projecttablemod.common.ProjectTableMod;
-import me.luligabi.entitymobiles.projecttablemod.common.screenhandler.ProjectTableScreenHandler;
+import me.luligabi.projecttablemod.common.ProjectTableMod;
+import me.luligabi.projecttablemod.common.screenhandler.ProjectTableScreenHandler;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
