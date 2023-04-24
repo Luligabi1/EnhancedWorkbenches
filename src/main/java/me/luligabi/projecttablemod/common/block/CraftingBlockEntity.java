@@ -2,90 +2,61 @@ package me.luligabi.projecttablemod.common.block;
 
 import me.luligabi.projecttablemod.mixin.CraftingInventoryAccessor;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.block.entity.LockableContainerBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
-import net.minecraft.item.ItemStack;
+import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.screen.NamedScreenHandlerFactory;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
-public abstract class CraftingBlockEntity extends LockableContainerBlockEntity {
-
+public abstract class CraftingBlockEntity extends BlockEntity implements NamedScreenHandlerFactory {
 
     protected CraftingBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
-        inventory = new SimpleCraftingInventory(7, 4); // 7*4 = 28, 9 input, 1 output, 18 inv
+        input = new SimpleCraftingInventory(3, 3);
+    }
+    
+
+    @Nullable
+    @Override
+    public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
+        return createScreenHandler(syncId, playerInventory);
     }
 
-
-
-    public static void tick(World world, BlockPos pos, BlockState state, CraftingBlockEntity blockEntity) {
-        /*if(input.isEmpty()) return;
-
-        Optional<CraftingRecipe> recipe = createRecipeOptional(world);
-        if(recipe.isEmpty()) {
-            blockEntity.inventory.set(0, ItemStack.EMPTY);
-            return;
-        }
-
-        blockEntity.inventory.set(0, recipe.get().getOutput(world.getRegistryManager()).copy());
-
-        */
+    @Override
+    public Text getDisplayName() {
+        return getContainerName();
     }
 
     @SuppressWarnings("ConstantConditions")
     @Override
     public void readNbt(NbtCompound nbt) {
         super.readNbt(nbt);
-        inventory = new SimpleCraftingInventory(7, 4);
-        Inventories.readNbt(nbt, ((CraftingInventoryAccessor) inventory).getStacks());
-        System.out.println("read: " + ((CraftingInventoryAccessor) inventory).getStacks());
+        input = new SimpleCraftingInventory(3, 3);
+        SimpleCraftingInventory.readNbt(nbt, input);
     }
 
     @Override
     protected void writeNbt(NbtCompound nbt) {
         super.writeNbt(nbt);
-        Inventories.writeNbt(nbt, ((CraftingInventoryAccessor) inventory).getStacks());
-        System.out.println("write: " + Inventories.writeNbt(nbt, ((CraftingInventoryAccessor) inventory).getStacks()));
+        SimpleCraftingInventory.writeNbt(nbt, input);
     }
 
-    @Override
-    public ItemStack getStack(int slot) {
-        return inventory.getStack(slot);
+
+    protected abstract ScreenHandler createScreenHandler(int syncId, PlayerInventory playerInventory);
+
+    protected abstract Text getContainerName();
+
+    public SimpleCraftingInventory getInput() {
+        return input;
     }
 
-    @Override
-    public ItemStack removeStack(int slot, int amount) {
-        return Inventories.splitStack(((CraftingInventoryAccessor) inventory).getStacks(), slot, amount);
-    }
 
-    @Override
-    public ItemStack removeStack(int slot) {
-        return Inventories.removeStack(((CraftingInventoryAccessor) inventory).getStacks(), slot);
-    }
-
-    @Override
-    public void setStack(int slot, ItemStack stack) {
-        inventory.setStack(slot, stack);
-    }
-
-    @Override
-    public void clear() {
-        inventory.clear();
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return inventory.isEmpty();
-    }
-
-    @Override
-    public boolean canPlayerUse(PlayerEntity player) {
-        return true;
-    }
-
-    protected SimpleCraftingInventory inventory;
-
+    protected SimpleCraftingInventory input;
 }
