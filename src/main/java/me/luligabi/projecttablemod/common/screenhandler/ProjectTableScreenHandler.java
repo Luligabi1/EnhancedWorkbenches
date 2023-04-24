@@ -162,7 +162,57 @@ public class ProjectTableScreenHandler extends ScreenHandler {
 
     @Override
     public ItemStack quickMove(PlayerEntity player, int index) {
-        return ItemStack.EMPTY;
+        ItemStack itemStack = ItemStack.EMPTY;
+        Slot slot = slots.get(index);
+
+        if(slot != null && slot.hasStack()) {
+            ItemStack itemStack2 = slot.getStack();
+            itemStack = itemStack2.copy();
+            if(index == 0) {
+                context.run((world, pos) -> {
+                    itemStack2.getItem().onCraft(itemStack2, world, player);
+                });
+                if(!insertItem(itemStack2, 28, 64, true)) {
+                    return ItemStack.EMPTY;
+                }
+                slot.onQuickTransfer(itemStack2, itemStack);
+            } else if(index >= 1 && index < 10) {
+                if(!insertItem(itemStack2, 10, 64, false)) {
+                    return ItemStack.EMPTY;
+                }
+            } else if(index >= 10 && index < 28) {
+                if(!insertItem(itemStack2, 1, 10, false)) {
+                    if (!insertItem(itemStack2, 28, 64, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                }
+            } else if(index >= 28 && index < 64) {
+                if(!insertItem(itemStack2, 1, 28, false)) {
+                    if(index < 55) {
+                        if(!insertItem(itemStack2, 55, 64, false)) {
+                            return ItemStack.EMPTY;
+                        }
+                    } else if(!insertItem(itemStack2, 28, 55, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                }
+            } else if(!insertItem(itemStack2, 28, 64, false)) {
+                return ItemStack.EMPTY;
+            }
+
+            if(itemStack2.isEmpty()) {
+                slot.setStack(ItemStack.EMPTY);
+            } else {
+                slot.markDirty();
+            }
+
+            if(itemStack2.getCount() == itemStack.getCount()) return ItemStack.EMPTY;
+
+            slot.onTakeItem(player, itemStack2);
+            if(index == 0) player.dropItem(itemStack2, false);
+        }
+
+        return itemStack;
     }
 
     public void provideRecipeInputs(RecipeMatcher matcher) {
