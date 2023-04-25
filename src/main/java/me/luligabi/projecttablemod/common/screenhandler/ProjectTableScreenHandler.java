@@ -1,7 +1,6 @@
 package me.luligabi.projecttablemod.common.screenhandler;
 
 import me.luligabi.projecttablemod.common.block.SimpleCraftingInventory;
-import me.luligabi.projecttablemod.mixin.CraftingInventoryAccessor;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.CraftingInventory;
@@ -20,6 +19,7 @@ import net.minecraft.screen.slot.Slot;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.world.World;
 
+import java.util.Objects;
 import java.util.Optional;
 
 public class ProjectTableScreenHandler extends ScreenHandler {
@@ -32,7 +32,6 @@ public class ProjectTableScreenHandler extends ScreenHandler {
     public ProjectTableScreenHandler(int syncId, PlayerInventory playerInventory, SimpleCraftingInventory input, Inventory inventory, ScreenHandlerContext context) {
         super(ScreenHandlingRegistry.PROJECT_TABLE_SCREEN_HANDLER, syncId);
         this.input = input;
-        this.inventory = inventory;
         this.result = new CraftingResultInventory();
         this.context = context;
         this.player = playerInventory.player;
@@ -55,30 +54,9 @@ public class ProjectTableScreenHandler extends ScreenHandler {
                 return super.takeStack(amount);
             }
 
+
             @Override
             public void onTakeItem(PlayerEntity player, ItemStack stack) {
-                /*onCrafted(stack);
-                DefaultedList<ItemStack> remainingStacks = player.world.getRecipeManager().getRemainingStacks(RecipeType.CRAFTING, ProjectTableScreenHandler.this.input, player.world);
-
-                for(int i = 0; i < 9; ++i) {
-                    ItemStack invStack = ProjectTableScreenHandler.this.input.getStack(i);
-                    ItemStack remainingStack = remainingStacks.get(i);
-                    if(!invStack.isEmpty()) {
-                        ProjectTableScreenHandler.this.input.removeStack(i, 1);
-                        invStack = ProjectTableScreenHandler.this.input.getStack(i);
-                    }
-
-                    if(!remainingStack.isEmpty()) {
-                        if(invStack.isEmpty()) {
-                            ProjectTableScreenHandler.this.input.setStack(i, remainingStack);
-                        } else if(ItemStack.areItemsEqual(invStack, remainingStack) && ItemStack.areNbtEqual(invStack, remainingStack)) {
-                            remainingStack.increment(invStack.getCount());
-                            ProjectTableScreenHandler.this.input.setStack(i, remainingStack);
-                        } else if(!player.getInventory().insertStack(remainingStack)) {
-                            player.dropItem(remainingStack, false);
-                        }
-                    }
-                }*/
                 super.onTakeItem(player, stack);
                 onContentChanged(inventory);
             }
@@ -128,7 +106,6 @@ public class ProjectTableScreenHandler extends ScreenHandler {
 
     protected static void updateResult(ScreenHandler handler, World world, PlayerEntity player, CraftingInventory inventory, CraftingResultInventory resultInventory) {
         if(!world.isClient()) {
-            System.out.println(((CraftingInventoryAccessor) inventory).getStacks());
             ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) player;
             ItemStack itemStack = ItemStack.EMPTY;
             Optional<CraftingRecipe> optional = world.getServer().getRecipeManager().getFirstMatch(RecipeType.CRAFTING, inventory, world);
@@ -151,13 +128,9 @@ public class ProjectTableScreenHandler extends ScreenHandler {
     @Override
     public void onContentChanged(Inventory inventory) {
         context.run((world, pos) -> {
+            if(!world.isClient()) Objects.requireNonNull(world.getBlockEntity(pos)).markDirty();
             updateResult(this, world, player, this.input, result);
         });
-    }
-
-    @Override
-    public boolean canUse(PlayerEntity player) {
-        return input.canPlayerUse(player);
     }
 
     @Override
@@ -215,6 +188,11 @@ public class ProjectTableScreenHandler extends ScreenHandler {
         return itemStack;
     }
 
+    @Override
+    public boolean canUse(PlayerEntity player) {
+        return true;
+    }
+
     public void provideRecipeInputs(RecipeMatcher matcher) {
         input.provideRecipeInputs(matcher);
     }
@@ -227,5 +205,4 @@ public class ProjectTableScreenHandler extends ScreenHandler {
     private final ScreenHandlerContext context;
     private final CraftingResultInventory result;
     private final SimpleCraftingInventory input;
-    private final Inventory inventory;
 }

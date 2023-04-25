@@ -22,7 +22,6 @@ public class SimpleCraftingInventory extends CraftingInventory {
 
     @Override
     public void setStack(int slot, ItemStack stack) {
-        //System.out.println("SIMPLE CRAFTING INVENTORY SETSTACK");
         ((CraftingInventoryAccessor) this).getStacks().set(slot, stack);
     }
 
