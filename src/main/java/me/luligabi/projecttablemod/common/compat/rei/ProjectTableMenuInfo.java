@@ -37,7 +37,7 @@ public class ProjectTableMenuInfo implements SimpleGridMenuInfo<ProjectTableScre
         Inventory inventory = context.getMenu().getInventory();
         return Iterables.concat(
                 SimpleGridMenuInfo.super.getInventorySlots(context),
-                IntStream.range(10, inventory.size())
+                IntStream.range(10, 27)
                         .mapToObj(index -> SlotAccessor.fromContainer(inventory, index))
                         .collect(Collectors.toList())
         );
