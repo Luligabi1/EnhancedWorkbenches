@@ -32,6 +32,7 @@ public class ProjectTableScreenHandler extends ScreenHandler {
     public ProjectTableScreenHandler(int syncId, PlayerInventory playerInventory, SimpleCraftingInventory input, Inventory inventory, ScreenHandlerContext context) {
         super(ScreenHandlingRegistry.PROJECT_TABLE_SCREEN_HANDLER, syncId);
         this.input = input;
+        this.inventory = inventory;
         this.result = new CraftingResultInventory();
         this.context = context;
         this.player = playerInventory.player;
@@ -40,53 +41,17 @@ public class ProjectTableScreenHandler extends ScreenHandler {
         input.onOpen(player);
         inventory.onOpen(player);
 
-        addSlot(new CraftingResultSlot(player, input, result, 0, 124, 35) {
-
-            @Override
-            public void setStack(ItemStack stack) {
-                super.setStack(stack);
-                onContentChanged(inventory);
-            }
-
-            @Override
-            public ItemStack takeStack(int amount) {
-                onContentChanged(inventory);
-                return super.takeStack(amount);
-            }
-
-
-            @Override
-            public void onTakeItem(PlayerEntity player, ItemStack stack) {
-                super.onTakeItem(player, stack);
-                onContentChanged(inventory);
-            }
-
-
-        });
+        addSlot(new ProjectTableOutputSlot(player, input, result, 0, 124, 35));
 
         for(int i = 0; i < 3; ++i) {
             for(int j = 0; j < 3; ++j) {
-                addSlot(new Slot(input, j + i * 3, 30 + j * 18, 17 + i * 18) {
-
-                    @Override
-                    public void setStack(ItemStack stack) {
-                        super.setStack(stack);
-                        onContentChanged(inventory);
-                    }
-
-                    @Override
-                    public ItemStack takeStack(int amount) {
-                        onContentChanged(inventory);
-                        return super.takeStack(amount);
-                    }
-
-                });
+                addSlot(new ProjectTableSlot(input, j + i * 3, 30 + j * 18, 17 + i * 18));
             }
         }
 
         for(int i = 0; i < 2; ++i) {
             for(int j = 0; j < 9; ++j) {
-                addSlot(new Slot(inventory, j + i * 9, 8 + j * 18, 77 + i * 18));
+                addSlot(new ProjectTableSlot(inventory, j + i * 9, 8 + j * 18, 77 + i * 18));
             }
         }
 
@@ -197,12 +162,39 @@ public class ProjectTableScreenHandler extends ScreenHandler {
         input.provideRecipeInputs(matcher);
     }
 
-    public SimpleCraftingInventory getInput() {
-        return input;
+    public Inventory getInventory() {
+        return inventory;
     }
 
     private final PlayerEntity player;
     private final ScreenHandlerContext context;
     private final CraftingResultInventory result;
+    private final Inventory inventory;
     private final SimpleCraftingInventory input;
+
+    private class ProjectTableSlot extends Slot {
+
+        public ProjectTableSlot(Inventory inventory, int index, int x, int y) {
+            super(inventory, index, x, y);
+        }
+
+        @Override
+        public void markDirty() {
+            super.markDirty();
+            ProjectTableScreenHandler.this.onContentChanged(inventory);
+        }
+    }
+
+    private class ProjectTableOutputSlot extends CraftingResultSlot {
+
+        public ProjectTableOutputSlot(PlayerEntity player, CraftingInventory input, Inventory inventory, int index, int x, int y) {
+            super(player, input, inventory, index, x, y);
+        }
+
+        @Override
+        public void markDirty() {
+            super.markDirty();
+            ProjectTableScreenHandler.this.onContentChanged(inventory);
+        }
+    }
 }

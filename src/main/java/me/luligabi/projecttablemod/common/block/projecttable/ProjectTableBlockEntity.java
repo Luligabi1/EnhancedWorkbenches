@@ -4,7 +4,6 @@ import me.luligabi.projecttablemod.common.block.BlockRegistry;
 import me.luligabi.projecttablemod.common.block.CraftingBlockEntity;
 import me.luligabi.projecttablemod.common.block.SimpleCraftingInventory;
 import me.luligabi.projecttablemod.common.screenhandler.ProjectTableScreenHandler;
-import me.luligabi.projecttablemod.mixin.CraftingInventoryAccessor;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
@@ -47,8 +46,6 @@ public class ProjectTableBlockEntity extends CraftingBlockEntity {
 
         input = new SimpleCraftingInventory(3, 3);
         SimpleCraftingInventory.readNbt(nbt, input);
-        System.out.println("read_Items: " + inventory.stacks);
-        System.out.println("read_Input: " + ((CraftingInventoryAccessor) input).getStacks());
     }
 
     @Override
@@ -59,8 +56,6 @@ public class ProjectTableBlockEntity extends CraftingBlockEntity {
         SimpleCraftingInventory.writeNbt(n, input);
 
         nbt.put("Input", n.get("Input"));
-        System.out.println("write_Items: " + nbt.get("Items"));
-        System.out.println("write_Input: " + nbt.get("Input"));
     }
 
 
