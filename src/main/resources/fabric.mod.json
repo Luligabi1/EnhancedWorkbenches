@@ -24,6 +24,9 @@
     "client": [
       "me.luligabi.projecttablemod.client.ProjectTableModClient"
     ],
+    "modmenu": [
+      "me.luligabi.projecttablemod.client.compat.modmenu.ConfigScreenEntrypoint"
+    ],
     "rei_common": [
       "me.luligabi.projecttablemod.common.compat.rei.CommonREIPlugin"
     ],

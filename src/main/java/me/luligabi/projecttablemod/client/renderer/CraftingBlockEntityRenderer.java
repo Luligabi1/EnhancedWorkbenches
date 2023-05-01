@@ -2,6 +2,7 @@ package me.luligabi.projecttablemod.client.renderer;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
+import me.luligabi.projecttablemod.client.ProjectTableModClient;
 import me.luligabi.projecttablemod.common.block.CraftingBlock;
 import me.luligabi.projecttablemod.common.block.CraftingBlockEntity;
 import net.minecraft.client.MinecraftClient;
@@ -19,7 +20,6 @@ import net.minecraft.util.math.RotationAxis;
 
 import java.util.HashMap;
 
-// TODO Implement config to toggle and change view range
 public abstract class CraftingBlockEntityRenderer<T extends CraftingBlockEntity> implements BlockEntityRenderer<T> {
 
     @SuppressWarnings("unused")
@@ -27,6 +27,7 @@ public abstract class CraftingBlockEntityRenderer<T extends CraftingBlockEntity>
 
     @Override
     public void render(T entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
+        if(!shouldRender()) return;
         Inventory inventory = entity.getInput();
         if(inventory.isEmpty() || !(entity.getWorld().getBlockState(entity.getPos()).getBlock() instanceof CraftingBlock)) return;
 
@@ -70,20 +71,23 @@ public abstract class CraftingBlockEntityRenderer<T extends CraftingBlockEntity>
         };
     }
 
+    private boolean shouldRender() {
+        if(!ProjectTableModClient.CLIENT_CONFIG.renderInput || !canRender()) return false;
+
+        return !ProjectTableModClient.CLIENT_CONFIG.renderInputRequireFancy || MinecraftClient.isFancyGraphicsOrBetter();
+    }
+
+    protected abstract boolean canRender();
+
+    @Override
+    public int getRenderDistance() {
+        return ProjectTableModClient.CLIENT_CONFIG.renderInputDistance * 16;
+    }
 
     @Override
     public boolean rendersOutsideBoundingBox(T blockEntity) {
         return true;
     }
-
-
-    @Override
-    public int getRenderDistance() {
-        return getMaximumChunkRenderDistance() * 16;
-    }
-
-    protected abstract int getMaximumChunkRenderDistance();
-
 
     private static final HashMap<Integer, Pair<Double, Double>> NORTH_POSITIONS;
     private static final HashMap<Integer, Pair<Double, Double>> SOUTH_POSITIONS;
