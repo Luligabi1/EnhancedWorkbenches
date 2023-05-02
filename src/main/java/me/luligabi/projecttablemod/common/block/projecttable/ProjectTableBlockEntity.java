@@ -35,7 +35,7 @@ public class ProjectTableBlockEntity extends CraftingBlockEntity {
 
     @Override
     protected Text getContainerName() {
-        return Text.of("block.projecttablemod.project_table");
+        return Text.translatable("block.projecttablemod.project_table");
     }
 
     @SuppressWarnings("ConstantConditions")

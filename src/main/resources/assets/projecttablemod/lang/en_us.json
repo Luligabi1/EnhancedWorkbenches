@@ -1,6 +1,8 @@
 {
+  "block.projecttablemod.project_table": "Project Table",
+  "block.projecttablemod.crafting_station": "Crafting Station",
 
-  "itemGroup.projecttablemod.item_group": "Project Table Mod",
+  "itemGroup.projecttablemod.item_group": "The Project Table Mod",
 
   "configCategory.projecttablemod.rendering": "Rendering",
 
