@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "id": "projecttablemod",
   "version": "${version}",
-  "name": "ProjectTableMod",
-  "description": "dummy",
+  "name": "The Project Table Mod",
+  "description": "The classic RedPower 2 crafting solution brought onto Modern Minecraft.",
   "authors": [
     "Luligabi"
   ],
@@ -11,11 +11,11 @@
     "gonsawa_"
   ],
   "contact": {
-    "website": "dummy",
-    "repo": "https://github.com/Luligabi1/ProjectTableMod"
+    "repo": "https://github.com/Luligabi1/ProjectTableMod",
+    "issues": "https://github.com/Luligabi1/ProjectTableMod/issues"
   },
   "license": "Apache-2.0",
-  "icon": "assets/projecttablemod/icon.png",
+  "icon": "assets/projecttablemod/textures/block/project_table/project_table_top.png",
   "environment": "*",
   "entrypoints": {
     "main": [
@@ -41,5 +41,15 @@
     "fabricloader": "*",
     "fabric": "*",
     "minecraft": ">=1.19.4"
+  },
+  "custom": {
+    "modmenu": {
+      "parent": {
+        "id": "red-logic-series",
+        "name": "Red Logic Series",
+        "description": "A series of mods bringing beloved RedPower 2 & Project Red features onto Modern Fabric",
+        "icon": "assets/red_logic_series/icon.png"
+      }
+    }
   }
 }
