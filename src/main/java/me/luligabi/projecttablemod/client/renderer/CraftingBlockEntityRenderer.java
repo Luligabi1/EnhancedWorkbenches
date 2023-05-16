@@ -10,13 +10,17 @@ import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
+import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.render.model.json.ModelTransformationMode;
+import net.minecraft.client.render.model.json.Transformation;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.inventory.Inventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.RotationAxis;
+import org.joml.Vector3f;
 
 import java.util.HashMap;
 
@@ -41,14 +45,17 @@ public abstract class CraftingBlockEntityRenderer<T extends CraftingBlockEntity>
         if(inventory.getStack(index).isEmpty()) return;
         matrices.push();
         Pair<Double, Double> pos = getDirectionPositionMap(direction).get(index);
+        ItemStack stack = inventory.getStack(index);
+        ModelTransformation transformation = MinecraftClient.getInstance().getItemRenderer().getModel(stack, null, null, 0).getTransformation();
+        boolean isBlock = transformation.fixed.equals(new Transformation(new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), new Vector3f(0.5F, 0.5F, 0.5F))); // this is stupid but should cover almost all cases (and doesn't require any mixins, yay!)
 
-        matrices.translate(pos.getLeft(), 1D, pos.getRight());
+        matrices.translate(pos.getLeft(), isBlock ? 1.05D : 1.001D, pos.getRight());
         matrices.scale(0.1F, 0.1F, 0.1F);
 
         matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(90F));
         matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180F));
         matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(getItemAngle(direction)));
-        MinecraftClient.getInstance().getItemRenderer().renderItem(inventory.getStack(index), ModelTransformationMode.NONE, light, OverlayTexture.DEFAULT_UV, matrices, vertexConsumers, entity.getWorld(), (int) entity.getPos().asLong());
+        MinecraftClient.getInstance().getItemRenderer().renderItem(stack, isBlock ? ModelTransformationMode.NONE : ModelTransformationMode.GUI, light, OverlayTexture.DEFAULT_UV, matrices, vertexConsumers, entity.getWorld(), (int) entity.getPos().asLong());
         matrices.pop();
     }
 

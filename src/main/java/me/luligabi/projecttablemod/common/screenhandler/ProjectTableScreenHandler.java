@@ -21,7 +21,6 @@ import net.minecraft.screen.slot.Slot;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.world.World;
 
-import java.util.Objects;
 import java.util.Optional;
 
 public class ProjectTableScreenHandler extends ScreenHandler {
