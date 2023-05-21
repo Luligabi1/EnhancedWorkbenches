@@ -15,4 +15,8 @@ public class CraftingStationBlockEntityRenderer extends CraftingBlockEntityRende
         return ProjectTableModClient.CLIENT_CONFIG.renderInputOnCraftingStation;
     }
 
+    @Override
+    protected boolean requiresLightmapLighting() {
+        return false;
+    }
 }

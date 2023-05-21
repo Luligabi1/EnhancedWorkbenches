@@ -8,6 +8,7 @@ import me.luligabi.projecttablemod.common.block.CraftingBlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
 import net.minecraft.client.render.model.json.ModelTransformation;
@@ -16,10 +17,13 @@ import net.minecraft.client.render.model.json.Transformation;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.Registries;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.Pair;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.RotationAxis;
+import net.minecraft.world.World;
 import org.joml.Vector3f;
 
 import java.util.HashMap;
@@ -36,8 +40,10 @@ public abstract class CraftingBlockEntityRenderer<T extends CraftingBlockEntity>
         if(inventory.isEmpty() || !(entity.getWorld().getBlockState(entity.getPos()).getBlock() instanceof CraftingBlock)) return;
 
         Direction direction = entity.getWorld().getBlockState(entity.getPos()).get(Properties.HORIZONTAL_FACING);
+
+        int light2 = requiresLightmapLighting() ? WorldRenderer.getLightmapCoordinates(entity.getWorld(), entity.getPos().up()) : light;
         for(int i = 0; i < 9; i++) {
-            renderItem(entity, inventory, i, direction, matrices, vertexConsumers, light);
+            renderItem(entity, inventory, i, direction, matrices, vertexConsumers, light2);
         }
     }
 
@@ -86,6 +92,8 @@ public abstract class CraftingBlockEntityRenderer<T extends CraftingBlockEntity>
 
     protected abstract boolean canRender();
 
+    protected abstract boolean requiresLightmapLighting();
+
     @Override
     public int getRenderDistance() {
         return ProjectTableModClient.CLIENT_CONFIG.renderInputDistance * 16;
@@ -117,12 +125,9 @@ public abstract class CraftingBlockEntityRenderer<T extends CraftingBlockEntity>
                 .put(0, new Pair<>(0.0625*5D, 0.0625*5D))
                 .put(1, new Pair<>(0.0625*8D, 0.0625*5D))
                 .put(2, new Pair<>(0.0625*11D, 0.0625*5D))
-
-
                 .put(3, new Pair<>(0.0625*5D, 0.0625*8D))
                 .put(4, new Pair<>(0.0625*8D, 0.0625*8D))
                 .put(5, new Pair<>(0.0625*11D, 0.0625*8D))
-
                 .put(6, new Pair<>(0.0625*5D, 0.0625*11D))
                 .put(7, new Pair<>(0.0625*8D, 0.0625*11D))
                 .put(8, new Pair<>(0.0625*11D, 0.0625*11D))
