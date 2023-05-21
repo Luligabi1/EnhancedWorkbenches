@@ -4,7 +4,6 @@ import me.luligabi.projecttablemod.client.ProjectTableModClient;
 import me.luligabi.projecttablemod.common.block.projecttable.ProjectTableBlockEntity;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
 
-// FIXME lighting issues
 public class ProjectTableBlockEntityRenderer extends CraftingBlockEntityRenderer<ProjectTableBlockEntity> {
 
     public ProjectTableBlockEntityRenderer(BlockEntityRendererFactory.Context context) {
@@ -16,4 +15,8 @@ public class ProjectTableBlockEntityRenderer extends CraftingBlockEntityRenderer
         return ProjectTableModClient.CLIENT_CONFIG.renderInputOnProjectTable;
     }
 
+    @Override
+    protected boolean requiresLightmapLighting() {
+        return true;
+    }
 }

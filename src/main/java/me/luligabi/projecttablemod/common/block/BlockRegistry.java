@@ -10,6 +10,7 @@ import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityT
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.BlockItem;
+import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 
@@ -35,9 +36,10 @@ public class BlockRegistry {
     private static void initBlock(String identifier, Block block) {
         Registry.register(Registries.BLOCK, ProjectTableMod.id(identifier), block);
         Registry.register(Registries.ITEM, ProjectTableMod.id(identifier), new BlockItem(block, new FabricItemSettings()));
+        ProjectTableMod.ITEMS.add(new ItemStack(block));
     }
 
-    public BlockRegistry() {
+    private BlockRegistry() {
         // NO-OP
     }
 

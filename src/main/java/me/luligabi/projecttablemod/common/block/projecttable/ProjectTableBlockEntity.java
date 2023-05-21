@@ -35,12 +35,11 @@ public class ProjectTableBlockEntity extends CraftingBlockEntity {
 
     @Override
     protected Text getContainerName() {
-        return Text.of("block.projecttablemod.project_table");
+        return Text.translatable("block.projecttablemod.project_table");
     }
 
-    @SuppressWarnings("ConstantConditions")
     @Override
-    public void readNbt(NbtCompound nbt) {
+    public void fromTag(NbtCompound nbt) {
         inventory = new SimpleInventory(9*2);
         Inventories.readNbt(nbt, inventory.stacks);
 
@@ -49,7 +48,7 @@ public class ProjectTableBlockEntity extends CraftingBlockEntity {
     }
 
     @Override
-    protected void writeNbt(NbtCompound nbt) {
+    public void toTag(NbtCompound nbt) {
         Inventories.writeNbt(nbt, inventory.stacks);
 
         NbtCompound n = new NbtCompound();
@@ -58,12 +57,10 @@ public class ProjectTableBlockEntity extends CraftingBlockEntity {
         nbt.put("Input", n.get("Input"));
     }
 
-
     public SimpleInventory getInventory() {
         return inventory;
     }
 
 
     protected SimpleInventory inventory;
-
 }

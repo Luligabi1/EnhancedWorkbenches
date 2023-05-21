@@ -34,7 +34,7 @@ public class CraftingStationBlockEntity extends CraftingBlockEntity {
 
     @Override
     protected Text getContainerName() {
-        return Text.of("block.projecttablemod.crafting_station");
+        return Text.translatable("block.projecttablemod.crafting_station");
     }
 
 }

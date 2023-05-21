@@ -1,6 +1,8 @@
 package me.luligabi.projecttablemod.common.screenhandler;
 
+import me.luligabi.projecttablemod.common.block.CraftingBlockEntity;
 import me.luligabi.projecttablemod.common.block.SimpleCraftingInventory;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.CraftingInventory;
@@ -18,7 +20,6 @@ import net.minecraft.screen.slot.Slot;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.world.World;
 
-import java.util.Objects;
 import java.util.Optional;
 
 public class CraftingStationScreenHandler extends ScreenHandler {
@@ -85,8 +86,10 @@ public class CraftingStationScreenHandler extends ScreenHandler {
         context.run((world, pos) -> {
             updateResult(this, world, player, input, result);
             try {
-                world.getBlockEntity(pos).markDirty();
-            } catch(NullPointerException e) {
+                BlockEntity blockEntity = world.getBlockEntity(pos);
+                blockEntity.markDirty();
+                ((CraftingBlockEntity) blockEntity).sync();
+            } catch(Exception e) {
                 e.fillInStackTrace();
             }
         });
