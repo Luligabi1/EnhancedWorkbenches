@@ -2,12 +2,9 @@ package me.luligabi.projecttablemod.client.compat.modmenu;
 
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
-import dev.isxander.yacl.api.ConfigCategory;
-import dev.isxander.yacl.api.Option;
-import dev.isxander.yacl.api.OptionGroup;
-import dev.isxander.yacl.api.YetAnotherConfigLib;
-import dev.isxander.yacl.gui.controllers.BooleanController;
-import dev.isxander.yacl.gui.controllers.string.number.IntegerFieldController;
+import dev.isxander.yacl3.api.*;
+import dev.isxander.yacl3.api.controller.BooleanControllerBuilder;
+import dev.isxander.yacl3.api.controller.IntegerFieldControllerBuilder;
 import me.luligabi.projecttablemod.client.ClientConfig;
 import me.luligabi.projecttablemod.client.ProjectTableModClient;
 import net.minecraft.client.gui.screen.Screen;
@@ -26,63 +23,63 @@ public class ConfigScreenEntrypoint implements ModMenuApi {
         /*
          * Rendering (Generic)
          */
-        Option<Boolean> renderInput = Option.createBuilder(Boolean.class)
+        Option<Boolean> renderInput = Option.<Boolean>createBuilder()
                 .name(Text.translatable("configOption.projecttablemod.renderInput"))
-                .tooltip(Text.translatable("configOption.projecttablemod.renderInput.tooltip"))
+                .description(OptionDescription.of(Text.translatable("configOption.projecttablemod.renderInput.tooltip")))
                 .binding(
                         true,
                         () -> config.renderInput,
                         newValue -> config.renderInput = newValue
-                )
-                .controller((booleanOption) -> new BooleanController(booleanOption, BooleanController.YES_NO_FORMATTER, true))
+                ) // option -> BooleanControllerBuilder.create(option).yesNoFormatter().coloured(true)
+                .controller(option -> BooleanControllerBuilder.create(option).yesNoFormatter().coloured(true))
                 .build();
 
-        Option<Integer> renderInputDistance = Option.createBuilder(Integer.class)
+        Option<Integer> renderInputDistance = Option.<Integer>createBuilder()
                 .name(Text.translatable("configOption.projecttablemod.renderInputDistance"))
-                .tooltip(Text.translatable("configOption.projecttablemod.renderInputDistance.tooltip"))
+                .description(OptionDescription.of(Text.translatable("configOption.projecttablemod.renderInputDistance.tooltip")))
                 .binding(
                         3,
                         () -> config.renderInputDistance,
                         newValue -> config.renderInputDistance = newValue
                 )
                 .available(config.renderInput)
-                .controller((intOption) -> new IntegerFieldController(intOption, 1, Integer.MAX_VALUE))
+                .controller(option -> IntegerFieldControllerBuilder.create(option).range(1, Integer.MAX_VALUE))
                 .build();
 
-        Option<Boolean> renderInputRequireFancy = Option.createBuilder(Boolean.class)
+        Option<Boolean> renderInputRequireFancy = Option.<Boolean>createBuilder()
                 .name(Text.translatable("configOption.projecttablemod.renderInputRequireFancy"))
-                .tooltip(Text.translatable("configOption.projecttablemod.renderInputRequireFancy.tooltip"))
+                .description(OptionDescription.of(Text.translatable("configOption.projecttablemod.renderInputRequireFancy.tooltip")))
                 .binding(
                         true,
                         () -> config.renderInputRequireFancy,
                         newValue -> config.renderInputRequireFancy = newValue
                 )
                 .available(config.renderInput)
-                .controller((booleanOption) -> new BooleanController(booleanOption, BooleanController.YES_NO_FORMATTER, true))
+                .controller(option -> BooleanControllerBuilder.create(option).yesNoFormatter().coloured(true))
                 .build();
 
-        Option<Boolean> renderInputOnProjectTable = Option.createBuilder(Boolean.class)
+        Option<Boolean> renderInputOnProjectTable = Option.<Boolean>createBuilder()
                 .name(Text.translatable("configOption.projecttablemod.renderInputOnProjectTable"))
-                .tooltip(Text.translatable("configOption.projecttablemod.renderInputOnProjectTable.tooltip"))
+                .description(OptionDescription.of(Text.translatable("configOption.projecttablemod.renderInputOnProjectTable.tooltip")))
                 .binding(
                         true,
                         () -> config.renderInputOnProjectTable,
                         newValue -> config.renderInputOnProjectTable = newValue
                 )
                 .available(config.renderInput)
-                .controller((booleanOption) -> new BooleanController(booleanOption, BooleanController.YES_NO_FORMATTER, true))
+                .controller(option -> BooleanControllerBuilder.create(option).yesNoFormatter().coloured(true))
                 .build();
 
-        Option<Boolean> renderInputOnCraftingStation = Option.createBuilder(Boolean.class)
+        Option<Boolean> renderInputOnCraftingStation = Option.<Boolean>createBuilder()
                 .name(Text.translatable("configOption.projecttablemod.renderInputOnCraftingStation"))
-                .tooltip(Text.translatable("configOption.projecttablemod.renderInputOnCraftingStation.tooltip"))
+                .description(OptionDescription.of(Text.translatable("configOption.projecttablemod.renderInputOnCraftingStation.tooltip")))
                 .binding(
                         true,
                         () -> config.renderInputOnCraftingStation,
                         newValue -> config.renderInputOnCraftingStation = newValue
                 )
                 .available(config.renderInput)
-                .controller((booleanOption) -> new BooleanController(booleanOption, BooleanController.YES_NO_FORMATTER, true))
+                .controller(option -> BooleanControllerBuilder.create(option).yesNoFormatter().coloured(true))
                 .build();
 
 

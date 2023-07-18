@@ -3,6 +3,7 @@ package me.luligabi.projecttablemod.client.screen;
 import com.mojang.blaze3d.systems.RenderSystem;
 import me.luligabi.projecttablemod.common.ProjectTableMod;
 import me.luligabi.projecttablemod.common.screenhandler.ProjectTableScreenHandler;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
@@ -27,18 +28,17 @@ public class ProjectTableScreen extends HandledScreen<ProjectTableScreenHandler>
     }
 
     @Override
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-        super.render(matrices, mouseX, mouseY, delta);
-        drawMouseoverTooltip(matrices, mouseX, mouseY);
+    public void render(DrawContext ctx, int mouseX, int mouseY, float delta) {
+        super.render(ctx, mouseX, mouseY, delta);
+        drawMouseoverTooltip(ctx, mouseX, mouseY);
     }
 
     @Override
-    protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
-        renderBackground(matrices);
+    protected void drawBackground(DrawContext ctx, float delta, int mouseX, int mouseY) {
+        renderBackground(ctx);
         RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.setShaderTexture(0, TEXTURE);
-        drawTexture(matrices, x, y, 0, 0, backgroundWidth, backgroundHeight);
+        ctx.drawTexture(TEXTURE, x, y, 0, 0, backgroundWidth, backgroundHeight);
     }
 
     private static final Identifier TEXTURE = ProjectTableMod.id("textures/gui/project_table.png");

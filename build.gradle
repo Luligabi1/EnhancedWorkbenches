@@ -19,6 +19,10 @@ repositories {
         name = "Shedaniel (REI)"
         url = "https://maven.shedaniel.me/"
     }
+    maven {
+        name = "CurseMaven"
+        url = "https://www.cursemaven.com"
+    }
 }
 
 dependencies {
@@ -28,7 +32,7 @@ dependencies {
 
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-    include modImplementation("dev.isxander:yet-another-config-lib:${project.yacl_version}") {
+    include modImplementation("dev.isxander.yacl:yet-another-config-lib-fabric:${project.yacl_version}") {
         transitive(false)
     }
 
@@ -36,6 +40,10 @@ dependencies {
     modRuntimeOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
 
     modImplementation "me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}"
+
+
+    modImplementation "curse.maven:balm-fabric-500525:${project.balm_file_id}"
+    modImplementation "curse.maven:crafting-tweaks-fabric-502516:${project.craftingtweaks_file_id}"
 }
 
 processResources {
