@@ -1,6 +1,7 @@
 package me.luligabi.projecttablemod.common.screenhandler;
 
-import me.luligabi.projecttablemod.common.block.SimpleCraftingInventory;
+import me.luligabi.projecttablemod.common.block.BlockRegistry;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
@@ -11,10 +12,10 @@ public class CraftingStationScreenHandler extends CraftingBlockScreenHandler {
 
 
     public CraftingStationScreenHandler(int syncId, PlayerInventory playerInventory) {
-        this(syncId, playerInventory, new SimpleCraftingInventory(3, 3), ScreenHandlerContext.EMPTY);
+        this(syncId, playerInventory, new SimpleRecipeInputInventory(3*3), ScreenHandlerContext.EMPTY);
     }
 
-    public CraftingStationScreenHandler(int syncId, PlayerInventory playerInventory, SimpleCraftingInventory input, ScreenHandlerContext context) {
+    public CraftingStationScreenHandler(int syncId, PlayerInventory playerInventory, SimpleRecipeInputInventory input, ScreenHandlerContext context) {
         super(ScreenHandlingRegistry.CRAFTING_STATION_SCREEN_HANDLER, syncId, playerInventory, input, context);
 
 
@@ -22,7 +23,7 @@ public class CraftingStationScreenHandler extends CraftingBlockScreenHandler {
 
         for(int i = 0; i < 3; ++i) {
             for(int j = 0; j < 3; ++j) {
-                addSlot(new CraftingSlot(input, j + i * 3, 30 + j * 18, 17 + i * 18));
+                addSlot(new CraftingSlot(j + i * 3, 30 + j * 18, 17 + i * 18));
             }
         }
 
@@ -37,6 +38,11 @@ public class CraftingStationScreenHandler extends CraftingBlockScreenHandler {
         }
 
         onContentChanged(input);
+    }
+
+    @Override
+    protected Block getBlock() {
+        return BlockRegistry.CRAFTING_STATION;
     }
 
     @Override

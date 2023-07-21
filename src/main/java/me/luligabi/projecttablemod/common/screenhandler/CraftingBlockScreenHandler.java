@@ -1,11 +1,11 @@
 package me.luligabi.projecttablemod.common.screenhandler;
 
 import me.luligabi.projecttablemod.common.block.CraftingBlockEntity;
-import me.luligabi.projecttablemod.common.block.SimpleCraftingInventory;
+import me.luligabi.projecttablemod.common.block.projecttable.ProjectTableBlockEntity;
+import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.inventory.CraftingResultInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
@@ -28,7 +28,7 @@ import java.util.Optional;
 public abstract class CraftingBlockScreenHandler extends ScreenHandler {
 
 
-    protected CraftingBlockScreenHandler(@Nullable ScreenHandlerType<?> type, int syncId, PlayerInventory playerInventory, SimpleCraftingInventory input, ScreenHandlerContext context) {
+    protected CraftingBlockScreenHandler(@Nullable ScreenHandlerType<?> type, int syncId, PlayerInventory playerInventory, SimpleRecipeInputInventory input, ScreenHandlerContext context) {
         super(type, syncId);
         this.input = input;
         this.context = context;
@@ -39,8 +39,9 @@ public abstract class CraftingBlockScreenHandler extends ScreenHandler {
         input.onOpen(player);
     }
 
-    protected static void updateResult(ScreenHandler handler, World world, PlayerEntity player, CraftingInventory input, CraftingResultInventory output) {
-        if(world.isClient) return;
+    @SuppressWarnings("ConstantConditions")
+    protected static void updateResult(ScreenHandler handler, World world, PlayerEntity player, SimpleRecipeInputInventory input, CraftingResultInventory output) {
+        if(world.isClient()) return;
         ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity)player;
         ItemStack itemStack = ItemStack.EMPTY;
         Optional<CraftingRecipe> recipeOptional = world.getServer().getRecipeManager().getFirstMatch(RecipeType.CRAFTING, input, world);
@@ -60,22 +61,14 @@ public abstract class CraftingBlockScreenHandler extends ScreenHandler {
 
     @Override
     public void onContentChanged(Inventory inventory) {
-        sendContentUpdates();
         context.run((world, pos) -> {
             updateResult(this, world, player, input, result);
-            try {
-                BlockEntity blockEntity = world.getBlockEntity(pos);
-                blockEntity.markDirty();
-                ((CraftingBlockEntity) blockEntity).sync();
-            } catch(Exception e) {
-                e.fillInStackTrace();
-            }
         });
     }
 
     @Override
     public boolean canUse(PlayerEntity player) {
-        return true;
+        return canUse(context, player, getBlock());
     }
 
     public void provideRecipeInputs(RecipeMatcher matcher) {
@@ -83,16 +76,31 @@ public abstract class CraftingBlockScreenHandler extends ScreenHandler {
     }
 
 
+    protected abstract Block getBlock();
+
     protected final BlockPos blockPos;
     protected final PlayerEntity player;
     protected final ScreenHandlerContext context;
-    protected final CraftingResultInventory result = new CraftingResultInventory();
-    protected final SimpleCraftingInventory input;
+    protected final SimpleRecipeInputInventory input;
+    protected final CraftingResultInventory result = new CraftingResultInventory() /*{
+
+        @Override
+        public void markDirty() {
+            super.markDirty();
+            context.run((world, pos) -> {
+                BlockEntity blockEntity = world.getBlockEntity(pos);
+                if(blockEntity != null) {
+                    blockEntity.markDirty();
+                    ((CraftingBlockEntity) blockEntity).sync();
+                }
+            });
+        }
+    }*/;
 
     protected class CraftingSlot extends Slot {
 
-        public CraftingSlot(Inventory inventory, int index, int x, int y) {
-            super(inventory, index, x, y);
+        public CraftingSlot(int index, int x, int y) {
+            super(input, index, x, y);
         }
 
         @Override
@@ -113,5 +121,37 @@ public abstract class CraftingBlockScreenHandler extends ScreenHandler {
             super.markDirty();
             CraftingBlockScreenHandler.this.onContentChanged(inventory);
         }
+
+        @Override
+        public ItemStack takeStack(int amount) {
+            markDirty();
+            return super.takeStack(amount);
+        }
+
+        /*
+        @Override
+        protected void onCrafted(ItemStack stack, int amount) {
+            super.onCrafted(stack, amount);
+            markDirty();
+        }*/
+
+        @Override
+        protected void onCrafted(ItemStack stack) {
+            super.onCrafted(stack);
+            markDirty();
+        }
+
+        @Override
+        protected void onTake(int amount) {
+            super.onTake(amount);
+            markDirty();
+        }
+
+        @Override
+        public void onTakeItem(PlayerEntity player, ItemStack stack) {
+            super.onTakeItem(player, stack);
+            markDirty();
+        }
+
     }
 }

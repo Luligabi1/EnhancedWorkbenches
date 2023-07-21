@@ -1,13 +1,18 @@
 package me.luligabi.projecttablemod.common.block;
 
 import com.google.common.base.Preconditions;
+import me.luligabi.projecttablemod.common.screenhandler.SimpleRecipeInputInventory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.Inventories;
+import net.minecraft.inventory.SimpleInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
@@ -15,6 +20,7 @@ import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
+import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 
@@ -22,7 +28,15 @@ public abstract class CraftingBlockEntity extends BlockEntity implements NamedSc
 
     protected CraftingBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
-        input = new SimpleCraftingInventory(3, 3);
+        input = new SimpleRecipeInputInventory(3*3) {
+
+            @Override
+            public void markDirty() {
+                super.markDirty();
+                CraftingBlockEntity.this.markDirty();
+                sync();
+            }
+        };
     }
     
 
@@ -71,15 +85,17 @@ public abstract class CraftingBlockEntity extends BlockEntity implements NamedSc
     }
 
 
-    public void toTag(NbtCompound nbt) {
-        super.writeNbt(nbt);
-        SimpleCraftingInventory.writeNbt(nbt, input);
-    }
-
     public void fromTag(NbtCompound nbt) {
         super.readNbt(nbt);
-        input = new SimpleCraftingInventory(3, 3);
-        SimpleCraftingInventory.readNbt(nbt, input);
+
+        Inventories.readNbt(nbt.getCompound("Input"), input.stacks);
+    }
+
+    public void toTag(NbtCompound nbt) {
+        super.writeNbt(nbt);
+
+        NbtCompound inputCompound = writeNbt(new NbtCompound(), input.stacks);
+        nbt.put("Input", inputCompound);
     }
 
     public void toClientTag(NbtCompound nbt) {
@@ -116,10 +132,29 @@ public abstract class CraftingBlockEntity extends BlockEntity implements NamedSc
 
     protected abstract Text getContainerName();
 
-    public SimpleCraftingInventory getInput() {
+    public SimpleInventory getInput() {
         return input;
     }
 
-    protected SimpleCraftingInventory input;
+    // the same thing as vanilla's but without the dumb isEmpty check that breaks a lot of stuff
+    // Thx, Mojang
+    protected NbtCompound writeNbt(NbtCompound nbt, DefaultedList<ItemStack> stacks) {
+        NbtList nbtList = new NbtList();
+
+        for(int i = 0; i < stacks.size(); ++i) {
+            ItemStack itemStack = stacks.get(i);
+            NbtCompound nbtCompound = new NbtCompound();
+            nbtCompound.putByte("Slot", (byte)i);
+            itemStack.writeNbt(nbtCompound);
+            nbtList.add(nbtCompound);
+        }
+
+        nbt.put("Items", nbtList);
+
+        return nbt;
+    }
+
+
+    protected SimpleRecipeInputInventory input;
     private boolean shouldClientRemesh = true;
 }

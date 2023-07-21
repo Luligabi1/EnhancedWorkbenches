@@ -1,6 +1,7 @@
 package me.luligabi.projecttablemod.common.screenhandler;
 
-import me.luligabi.projecttablemod.common.block.SimpleCraftingInventory;
+import me.luligabi.projecttablemod.common.block.BlockRegistry;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -13,10 +14,10 @@ public class ProjectTableScreenHandler extends CraftingBlockScreenHandler {
 
 
     public ProjectTableScreenHandler(int syncId, PlayerInventory playerInventory) {
-        this(syncId, playerInventory, new SimpleCraftingInventory(3, 3), new SimpleInventory(2*9), ScreenHandlerContext.EMPTY);
+        this(syncId, playerInventory, new SimpleRecipeInputInventory(3*3), new SimpleInventory(2*9), ScreenHandlerContext.EMPTY);
     }
 
-    public ProjectTableScreenHandler(int syncId, PlayerInventory playerInventory, SimpleCraftingInventory input, Inventory inventory, ScreenHandlerContext context) {
+    public ProjectTableScreenHandler(int syncId, PlayerInventory playerInventory, SimpleRecipeInputInventory input, Inventory inventory, ScreenHandlerContext context) {
         super(ScreenHandlingRegistry.PROJECT_TABLE_SCREEN_HANDLER, syncId, playerInventory, input, context);
         this.inventory = inventory;
         checkSize(inventory, 18);
@@ -26,13 +27,13 @@ public class ProjectTableScreenHandler extends CraftingBlockScreenHandler {
 
         for(int i = 0; i < 3; ++i) {
             for(int j = 0; j < 3; ++j) {
-                addSlot(new CraftingSlot(input, j + i * 3, 30 + j * 18, 17 + i * 18));
+                addSlot(new CraftingSlot(j + i * 3, 30 + j * 18, 17 + i * 18));
             }
         }
 
         for(int i = 0; i < 2; ++i) {
             for(int j = 0; j < 9; ++j) {
-                addSlot(new CraftingSlot(inventory, j + i * 9, 8 + j * 18, 77 + i * 18));
+                addSlot(new CraftingSlot(j + i * 9, 8 + j * 18, 77 + i * 18));
             }
         }
 
@@ -50,6 +51,10 @@ public class ProjectTableScreenHandler extends CraftingBlockScreenHandler {
         onContentChanged(input);
     }
 
+    @Override
+    protected Block getBlock() {
+        return BlockRegistry.PROJECT_TABLE;
+    }
 
     @Override
     public ItemStack quickMove(PlayerEntity player, int index) {
