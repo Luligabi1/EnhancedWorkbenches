@@ -33,7 +33,7 @@ public class ProjectTableScreenHandler extends CraftingBlockScreenHandler {
 
         for(int i = 0; i < 2; ++i) {
             for(int j = 0; j < 9; ++j) {
-                addSlot(new CraftingSlot(j + i * 9, 8 + j * 18, 77 + i * 18));
+                addSlot(new Slot(inventory, j + i * 9, 8 + j * 18, 77 + i * 18));
             }
         }
 
