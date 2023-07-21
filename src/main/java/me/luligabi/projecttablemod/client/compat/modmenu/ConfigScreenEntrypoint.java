@@ -30,7 +30,7 @@ public class ConfigScreenEntrypoint implements ModMenuApi {
                         true,
                         () -> config.renderInput,
                         newValue -> config.renderInput = newValue
-                ) // option -> BooleanControllerBuilder.create(option).yesNoFormatter().coloured(true)
+                )
                 .controller(option -> BooleanControllerBuilder.create(option).yesNoFormatter().coloured(true))
                 .build();
 
