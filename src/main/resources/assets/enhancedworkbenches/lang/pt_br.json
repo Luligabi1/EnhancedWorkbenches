@@ -1,0 +1,21 @@
+{
+  "block.enhancedworkbenches.project_table": "Bancada de Projeto",
+  "block.enhancedworkbenches.crafting_station": "Estação de Trabalho",
+
+  "configCategory.enhancedworkbenches.rendering": "Renderização",
+
+  "configOption.enhancedworkbenches.renderInput": "Renderizar Input?",
+  "configOption.enhancedworkbenches.renderInput.tooltip": "Determina se é possível ver o conteúdo do input em cima dde ambas Bancadas de Projeto e Estações de Trabalho.",
+
+  "configOption.enhancedworkbenches.renderInputDistance": "Distância de Renderização de Input",
+  "configOption.enhancedworkbenches.renderInputDistance.tooltip": "Quão longe, em chunks (16 blocos), você é capaz de ver o conteúdo do input.",
+
+  "configOption.enhancedworkbenches.renderInputRequireFancy": "Renderização de Input requer 'Bonitos'",
+  "configOption.enhancedworkbenches.renderInputRequireFancy.tooltip": "Determina se o input deve ser renderizado somente se você está usando gráficos 'Bonitos' ou acima.",
+
+  "configOption.enhancedworkbenches.renderInputOnProjectTable": "Renderizar Input em Bancadas de Projeto?",
+  "configOption.enhancedworkbenches.renderInputOnProjectTable.tooltip": "Determina se o Input deve ser renderizado em Bancadas de Projeto",
+
+  "configOption.enhancedworkbenches.renderInputOnCraftingStation": "Renderizar Input em Estações de Trabalho?",
+  "configOption.enhancedworkbenches.renderInputOnCraftingStation.tooltip": "Determina se o Input deve ser renderizado em Estações de Trabalho"
+}

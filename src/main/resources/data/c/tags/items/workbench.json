@@ -2,7 +2,7 @@
   "replace": false,
   "values": [
     "minecraft:crafting_table",
-    "projecttablemod:project_table",
-    "projecttablemod:crafting_station"
+    "enhancedworkbenches:project_table",
+    "enhancedworkbenches:crafting_station"
   ]
 }

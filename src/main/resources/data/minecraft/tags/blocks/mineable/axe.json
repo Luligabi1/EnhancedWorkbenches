@@ -1,7 +1,7 @@
 {
   "replace": false,
   "values": [
-    "projecttablemod:project_table",
-    "projecttablemod:crafting_station"
+    "enhancedworkbenches:project_table",
+    "enhancedworkbenches:crafting_station"
   ]
 }

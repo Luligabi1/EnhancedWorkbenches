@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "enhancedworkbenches:block/crafting_station"
+    },
+    "facing=south": {
+      "model": "enhancedworkbenches:block/crafting_station",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "enhancedworkbenches:block/crafting_station",
+      "y": 270
+    },
+    "facing=east": {
+      "model": "enhancedworkbenches:block/crafting_station",
+      "y": 90
+    }
+  }
+}

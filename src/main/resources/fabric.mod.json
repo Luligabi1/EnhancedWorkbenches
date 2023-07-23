@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "id": "projecttablemod",
+  "id": "enhancedworkbenches",
   "version": "${version}",
-  "name": "The Project Table Mod",
-  "description": "The classic RedPower 2 crafting solution brought onto Modern Minecraft.",
+  "name": "Enhanced Workbenches",
+  "description": "Better crafting solutions through the ages brought onto Modern Minecraft.",
   "authors": [
     "Luligabi"
   ],
@@ -11,36 +11,34 @@
     "gonsawa_"
   ],
   "contact": {
-    "repo": "https://github.com/Luligabi1/ProjectTableMod",
-    "issues": "https://github.com/Luligabi1/ProjectTableMod/issues"
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/enhanced-workbenches",
+    "repo": "https://github.com/Luligabi1/EnhancedWorkbenches",
+    "issues": "https://github.com/Luligabi1/EnhancedWorkbenches/issues"
   },
   "license": "Apache-2.0",
-  "icon": "assets/projecttablemod/textures/block/project_table/project_table_top.png",
+  "icon": "assets/enhancedworkbenches/icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
-      "me.luligabi.projecttablemod.common.ProjectTableMod"
+      "me.luligabi.enhancedworkbenches.common.EnhancedWorkbenches"
     ],
     "client": [
-      "me.luligabi.projecttablemod.client.ProjectTableModClient"
+      "me.luligabi.enhancedworkbenches.client.EnhancedWorkbenchesClient"
     ],
     "modmenu": [
-      "me.luligabi.projecttablemod.client.compat.modmenu.ConfigScreenEntrypoint"
+      "me.luligabi.enhancedworkbenches.client.compat.modmenu.ConfigScreenEntrypoint"
     ],
     "rei_common": [
-      "me.luligabi.projecttablemod.common.compat.rei.CommonREIPlugin"
+      "me.luligabi.enhancedworkbenches.common.compat.rei.CommonREIPlugin"
     ],
     "rei_client": [
-      "me.luligabi.projecttablemod.client.compat.rei.ClientREIPlugin"
+      "me.luligabi.enhancedworkbenches.client.compat.rei.ClientREIPlugin"
     ]
   },
-  "mixins": [
-    "ProjectTableMod.mixins.json"
-  ],
   "depends": {
     "fabricloader": "*",
     "fabric": "*",
-    "minecraft": ">=1.19.4"
+    "minecraft": "1.20.x"
   },
   "custom": {
     "modmenu": {

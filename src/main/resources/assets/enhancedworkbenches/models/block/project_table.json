@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "north": "enhancedworkbenches:block/project_table/project_table_front",
+    "south": "enhancedworkbenches:block/project_table/project_table_side",
+    "west": "enhancedworkbenches:block/project_table/project_table_side",
+    "east": "enhancedworkbenches:block/project_table/project_table_side",
+    "up": "enhancedworkbenches:block/project_table/project_table_top",
+    "down": "enhancedworkbenches:block/project_table/project_table_bottom",
+    "particle": "enhancedworkbenches:block/project_table/project_table_front"
+  }
+}

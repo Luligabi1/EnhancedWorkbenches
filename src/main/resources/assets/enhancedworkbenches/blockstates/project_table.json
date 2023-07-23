@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "enhancedworkbenches:block/project_table"
+    },
+    "facing=south": {
+      "model": "enhancedworkbenches:block/project_table",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "enhancedworkbenches:block/project_table",
+      "y": 270
+    },
+    "facing=east": {
+      "model": "enhancedworkbenches:block/project_table",
+      "y": 90
+    }
+  }
+}

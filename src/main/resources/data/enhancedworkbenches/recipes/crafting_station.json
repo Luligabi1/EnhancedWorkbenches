@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "c:workbench"
+    }
+  ],
+  "result": {
+    "item": "enhancedworkbenches:crafting_station",
+    "count": 1
+  }
+}
