@@ -3,9 +3,10 @@ package me.luligabi.enhancedworkbenches.client.screen;
 import com.mojang.blaze3d.systems.RenderSystem;
 import me.luligabi.enhancedworkbenches.common.EnhancedWorkbenches;
 import me.luligabi.enhancedworkbenches.common.screenhandler.ProjectTableScreenHandler;
-import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.render.GameRenderer;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -33,7 +34,7 @@ public class ProjectTableScreen extends HandledScreen<ProjectTableScreenHandler>
     }
 
     @Override
-    protected void drawBackground(DrawContext ctx, float delta, int mouseX, int mouseY) {
+    protected void drawBackground(DrawableHelper ctx, float delta, int mouseX, int mouseY) {
         renderBackground(ctx);
         RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);

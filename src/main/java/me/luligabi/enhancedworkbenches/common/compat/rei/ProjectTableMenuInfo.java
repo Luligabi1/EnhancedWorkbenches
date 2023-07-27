@@ -20,7 +20,6 @@ public class ProjectTableMenuInfo implements SimpleGridMenuInfo<ProjectTableScre
         this.display = display;
     }
 
-
     @Override
     public void populateRecipeFinder(MenuInfoContext<ProjectTableScreenHandler, ?, DefaultCraftingDisplay<?>> context, RecipeFinder finder) {
         context.getMenu().provideRecipeInputs(new RecipeMatcher() {

@@ -14,7 +14,6 @@ public class CraftingStationMenuInfo implements SimpleGridMenuInfo<CraftingStati
         this.display = display;
     }
 
-
     @Override
     public void populateRecipeFinder(MenuInfoContext<CraftingStationScreenHandler, ?, DefaultCraftingDisplay<?>> context, RecipeFinder finder) {
         context.getMenu().provideRecipeInputs(new RecipeMatcher() {

@@ -28,7 +28,6 @@ public class ProjectTableBlockEntity extends CraftingBlockEntity {
         };
     }
 
-
     @Override
     protected ScreenHandler createScreenHandler(int syncId, PlayerInventory playerInventory) {
         return new ProjectTableScreenHandler(
@@ -63,7 +62,6 @@ public class ProjectTableBlockEntity extends CraftingBlockEntity {
     public SimpleInventory getInventory() {
         return inventory;
     }
-
 
     protected SimpleInventory inventory;
 }

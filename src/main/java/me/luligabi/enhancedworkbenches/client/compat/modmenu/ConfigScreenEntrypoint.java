@@ -2,9 +2,10 @@ package me.luligabi.enhancedworkbenches.client.compat.modmenu;
 
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
-import dev.isxander.yacl3.api.*;
-import dev.isxander.yacl3.api.controller.BooleanControllerBuilder;
-import dev.isxander.yacl3.api.controller.IntegerFieldControllerBuilder;
+import dev.isxander.yacl.api.ConfigCategory;
+import dev.isxander.yacl.api.Option;
+import dev.isxander.yacl.api.OptionGroup;
+import dev.isxander.yacl.api.YetAnotherConfigLib;
 import me.luligabi.enhancedworkbenches.client.ClientConfig;
 import me.luligabi.enhancedworkbenches.client.EnhancedWorkbenchesClient;
 import net.minecraft.client.gui.screen.Screen;
@@ -81,7 +82,6 @@ public class ConfigScreenEntrypoint implements ModMenuApi {
                 .available(config.renderInput)
                 .controller(option -> BooleanControllerBuilder.create(option).yesNoFormatter().coloured(true))
                 .build();
-
 
 
         return YetAnotherConfigLib.createBuilder()

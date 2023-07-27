@@ -2,6 +2,8 @@
   "block.enhancedworkbenches.project_table": "Project Table",
   "block.enhancedworkbenches.crafting_station": "Crafting Station",
 
+  "itemGroup.enhancedworkbenches.enhanced_workbenches_tab": "Enhanced Workbenches",
+
   "configCategory.enhancedworkbenches.rendering": "Rendering",
 
   "configOption.enhancedworkbenches.renderInput": "Render Input?",

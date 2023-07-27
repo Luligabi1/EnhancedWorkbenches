@@ -16,7 +16,6 @@ public class CraftingStationBlockEntity extends CraftingBlockEntity {
         super(BlockRegistry.CRAFTING_STATION_ENTITY_TYPE, pos, state);
     }
 
-
     @Override
     protected ScreenHandler createScreenHandler(int syncId, PlayerInventory playerInventory) {
         return new CraftingStationScreenHandler(

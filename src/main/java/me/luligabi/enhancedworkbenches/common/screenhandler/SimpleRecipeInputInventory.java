@@ -1,12 +1,11 @@
 package me.luligabi.enhancedworkbenches.common.screenhandler;
 
-import net.minecraft.inventory.RecipeInputInventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 
 import java.util.List;
 
-public class SimpleRecipeInputInventory extends SimpleInventory implements RecipeInputInventory {
+public class SimpleRecipeInputInventory extends SimpleInventory implements IRecipeInputInventory {
 
     public SimpleRecipeInputInventory(int size) {
         super(size);

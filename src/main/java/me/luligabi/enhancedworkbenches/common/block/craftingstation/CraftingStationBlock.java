@@ -21,7 +21,6 @@ public class CraftingStationBlock extends CraftingBlock {
         super(FabricBlockSettings.copy(Blocks.CRAFTING_TABLE));
     }
 
-
     @Nullable
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {

@@ -24,7 +24,6 @@ import java.util.Optional;
 
 public abstract class CraftingBlockScreenHandler extends ScreenHandler {
 
-
     protected CraftingBlockScreenHandler(@Nullable ScreenHandlerType<?> type, int syncId, PlayerInventory playerInventory, SimpleRecipeInputInventory input, ScreenHandlerContext context) {
         super(type, syncId);
         this.input = input;
@@ -45,10 +44,7 @@ public abstract class CraftingBlockScreenHandler extends ScreenHandler {
         if(recipeOptional.isPresent()) {
             CraftingRecipe recipe = recipeOptional.get();
             if(output.shouldCraftRecipe(world, serverPlayerEntity, recipe)) {
-                ItemStack itemStack2 = recipe.craft(input, world.getRegistryManager());
-                if(itemStack2.isItemEnabled(world.getEnabledFeatures())) {
-                    itemStack = itemStack2;
-                }
+                itemStack = recipe.getOutput().copy();
             }
         }
         output.setStack(0, itemStack);
@@ -71,7 +67,6 @@ public abstract class CraftingBlockScreenHandler extends ScreenHandler {
     public void provideRecipeInputs(RecipeMatcher matcher) {
         input.provideRecipeInputs(matcher);
     }
-
 
     protected abstract Block getBlock();
 

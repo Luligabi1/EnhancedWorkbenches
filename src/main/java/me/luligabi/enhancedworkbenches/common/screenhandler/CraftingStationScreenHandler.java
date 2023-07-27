@@ -10,14 +10,12 @@ import net.minecraft.screen.slot.Slot;
 
 public class CraftingStationScreenHandler extends CraftingBlockScreenHandler {
 
-
     public CraftingStationScreenHandler(int syncId, PlayerInventory playerInventory) {
         this(syncId, playerInventory, new SimpleRecipeInputInventory(3*3), ScreenHandlerContext.EMPTY);
     }
 
     public CraftingStationScreenHandler(int syncId, PlayerInventory playerInventory, SimpleRecipeInputInventory input, ScreenHandlerContext context) {
         super(ScreenHandlingRegistry.CRAFTING_STATION_SCREEN_HANDLER, syncId, playerInventory, input, context);
-
 
         addSlot(new CraftingOutputSlot(player, 0, 124, 35));
 
@@ -46,7 +44,7 @@ public class CraftingStationScreenHandler extends CraftingBlockScreenHandler {
     }
 
     @Override
-    public ItemStack quickMove(PlayerEntity player, int index) {
+    public ItemStack transferSlot(PlayerEntity player, int index) {
         ItemStack itemStack = ItemStack.EMPTY;
         Slot slot = slots.get(index);
         if (slot != null && slot.hasStack()) {
