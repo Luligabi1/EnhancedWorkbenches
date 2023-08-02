@@ -4,19 +4,31 @@ import me.luligabi.enhancedworkbenches.common.block.BlockRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.slot.Slot;
 
 public class ProjectTableScreenHandler extends CraftingBlockScreenHandler {
 
     public ProjectTableScreenHandler(int syncId, PlayerInventory playerInventory) {
-        this(syncId, playerInventory, new SimpleRecipeInputInventory(3*3), new SimpleInventory(2*9), ScreenHandlerContext.EMPTY);
+        this(syncId, playerInventory, new CraftingInventory((new ScreenHandler(null, syncId) {
+            @Override
+            public ItemStack transferSlot(PlayerEntity player, int index) {
+                return this.transferSlot(player, index);
+            }
+
+            @Override
+            public boolean canUse(PlayerEntity player) {
+                return true;
+            }
+        }),3,3), new SimpleInventory(2*9), ScreenHandlerContext.EMPTY);
     }
 
-    public ProjectTableScreenHandler(int syncId, PlayerInventory playerInventory, SimpleRecipeInputInventory input, Inventory inventory, ScreenHandlerContext context) {
+    public ProjectTableScreenHandler(int syncId, PlayerInventory playerInventory, CraftingInventory input, Inventory inventory, ScreenHandlerContext context) {
         super(ScreenHandlingRegistry.PROJECT_TABLE_SCREEN_HANDLER, syncId, playerInventory, input, context);
         this.inventory = inventory;
         checkSize(inventory, 18);

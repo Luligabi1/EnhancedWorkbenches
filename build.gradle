@@ -3,10 +3,15 @@ plugins {
     id 'maven-publish'
 }
 
+loom {
+    accessWidenerPath = file("src/main/resources/enhancedworkbenches.accesswidener")
+}
+
 version = project.mod_version
 group = project.maven_group
 
 repositories {
+
     maven {
         name = "isXander (YACL)"
         url = "https://maven.isxander.dev/releases/"
@@ -32,14 +37,14 @@ dependencies {
 
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-    include modImplementation("dev.isxander:yet-another-config-lib:${project.yacl_version}") {
-        transitive(false)
-    }
+    modImplementation "dev.isxander:yet-another-config-lib:${project.yacl_version}"
 
     modCompileOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
     modRuntimeOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
 
     modImplementation "me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}"
+
+    modImplementation 'org.joml:joml:1.10.5'
 
 /*
     modImplementation "curse.maven:balm-fabric-500525:${project.balm_file_id}"

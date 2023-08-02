@@ -19,7 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.Direction;
-import org.joml.Vector3f;
+import net.minecraft.util.math.Vec3f;
 
 import java.util.HashMap;
 
@@ -48,15 +48,16 @@ public abstract class CraftingBlockEntityRenderer<T extends CraftingBlockEntity>
         Pair<Double, Double> pos = getDirectionPositionMap(direction).get(index);
         ItemStack stack = inventory.getStack(index);
         ModelTransformation transformation = MinecraftClient.getInstance().getItemRenderer().getModel(stack, null, null, 0).getTransformation();
-        boolean isBlock = transformation.fixed.equals(new Transformation(new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), new Vector3f(0.5F, 0.5F, 0.5F))); // this is stupid but should cover almost all cases (and doesn't require any mixins, yay!)
+        boolean isBlock = transformation.fixed.equals(new Transformation(new Vec3f(0, 0, 0), new Vec3f(0, 0, 0), new Vec3f(0.5F, 0.5F, 0.5F))); // this is stupid but should cover almost all cases (and doesn't require any mixins, yay!)
 
         matrices.translate(pos.getLeft(), isBlock ? 1.05D : 1.001D, pos.getRight());
         matrices.scale(0.1F, 0.1F, 0.1F);
 
-        matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(90F));
-        matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180F));
-        matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(getItemAngle(direction)));
-        MinecraftClient.getInstance().getItemRenderer().renderItem(stack, isBlock ? ModelTransformationMode.NONE : ModelTransformationMode.GUI, light, OverlayTexture.DEFAULT_UV, matrices, vertexConsumers, entity.getWorld(), (int) entity.getPos().asLong());
+
+        matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(90F));
+        matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(180F));
+        matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(getItemAngle(direction)));
+        MinecraftClient.getInstance().getItemRenderer().renderItem(stack, isBlock ? ModelTransformation.Mode.NONE : ModelTransformation.Mode.GUI, light,  OverlayTexture.DEFAULT_UV, matrices,  vertexConsumers, (int) entity.getPos().asLong());
         matrices.pop();
     }
 

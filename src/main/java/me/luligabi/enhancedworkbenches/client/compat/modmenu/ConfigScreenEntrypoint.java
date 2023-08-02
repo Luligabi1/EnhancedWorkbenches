@@ -24,63 +24,59 @@ public class ConfigScreenEntrypoint implements ModMenuApi {
         /*
          * Rendering (Generic)
          */
-        Option<Boolean> renderInput = Option.<Boolean>createBuilder()
+
+        Option<Boolean> renderInput = Option.<Boolean>createBuilder(boolean.class)
                 .name(Text.translatable("configOption.enhancedworkbenches.renderInput"))
-                .description(OptionDescription.of(Text.translatable("configOption.enhancedworkbenches.renderInput.tooltip")))
+                .tooltip(Text.translatable("configOption.enhancedworkbenches.renderInput.tooltip"))
                 .binding(
                         true,
                         () -> config.renderInput,
                         newValue -> config.renderInput = newValue
                 )
-                .controller(option -> BooleanControllerBuilder.create(option).yesNoFormatter().coloured(true))
                 .build();
 
-        Option<Integer> renderInputDistance = Option.<Integer>createBuilder()
+        Option<Integer> renderInputDistance = Option.<Integer>createBuilder(int.class)
                 .name(Text.translatable("configOption.enhancedworkbenches.renderInputDistance"))
-                .description(OptionDescription.of(Text.translatable("configOption.enhancedworkbenches.renderInputDistance.tooltip")))
+                .tooltip((Text.translatable("configOption.enhancedworkbenches.renderInputDistance.tooltip")))
                 .binding(
                         3,
                         () -> config.renderInputDistance,
                         newValue -> config.renderInputDistance = newValue
                 )
                 .available(config.renderInput)
-                .controller(option -> IntegerFieldControllerBuilder.create(option).range(1, Integer.MAX_VALUE))
                 .build();
 
-        Option<Boolean> renderInputRequireFancy = Option.<Boolean>createBuilder()
+        Option<Boolean> renderInputRequireFancy = Option.<Boolean>createBuilder(boolean.class)
                 .name(Text.translatable("configOption.enhancedworkbenches.renderInputRequireFancy"))
-                .description(OptionDescription.of(Text.translatable("configOption.enhancedworkbenches.renderInputRequireFancy.tooltip")))
+                .tooltip(Text.translatable("configOption.enhancedworkbenches.renderInputRequireFancy.tooltip"))
                 .binding(
                         true,
                         () -> config.renderInputRequireFancy,
                         newValue -> config.renderInputRequireFancy = newValue
                 )
                 .available(config.renderInput)
-                .controller(option -> BooleanControllerBuilder.create(option).yesNoFormatter().coloured(true))
                 .build();
 
-        Option<Boolean> renderInputOnProjectTable = Option.<Boolean>createBuilder()
+        Option<Boolean> renderInputOnProjectTable = Option.<Boolean>createBuilder(boolean.class)
                 .name(Text.translatable("configOption.enhancedworkbenches.renderInputOnProjectTable"))
-                .description(OptionDescription.of(Text.translatable("configOption.enhancedworkbenches.renderInputOnProjectTable.tooltip")))
+                .tooltip((Text.translatable("configOption.enhancedworkbenches.renderInputOnProjectTable.tooltip")))
                 .binding(
                         true,
                         () -> config.renderInputOnProjectTable,
                         newValue -> config.renderInputOnProjectTable = newValue
                 )
                 .available(config.renderInput)
-                .controller(option -> BooleanControllerBuilder.create(option).yesNoFormatter().coloured(true))
                 .build();
 
-        Option<Boolean> renderInputOnCraftingStation = Option.<Boolean>createBuilder()
+        Option<Boolean> renderInputOnCraftingStation = Option.<Boolean>createBuilder(boolean.class)
                 .name(Text.translatable("configOption.enhancedworkbenches.renderInputOnCraftingStation"))
-                .description(OptionDescription.of(Text.translatable("configOption.enhancedworkbenches.renderInputOnCraftingStation.tooltip")))
+                .tooltip((Text.translatable("configOption.enhancedworkbenches.renderInputOnCraftingStation.tooltip")))
                 .binding(
                         true,
                         () -> config.renderInputOnCraftingStation,
                         newValue -> config.renderInputOnCraftingStation = newValue
                 )
                 .available(config.renderInput)
-                .controller(option -> BooleanControllerBuilder.create(option).yesNoFormatter().coloured(true))
                 .build();
 
 

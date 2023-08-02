@@ -1,15 +1,14 @@
 package me.luligabi.enhancedworkbenches.common.block;
 
 import com.google.common.base.Preconditions;
-import me.luligabi.enhancedworkbenches.common.screenhandler.SimpleRecipeInputInventory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.inventory.Inventories;
-import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
@@ -29,7 +28,7 @@ public abstract class CraftingBlockEntity extends BlockEntity implements NamedSc
 
     protected CraftingBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
-        input = new SimpleRecipeInputInventory(3*3) {
+        input = new CraftingInventory(null, 3, 3) {
 
             @Override
             public void markDirty() {
@@ -133,7 +132,7 @@ public abstract class CraftingBlockEntity extends BlockEntity implements NamedSc
 
     protected abstract Text getContainerName();
 
-    public SimpleInventory getInput() {
+    public CraftingInventory getInput() {
         return input;
     }
 
@@ -156,6 +155,6 @@ public abstract class CraftingBlockEntity extends BlockEntity implements NamedSc
     }
 
 
-    protected SimpleRecipeInputInventory input;
+    protected CraftingInventory input;
     private boolean shouldClientRemesh = true;
 }

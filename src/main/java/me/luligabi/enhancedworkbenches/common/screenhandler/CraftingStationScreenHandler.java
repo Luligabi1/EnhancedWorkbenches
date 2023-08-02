@@ -4,17 +4,29 @@ import me.luligabi.enhancedworkbenches.common.block.BlockRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.slot.Slot;
 
 public class CraftingStationScreenHandler extends CraftingBlockScreenHandler {
 
     public CraftingStationScreenHandler(int syncId, PlayerInventory playerInventory) {
-        this(syncId, playerInventory, new SimpleRecipeInputInventory(3*3), ScreenHandlerContext.EMPTY);
+        this(syncId, playerInventory, new CraftingInventory((new ScreenHandler(null, syncId) {
+            @Override
+            public ItemStack transferSlot(PlayerEntity player, int index) {
+                return this.transferSlot(player, index);
+            }
+
+            @Override
+            public boolean canUse(PlayerEntity player) {
+                return true;
+            }
+        }),3,3), ScreenHandlerContext.EMPTY);
     }
 
-    public CraftingStationScreenHandler(int syncId, PlayerInventory playerInventory, SimpleRecipeInputInventory input, ScreenHandlerContext context) {
+    public CraftingStationScreenHandler(int syncId, PlayerInventory playerInventory, CraftingInventory input, ScreenHandlerContext context) {
         super(ScreenHandlingRegistry.CRAFTING_STATION_SCREEN_HANDLER, syncId, playerInventory, input, context);
 
         addSlot(new CraftingOutputSlot(player, 0, 124, 35));

@@ -3,6 +3,7 @@ package me.luligabi.enhancedworkbenches.common.screenhandler;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.inventory.CraftingResultInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
@@ -24,7 +25,7 @@ import java.util.Optional;
 
 public abstract class CraftingBlockScreenHandler extends ScreenHandler {
 
-    protected CraftingBlockScreenHandler(@Nullable ScreenHandlerType<?> type, int syncId, PlayerInventory playerInventory, SimpleRecipeInputInventory input, ScreenHandlerContext context) {
+    protected CraftingBlockScreenHandler(@Nullable ScreenHandlerType<?> type, int syncId, PlayerInventory playerInventory, CraftingInventory input, ScreenHandlerContext context) {
         super(type, syncId);
         this.input = input;
         this.context = context;
@@ -36,7 +37,7 @@ public abstract class CraftingBlockScreenHandler extends ScreenHandler {
     }
 
     @SuppressWarnings("ConstantConditions")
-    protected static void updateResult(ScreenHandler handler, World world, PlayerEntity player, SimpleRecipeInputInventory input, CraftingResultInventory output) {
+    protected static void updateResult(ScreenHandler handler, World world, PlayerEntity player, CraftingInventory input, CraftingResultInventory output) {
         if(world.isClient()) return;
         ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity)player;
         ItemStack itemStack = ItemStack.EMPTY;
@@ -73,7 +74,7 @@ public abstract class CraftingBlockScreenHandler extends ScreenHandler {
     protected final BlockPos blockPos;
     protected final PlayerEntity player;
     protected final ScreenHandlerContext context;
-    protected final SimpleRecipeInputInventory input;
+    protected final CraftingInventory input;
     protected final CraftingResultInventory result = new CraftingResultInventory() /*{
 
         @Override
