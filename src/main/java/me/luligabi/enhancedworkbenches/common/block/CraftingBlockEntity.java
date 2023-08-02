@@ -18,6 +18,7 @@ import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
@@ -28,7 +29,17 @@ public abstract class CraftingBlockEntity extends BlockEntity implements NamedSc
 
     protected CraftingBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
-        input = new CraftingInventory(null, 3, 3) {
+        input = new CraftingInventory(new ScreenHandler(ScreenHandlerType.CRAFTING, -1) {
+            @Override
+            public ItemStack transferSlot(PlayerEntity player, int index) {
+                return this.transferSlot(player, index);
+            }
+
+            @Override
+            public boolean canUse(PlayerEntity player) {
+                return false;
+            }
+        }, 3, 3) {
 
             @Override
             public void markDirty() {
