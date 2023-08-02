@@ -5,6 +5,10 @@ plugins {
 
 loom {
     accessWidenerPath = file("src/main/resources/enhancedworkbenches.accesswidener")
+    interfaceInjection {
+        // When enabled injected interfaces from dependecies will be applied.
+        enableDependencyInterfaceInjection = true
+    }
 }
 
 version = project.mod_version
@@ -37,14 +41,17 @@ dependencies {
 
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
+    modImplementation'org.joml:joml:1.10.5'
+
     modImplementation "dev.isxander:yet-another-config-lib:${project.yacl_version}"
 
-    modCompileOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
-    modRuntimeOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
+//    modCompileOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
+//
+//    modRuntimeOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
 
-    modImplementation "me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}"
+    modCompileOnly "me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}"
+    modCompileOnly "me.shedaniel:RoughlyEnoughItems-api-fabric:${project.rei_version}"
 
-    modImplementation 'org.joml:joml:1.10.5'
 
 /*
     modImplementation "curse.maven:balm-fabric-500525:${project.balm_file_id}"

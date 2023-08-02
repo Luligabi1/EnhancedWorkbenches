@@ -37,18 +37,18 @@ public abstract class CraftingBlockScreenHandler extends ScreenHandler {
     }
 
     @SuppressWarnings("ConstantConditions")
-    protected static void updateResult(ScreenHandler handler, World world, PlayerEntity player, CraftingInventory input, CraftingResultInventory output) {
-        if(world.isClient()) return;
+    protected static void updateResult(ScreenHandler handler, World world, PlayerEntity player, CraftingInventory craftingInventory, CraftingResultInventory resultInventory) {
+        CraftingRecipe craftingRecipe;
+        if (world.isClient) {
+            return;
+        }
         ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity)player;
         ItemStack itemStack = ItemStack.EMPTY;
-        Optional<CraftingRecipe> recipeOptional = world.getServer().getRecipeManager().getFirstMatch(RecipeType.CRAFTING, input, world);
-        if(recipeOptional.isPresent()) {
-            CraftingRecipe recipe = recipeOptional.get();
-            if(output.shouldCraftRecipe(world, serverPlayerEntity, recipe)) {
-                itemStack = recipe.getOutput().copy();
-            }
+        Optional<CraftingRecipe> optional = world.getServer().getRecipeManager().getFirstMatch(RecipeType.CRAFTING, craftingInventory, world);
+        if (optional.isPresent() && resultInventory.shouldCraftRecipe(world, serverPlayerEntity, craftingRecipe = optional.get())) {
+            itemStack = craftingRecipe.craft(craftingInventory);
         }
-        output.setStack(0, itemStack);
+        resultInventory.setStack(0, itemStack);
         handler.setPreviousTrackedSlot(0, itemStack);
         serverPlayerEntity.networkHandler.sendPacket(new ScreenHandlerSlotUpdateS2CPacket(handler.syncId, handler.nextRevision(), 0, itemStack));
     }
