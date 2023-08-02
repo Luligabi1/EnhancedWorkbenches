@@ -4,6 +4,8 @@
 
   "itemGroup.enhancedworkbenches.enhanced_workbenches_tab": "Enhanced Workbenches",
 
+  "text.autoconfig.enhancedworkbenches-client.title": "Enhanced Workbenches Configuration",
+
   "configCategory.enhancedworkbenches.rendering": "Rendering",
 
   "configOption.enhancedworkbenches.renderInput": "Render Input?",
@@ -12,12 +14,29 @@
   "configOption.enhancedworkbenches.renderInputDistance": "Render Input Distance",
   "configOption.enhancedworkbenches.renderInputDistance.tooltip": "How far, in chunks (16 blocks), you're able to see the content of the input.",
 
-  "configOption.enhancedworkbenches.renderInputRequireFancy": "Render Input Requires 'Fancy'",
+  "configOption.enhancedworkbenches.renderInputRequireFancy": "Render Input Requires 'Fancy'?",
   "configOption.enhancedworkbenches.renderInputRequireFancy.tooltip": "Whether the input should only be rendered if you're using 'Fancy' or higher graphic settings.",
 
   "configOption.enhancedworkbenches.renderInputOnProjectTable": "Render Input on Project Tables?",
   "configOption.enhancedworkbenches.renderInputOnProjectTable.tooltip": "Whether the input should be rendered on Project Tables",
 
   "configOption.enhancedworkbenches.renderInputOnCraftingStation": "Render Input on Crafting Stations?",
-  "configOption.enhancedworkbenches.renderInputOnCraftingStation.tooltip": "Whether the input should be rendered on Crafting Stations"
+  "configOption.enhancedworkbenches.renderInputOnCraftingStation.tooltip": "Whether the input should be rendered on Crafting Stations",
+
+  "text.autoconfig.enhancedworkbenches-client.option.renderInput": "Render Input?",
+  "text.autoconfig.enhancedworkbenches-client.option.renderInput.@Tooltip[0]": "Whether you're able to see the contents of the input",
+  "text.autoconfig.enhancedworkbenches-client.option.renderInput.@Tooltip[1]": "on top of either Project Tables or Crafting Stations.",
+
+  "text.autoconfig.enhancedworkbenches-client.option.renderInputDistance": "Render Input Distance",
+  "text.autoconfig.enhancedworkbenches-client.option.renderInputDistance.@Tooltip": "How far, in chunks (16 blocks), you're able to see the content of the input.",
+
+  "text.autoconfig.enhancedworkbenches-client.option.renderInputRequireFancy": "Render Input Requires 'Fancy'?",
+  "text.autoconfig.enhancedworkbenches-client.option.renderInputRequireFancy.@Tooltip[0]": "Whether the input should only be rendered",
+  "text.autoconfig.enhancedworkbenches-client.option.renderInputRequireFancy.@Tooltip[1]": "if you're using 'Fancy' or higher graphic settings.",
+
+  "text.autoconfig.enhancedworkbenches-client.option.renderInputOnProjectTable": "Render Input on Project Tables?",
+  "text.autoconfig.enhancedworkbenches-client.option.renderInputOnProjectTable.@Tooltip": "Whether the input should be rendered on Project Tables",
+
+  "text.autoconfig.enhancedworkbenches-client.option.renderInputOnCraftingStation": "Render Input on Crafting Stations?",
+  "text.autoconfig.enhancedworkbenches-client.option.renderInputOnCraftingStation.@Tooltip": "Whether the input should be rendered on Crafting Stations"
 }

@@ -31,10 +31,6 @@ public class CraftingStationScreen extends HandledScreen<CraftingStationScreenHa
     @Override
     protected void drawBackground(MatrixStack ctx, float delta, int mouseX, int mouseY) {
         renderBackground(ctx);
-//        RenderSystem.setShader(GameRenderer::getPositionTexProgram);
-//        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-//        ctx.drawTexture(TEXTURE, x, y, 0, 0, backgroundWidth, backgroundHeight);
-//        port to 1.19.2
         RenderSystem.setShaderTexture(0, TEXTURE);
         drawTexture(ctx, x, y, 0, 0, backgroundWidth, backgroundHeight);
     }
