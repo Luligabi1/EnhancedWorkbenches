@@ -55,8 +55,8 @@ public abstract class CraftingBlockEntityRenderer<T extends CraftingBlockEntity>
 
 
         matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(90F));
-        matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(180F));
-        matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(getItemAngle(direction)));
+        matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(180F));
+        matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(getItemAngle(direction)));
         MinecraftClient.getInstance().getItemRenderer().renderItem(stack, isBlock ? ModelTransformation.Mode.NONE : ModelTransformation.Mode.GUI, light,  OverlayTexture.DEFAULT_UV, matrices,  vertexConsumers, (int) entity.getPos().asLong());
         matrices.pop();
     }
