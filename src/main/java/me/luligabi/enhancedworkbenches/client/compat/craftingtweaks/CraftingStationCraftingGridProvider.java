@@ -46,21 +46,21 @@ public class CraftingStationCraftingGridProvider implements CraftingGridProvider
                         public void rotateGrid(CraftingGrid craftingGrid, PlayerEntity playerEntity, ScreenHandler handler, boolean b) {
                             (new DefaultGridRotateHandler()).rotateGrid(craftingGrid, playerEntity, handler, b);
 
-                            screenHandler.slots.get(1).markDirty();
+                            screenHandler.getSlot(1).markDirty();
                         }
                     }).balanceHandler(new GridBalanceHandler<>() {
                         @Override
                         public void balanceGrid(CraftingGrid craftingGrid, PlayerEntity playerEntity, ScreenHandler handler) {
                             (new DefaultGridBalanceHandler()).balanceGrid(craftingGrid, playerEntity, handler);
 
-                            screenHandler.slots.get(1).markDirty();
+                            screenHandler.getSlot(1).markDirty();
                         }
 
                         @Override
                         public void spreadGrid(CraftingGrid craftingGrid, PlayerEntity playerEntity, ScreenHandler handler) {
                             (new DefaultGridBalanceHandler()).spreadGrid(craftingGrid, playerEntity, handler);
 
-                            screenHandler.slots.get(1).markDirty();
+                            screenHandler.getSlot(1).markDirty();
                         }
                     });
         }
