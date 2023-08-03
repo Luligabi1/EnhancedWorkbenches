@@ -146,5 +146,10 @@ public abstract class CraftingBlockScreenHandler extends ScreenHandler {
             markDirty();
         }
 
+        @Override
+        public void onQuickTransfer(ItemStack newItem, ItemStack original) {
+            super.onQuickTransfer(newItem, original);
+            markDirty();
+        }
     }
 }
