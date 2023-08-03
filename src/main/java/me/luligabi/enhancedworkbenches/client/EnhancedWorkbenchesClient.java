@@ -36,7 +36,7 @@ public class EnhancedWorkbenchesClient implements ClientModInitializer {
         BlockEntityRendererFactories.register(BlockRegistry.PROJECT_TABLE_ENTITY_TYPE, ProjectTableBlockEntityRenderer::new);
 
         // Check if cloth-config mod is loaded on the client
-        if (!FabricLoader.getInstance().isModLoaded("cloth-config")) {
+        if (FabricLoader.getInstance().isModLoaded("cloth-config")) {
             ConfigManager.registerAutoConfig();
             ClothConfiguration config = AutoConfig.getConfigHolder(ClothConfiguration.class).getConfig();
             try {

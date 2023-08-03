@@ -4,6 +4,7 @@ import me.luligabi.enhancedworkbenches.common.block.BlockRegistry;
 import me.luligabi.enhancedworkbenches.common.screenhandler.ScreenHandlingRegistry;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
@@ -19,6 +20,16 @@ public class EnhancedWorkbenches implements ModInitializer {
     public void onInitialize() {
         BlockRegistry.init();
         ScreenHandlingRegistry.init();
+
+        if (FabricLoader.getInstance().isModLoaded("craftingtweaks")) {
+            try {
+                System.out.println("Registering CraftingTweaks provider..");
+                Class.forName("me.luligabi.enhancedworkbenches.client.compat.craftingtweaks.ProjectTableCraftingGridProvider").getConstructor().newInstance();
+                System.out.println("Registering CraftingTweaks provider done!");
+            } catch (Throwable e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public static Identifier id(String id) {
