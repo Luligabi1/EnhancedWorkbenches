@@ -53,7 +53,6 @@ public abstract class CraftingBlockEntityRenderer<T extends CraftingBlockEntity>
         matrices.translate(pos.getLeft(), isBlock ? 1.05D : 1.001D, pos.getRight());
         matrices.scale(0.1F, 0.1F, 0.1F);
 
-
         matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(90F));
         matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(180F));
         matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(getItemAngle(direction)));
