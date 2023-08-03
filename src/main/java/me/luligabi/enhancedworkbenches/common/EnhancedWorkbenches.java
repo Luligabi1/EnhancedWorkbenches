@@ -23,9 +23,8 @@ public class EnhancedWorkbenches implements ModInitializer {
 
         if (FabricLoader.getInstance().isModLoaded("craftingtweaks")) {
             try {
-                System.out.println("Registering CraftingTweaks provider..");
                 Class.forName("me.luligabi.enhancedworkbenches.client.compat.craftingtweaks.ProjectTableCraftingGridProvider").getConstructor().newInstance();
-                System.out.println("Registering CraftingTweaks provider done!");
+                Class.forName("me.luligabi.enhancedworkbenches.client.compat.craftingtweaks.CraftingStationCraftingGridProvider").getConstructor().newInstance();
             } catch (Throwable e) {
                 e.printStackTrace();
             }
