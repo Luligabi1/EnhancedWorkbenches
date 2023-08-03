@@ -37,7 +37,7 @@ public abstract class CraftingBlockEntity extends BlockEntity implements NamedSc
 
             @Override
             public boolean canUse(PlayerEntity player) {
-                return false;
+                return true;
             }
         }, 3, 3) {
 
@@ -61,7 +61,6 @@ public abstract class CraftingBlockEntity extends BlockEntity implements NamedSc
     public Text getDisplayName() {
         return getContainerName();
     }
-
 
     @Override
     protected final void writeNbt(NbtCompound nbt) {
@@ -161,10 +160,8 @@ public abstract class CraftingBlockEntity extends BlockEntity implements NamedSc
         }
 
         nbt.put("Items", nbtList);
-
         return nbt;
     }
-
 
     protected CraftingInventory input;
     private boolean shouldClientRemesh = true;

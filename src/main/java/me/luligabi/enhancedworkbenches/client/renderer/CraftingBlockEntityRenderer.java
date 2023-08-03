@@ -37,7 +37,7 @@ public abstract class CraftingBlockEntityRenderer<T extends CraftingBlockEntity>
         Direction direction = entity.getWorld().getBlockState(entity.getPos()).get(Properties.HORIZONTAL_FACING);
 
         int light2 = requiresLightmapLighting() ? WorldRenderer.getLightmapCoordinates(entity.getWorld(), entity.getPos().up()) : light;
-        for(int i = 0; i < 9; i++) {
+        for (int i = 0; i < 9; i++) {
             renderItem(entity, inventory, i, direction, matrices, vertexConsumers, light2);
         }
     }

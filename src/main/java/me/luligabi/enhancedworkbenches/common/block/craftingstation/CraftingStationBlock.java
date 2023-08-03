@@ -45,7 +45,6 @@ public class CraftingStationBlock extends CraftingBlock {
         return VOXEL_SHAPE;
     }
 
-
     private static final VoxelShape COUNTER = createCuboidShape(0, 12, 0, 16, 16, 16);
     private static final VoxelShape LEG_1 = createCuboidShape(0, 0, 0, 4, 12, 4);
     private static final VoxelShape LEG_2 = createCuboidShape(0, 0, 12, 4, 12, 16);

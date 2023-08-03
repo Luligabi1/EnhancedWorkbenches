@@ -39,18 +39,26 @@ public abstract class CraftingBlockScreenHandler extends ScreenHandler {
     @SuppressWarnings("ConstantConditions")
     protected static void updateResult(ScreenHandler handler, World world, PlayerEntity player, CraftingInventory craftingInventory, CraftingResultInventory resultInventory) {
         CraftingRecipe craftingRecipe;
+
         if (world.isClient) {
             return;
         }
-        ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity)player;
+
+        ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) player;
         ItemStack itemStack = ItemStack.EMPTY;
         Optional<CraftingRecipe> optional = world.getServer().getRecipeManager().getFirstMatch(RecipeType.CRAFTING, craftingInventory, world);
+
         if (optional.isPresent() && resultInventory.shouldCraftRecipe(world, serverPlayerEntity, craftingRecipe = optional.get())) {
             itemStack = craftingRecipe.craft(craftingInventory);
         }
+
         resultInventory.setStack(0, itemStack);
         handler.setPreviousTrackedSlot(0, itemStack);
         serverPlayerEntity.networkHandler.sendPacket(new ScreenHandlerSlotUpdateS2CPacket(handler.syncId, handler.nextRevision(), 0, itemStack));
+
+        if (itemStack.isEmpty()) {
+            craftingInventory.markDirty();
+        }
     }
 
     @Override
@@ -91,7 +99,6 @@ public abstract class CraftingBlockScreenHandler extends ScreenHandler {
     }*/;
 
     protected class CraftingSlot extends Slot {
-
         public CraftingSlot(int index, int x, int y) {
             super(input, index, x, y);
         }
@@ -104,7 +111,6 @@ public abstract class CraftingBlockScreenHandler extends ScreenHandler {
     }
 
     protected class CraftingOutputSlot extends CraftingResultSlot {
-
         public CraftingOutputSlot(PlayerEntity player, int index, int x, int y) {
             super(player, CraftingBlockScreenHandler.this.input, CraftingBlockScreenHandler.this.result, index, x, y);
         }

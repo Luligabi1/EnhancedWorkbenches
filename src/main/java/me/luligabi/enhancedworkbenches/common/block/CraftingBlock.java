@@ -31,11 +31,13 @@ public abstract class CraftingBlock extends BlockWithEntity {
 
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if(world.isClient) return ActionResult.SUCCESS;
+        if (world.isClient) return ActionResult.SUCCESS;
         BlockEntity blockEntity = world.getBlockEntity(pos);
-        if(blockEntity instanceof CraftingBlockEntity) {
+
+        if (blockEntity instanceof CraftingBlockEntity) {
             player.openHandledScreen((NamedScreenHandlerFactory) blockEntity);
         }
+
         return ActionResult.CONSUME;
     }
 
