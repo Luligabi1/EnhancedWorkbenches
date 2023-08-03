@@ -2,11 +2,10 @@ package me.luligabi.enhancedworkbenches.client.compat.craftingtweaks;
 
 import me.luligabi.enhancedworkbenches.common.screenhandler.ProjectTableScreenHandler;
 import net.blay09.mods.craftingtweaks.api.*;
+import net.blay09.mods.craftingtweaks.api.impl.DefaultGridBalanceHandler;
 import net.blay09.mods.craftingtweaks.api.impl.DefaultGridRotateHandler;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
-import net.minecraft.screen.slot.Slot;
 
 public class ProjectTableCraftingGridProvider implements CraftingGridProvider {
     public ProjectTableCraftingGridProvider() {
@@ -48,6 +47,20 @@ public class ProjectTableCraftingGridProvider implements CraftingGridProvider {
                         @Override
                         public void rotateGrid(CraftingGrid craftingGrid, PlayerEntity playerEntity, ScreenHandler handler, boolean b) {
                             (new DefaultGridRotateHandler()).rotateGrid(craftingGrid, playerEntity, handler, b);
+
+                            screenHandler.slots.get(1).markDirty();
+                        }
+                    }).balanceHandler(new GridBalanceHandler<>() {
+                        @Override
+                        public void balanceGrid(CraftingGrid craftingGrid, PlayerEntity playerEntity, ScreenHandler handler) {
+                            (new DefaultGridBalanceHandler()).balanceGrid(craftingGrid, playerEntity, handler);
+
+                            screenHandler.slots.get(1).markDirty();
+                        }
+
+                        @Override
+                        public void spreadGrid(CraftingGrid craftingGrid, PlayerEntity playerEntity, ScreenHandler handler) {
+                            (new DefaultGridBalanceHandler()).spreadGrid(craftingGrid, playerEntity, handler);
 
                             screenHandler.slots.get(1).markDirty();
                         }

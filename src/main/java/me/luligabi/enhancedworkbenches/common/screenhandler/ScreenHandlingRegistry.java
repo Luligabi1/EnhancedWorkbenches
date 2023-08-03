@@ -5,7 +5,6 @@ import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.registry.Registry;
 
 public class ScreenHandlingRegistry {
-
     public static final ScreenHandlerType<ProjectTableScreenHandler> PROJECT_TABLE_SCREEN_HANDLER = Registry.register(
             Registry.SCREEN_HANDLER,
             EnhancedWorkbenches.id("project_table"),

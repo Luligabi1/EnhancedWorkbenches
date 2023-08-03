@@ -9,7 +9,6 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 public class CraftingStationScreen extends HandledScreen<CraftingStationScreenHandler> {
-
     public CraftingStationScreen(CraftingStationScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
     }

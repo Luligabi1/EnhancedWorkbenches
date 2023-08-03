@@ -24,27 +24,31 @@ import net.minecraft.util.math.Vec3f;
 import java.util.HashMap;
 
 public abstract class CraftingBlockEntityRenderer<T extends CraftingBlockEntity> implements BlockEntityRenderer<T> {
-
     @SuppressWarnings("unused")
     public CraftingBlockEntityRenderer(BlockEntityRendererFactory.Context context) {}
 
     @Override
     public void render(T entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
         if(!shouldRender()) return;
+
         Inventory inventory = entity.getInput();
-        if(inventory.isEmpty() || !(entity.getWorld().getBlockState(entity.getPos()).getBlock() instanceof CraftingBlock)) return;
+
+        if (inventory.isEmpty() || !(entity.getWorld().getBlockState(entity.getPos()).getBlock() instanceof CraftingBlock)) return;
 
         Direction direction = entity.getWorld().getBlockState(entity.getPos()).get(Properties.HORIZONTAL_FACING);
 
         int light2 = requiresLightmapLighting() ? WorldRenderer.getLightmapCoordinates(entity.getWorld(), entity.getPos().up()) : light;
+
         for (int i = 0; i < 9; i++) {
             renderItem(entity, inventory, i, direction, matrices, vertexConsumers, light2);
         }
     }
 
     private void renderItem(T entity, Inventory inventory, int index, Direction direction, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
-        if(inventory.getStack(index).isEmpty()) return;
+        if (inventory.getStack(index).isEmpty()) return;
+
         matrices.push();
+
         Pair<Double, Double> pos = getDirectionPositionMap(direction).get(index);
         ItemStack stack = inventory.getStack(index);
         ModelTransformation transformation = MinecraftClient.getInstance().getItemRenderer().getModel(stack, null, null, 0).getTransformation();
@@ -56,12 +60,14 @@ public abstract class CraftingBlockEntityRenderer<T extends CraftingBlockEntity>
         matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(90F));
         matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(180F));
         matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(getItemAngle(direction)));
+
         MinecraftClient.getInstance().getItemRenderer().renderItem(stack, isBlock ? ModelTransformation.Mode.NONE : ModelTransformation.Mode.GUI, light,  OverlayTexture.DEFAULT_UV, matrices,  vertexConsumers, (int) entity.getPos().asLong());
+
         matrices.pop();
     }
 
     private HashMap<Integer, Pair<Double, Double>> getDirectionPositionMap(Direction direction) {
-        return switch(direction) {
+        return switch (direction) {
             case NORTH -> NORTH_POSITIONS;
             case SOUTH -> SOUTH_POSITIONS;
             case WEST -> WEST_POSITIONS;
@@ -80,7 +86,7 @@ public abstract class CraftingBlockEntityRenderer<T extends CraftingBlockEntity>
     }
 
     private boolean shouldRender() {
-        if(!EnhancedWorkbenchesClient.CLIENT_CONFIG.renderInput || !canRender()) return false;
+        if (!EnhancedWorkbenchesClient.CLIENT_CONFIG.renderInput || !canRender()) return false;
 
         return !EnhancedWorkbenchesClient.CLIENT_CONFIG.renderInputRequireFancy || MinecraftClient.isFancyGraphicsOrBetter();
     }

@@ -11,7 +11,6 @@ import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.slot.Slot;
 
 public class CraftingStationScreenHandler extends CraftingBlockScreenHandler {
-
     public CraftingStationScreenHandler(int syncId, PlayerInventory playerInventory) {
         this(syncId, playerInventory, new CraftingInventory((new ScreenHandler(null, syncId) {
             @Override

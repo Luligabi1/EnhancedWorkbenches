@@ -5,7 +5,6 @@ import me.luligabi.enhancedworkbenches.common.block.craftingstation.CraftingStat
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
 
 public class CraftingStationBlockEntityRenderer extends CraftingBlockEntityRenderer<CraftingStationBlockEntity> {
-
     public CraftingStationBlockEntityRenderer(BlockEntityRendererFactory.Context context) {
         super(context);
     }

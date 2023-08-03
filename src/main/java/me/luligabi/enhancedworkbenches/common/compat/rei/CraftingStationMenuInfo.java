@@ -9,7 +9,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.RecipeMatcher;
 
 public class CraftingStationMenuInfo implements SimpleGridMenuInfo<CraftingStationScreenHandler, DefaultCraftingDisplay<?>> {
-
     public CraftingStationMenuInfo(DefaultCraftingDisplay<?> display) {
         this.display = display;
     }
@@ -17,7 +16,6 @@ public class CraftingStationMenuInfo implements SimpleGridMenuInfo<CraftingStati
     @Override
     public void populateRecipeFinder(MenuInfoContext<CraftingStationScreenHandler, ?, DefaultCraftingDisplay<?>> context, RecipeFinder finder) {
         context.getMenu().provideRecipeInputs(new RecipeMatcher() {
-
             @Override
             public void addInput(ItemStack itemStack, int i) {
                 finder.addItem(itemStack, i);

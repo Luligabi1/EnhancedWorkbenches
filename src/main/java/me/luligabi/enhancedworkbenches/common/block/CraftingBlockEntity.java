@@ -29,6 +29,7 @@ public abstract class CraftingBlockEntity extends BlockEntity implements NamedSc
 
     protected CraftingBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
+
         input = new CraftingInventory(new ScreenHandler(ScreenHandlerType.CRAFTING, -1) {
             @Override
             public ItemStack transferSlot(PlayerEntity player, int index) {

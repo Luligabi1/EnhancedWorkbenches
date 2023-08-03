@@ -38,7 +38,7 @@
   "depends": {
     "fabricloader": "*",
     "fabric": "*",
-    "minecraft": "1.19.2"
+    "minecraft": ">=1.19"
   },
   "custom": {
     "modmenu": {
@@ -50,5 +50,5 @@
       }
     }
   },
-  "accessWidener" : "enhancedworkbenches.accesswidener"
+  "accessWidener": "enhancedworkbenches.accesswidener"
 }

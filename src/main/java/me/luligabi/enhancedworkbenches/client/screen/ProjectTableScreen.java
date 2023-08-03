@@ -10,7 +10,6 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 public class ProjectTableScreen extends HandledScreen<ProjectTableScreenHandler> {
-
     public ProjectTableScreen(ProjectTableScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
     }
@@ -18,6 +17,7 @@ public class ProjectTableScreen extends HandledScreen<ProjectTableScreenHandler>
     @Override
     protected void init() {
         super.init();
+
         backgroundHeight = 208;
         titleX = (backgroundWidth - textRenderer.getWidth(title)) / 2;
         playerInventoryTitleY = 114;
@@ -28,6 +28,7 @@ public class ProjectTableScreen extends HandledScreen<ProjectTableScreenHandler>
     @Override
     public void render(MatrixStack ctx, int mouseX, int mouseY, float delta) {
         super.render(ctx, mouseX, mouseY, delta);
+
         drawMouseoverTooltip(ctx, mouseX, mouseY);
     }
 

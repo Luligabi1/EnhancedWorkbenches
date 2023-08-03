@@ -14,11 +14,10 @@ import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 
 public class ProjectTableBlockEntity extends CraftingBlockEntity {
-
     public ProjectTableBlockEntity(BlockPos pos, BlockState state) {
         super(BlockRegistry.PROJECT_TABLE_ENTITY_TYPE, pos, state);
-        inventory = new SimpleInventory(2*9) {
 
+        inventory = new SimpleInventory(2 * 9) {
             @Override
             public void markDirty() {
                 super.markDirty();

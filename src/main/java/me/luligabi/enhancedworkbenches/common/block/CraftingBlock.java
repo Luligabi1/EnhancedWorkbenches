@@ -26,6 +26,7 @@ public abstract class CraftingBlock extends BlockWithEntity {
 
     protected CraftingBlock(Settings settings) {
         super(settings);
+
         setDefaultState(getDefaultState().with(FACING, Direction.NORTH));
     }
 
@@ -40,7 +41,6 @@ public abstract class CraftingBlock extends BlockWithEntity {
 
         return ActionResult.CONSUME;
     }
-
 
     @Override
     public BlockRenderType getRenderType(BlockState state) {

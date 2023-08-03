@@ -84,7 +84,6 @@ public abstract class CraftingBlockScreenHandler extends ScreenHandler {
     protected final ScreenHandlerContext context;
     protected final CraftingInventory input;
     protected final CraftingResultInventory result = new CraftingResultInventory() /*{
-
         @Override
         public void markDirty() {
             super.markDirty();
