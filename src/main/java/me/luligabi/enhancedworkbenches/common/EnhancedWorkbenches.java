@@ -20,16 +20,6 @@ public class EnhancedWorkbenches implements ModInitializer {
     public void onInitialize() {
         BlockRegistry.init();
         ScreenHandlingRegistry.init();
-
-        // Crafring Tweaks providers registering for proper compat.
-        if (FabricLoader.getInstance().isModLoaded("craftingtweaks")) {
-            try {
-                Class.forName("me.luligabi.enhancedworkbenches.client.compat.craftingtweaks.ProjectTableCraftingGridProvider").getConstructor().newInstance();
-                Class.forName("me.luligabi.enhancedworkbenches.client.compat.craftingtweaks.CraftingStationCraftingGridProvider").getConstructor().newInstance();
-            } catch (Throwable exception) {
-                exception.printStackTrace();
-            }
-        }
     }
 
     public static Identifier id(String id) {
