@@ -58,7 +58,7 @@ dependencies {
     modImplementation "curse.maven:balm-fabric-500525:${project.balm_file_id}"
     modImplementation "curse.maven:crafting-tweaks-fabric-502516:${project.craftingtweaks_file_id}"
 
-    modApi("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config_api_version}") {
+    include modApi("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config_api_version}") {
         exclude(group: "net.fabricmc.fabric-api")
     }
 }
