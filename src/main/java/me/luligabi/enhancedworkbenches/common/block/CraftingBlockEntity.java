@@ -1,6 +1,7 @@
 package me.luligabi.enhancedworkbenches.common.block;
 
 import com.google.common.base.Preconditions;
+import me.luligabi.enhancedworkbenches.mixin.CraftingInventoryAccessor;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
@@ -99,13 +100,13 @@ public abstract class CraftingBlockEntity extends BlockEntity implements NamedSc
     public void fromTag(NbtCompound nbt) {
         super.readNbt(nbt);
 
-        Inventories.readNbt(nbt.getCompound("Input"), input.stacks);
+        Inventories.readNbt(nbt.getCompound("Input"), ((CraftingInventoryAccessor) input).enhancedworkbenches_getStacks());
     }
 
     public void toTag(NbtCompound nbt) {
         super.writeNbt(nbt);
 
-        NbtCompound inputCompound = writeNbt(new NbtCompound(), input.stacks);
+        NbtCompound inputCompound = writeNbt(new NbtCompound(), ((CraftingInventoryAccessor) input).enhancedworkbenches_getStacks());
         nbt.put("Input", inputCompound);
     }
 

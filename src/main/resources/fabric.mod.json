@@ -35,6 +35,9 @@
       "me.luligabi.enhancedworkbenches.client.compat.rei.ClientREIPlugin"
     ]
   },
+  "mixins": [
+    "enhancedworkbenches.mixins.json"
+  ],
   "depends": {
     "fabricloader": "*",
     "fabric": "*",
@@ -49,6 +52,5 @@
         "icon": "assets/red_logic_series/icon.png"
       }
     }
-  },
-  "accessWidener": "enhancedworkbenches.accesswidener"
+  }
 }

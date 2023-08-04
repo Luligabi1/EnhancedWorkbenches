@@ -4,9 +4,7 @@ plugins {
 }
 
 loom {
-    accessWidenerPath = file("src/main/resources/enhancedworkbenches.accesswidener")
     interfaceInjection {
-        // When enabled injected interfaces from dependecies will be applied.
         enableDependencyInterfaceInjection = true
     }
 }
