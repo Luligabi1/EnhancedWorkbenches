@@ -2,6 +2,8 @@
   "block.enhancedworkbenches.project_table": "Bancada de Projeto",
   "block.enhancedworkbenches.crafting_station": "Estação de Trabalho",
 
+  "itemGroup.enhancedworkbenches.enhanced_workbenches_tab": "Enhanced Workbenches",
+
   "configCategory.enhancedworkbenches.rendering": "Renderização",
 
   "text.autoconfig.enhancedworkbenches-client.title": "Enhanced Workbenches Configuração",
