@@ -41,8 +41,6 @@ dependencies {
 
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-    modImplementation'org.joml:joml:1.10.5'
-
     // YACL was removed in 1.19.2 version, so for now it uses cloth-config instead. If you feel that it is needed, feel free to uncomment this.
     // include modImplementation("dev.isxander.yacl:yet-another-config-lib-fabric:${project.yacl_version}") {
     //        transitive(false)
