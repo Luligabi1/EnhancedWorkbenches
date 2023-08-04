@@ -18,10 +18,10 @@
   "configOption.enhancedworkbenches.renderInputRequireFancy.tooltip": "Whether the input should only be rendered if you're using 'Fancy' or higher graphic settings.",
 
   "configOption.enhancedworkbenches.renderInputOnProjectTable": "Render Input on Project Tables?",
-  "configOption.enhancedworkbenches.renderInputOnProjectTable.tooltip": "Whether the input should be rendered on Project Tables",
+  "configOption.enhancedworkbenches.renderInputOnProjectTable.tooltip": "Whether the input should be rendered on Project Tables.",
 
   "configOption.enhancedworkbenches.renderInputOnCraftingStation": "Render Input on Crafting Stations?",
-  "configOption.enhancedworkbenches.renderInputOnCraftingStation.tooltip": "Whether the input should be rendered on Crafting Stations",
+  "configOption.enhancedworkbenches.renderInputOnCraftingStation.tooltip": "Whether the input should be rendered on Crafting Stations.",
 
   "text.autoconfig.enhancedworkbenches-client.option.renderInput": "Render Input?",
   "text.autoconfig.enhancedworkbenches-client.option.renderInput.@Tooltip[0]": "Whether you're able to see the contents of the input",
@@ -35,8 +35,8 @@
   "text.autoconfig.enhancedworkbenches-client.option.renderInputRequireFancy.@Tooltip[1]": "if you're using 'Fancy' or higher graphic settings.",
 
   "text.autoconfig.enhancedworkbenches-client.option.renderInputOnProjectTable": "Render Input on Project Tables?",
-  "text.autoconfig.enhancedworkbenches-client.option.renderInputOnProjectTable.@Tooltip": "Whether the input should be rendered on Project Tables",
+  "text.autoconfig.enhancedworkbenches-client.option.renderInputOnProjectTable.@Tooltip": "Whether the input should be rendered on Project Tables.",
 
   "text.autoconfig.enhancedworkbenches-client.option.renderInputOnCraftingStation": "Render Input on Crafting Stations?",
-  "text.autoconfig.enhancedworkbenches-client.option.renderInputOnCraftingStation.@Tooltip": "Whether the input should be rendered on Crafting Stations"
+  "text.autoconfig.enhancedworkbenches-client.option.renderInputOnCraftingStation.@Tooltip": "Whether the input should be rendered on Crafting Stations."
 }
