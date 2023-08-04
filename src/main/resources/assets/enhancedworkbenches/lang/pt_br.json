@@ -4,7 +4,7 @@
 
   "configCategory.enhancedworkbenches.rendering": "Renderização",
 
-  "text.autoconfig.enhancedworkbenches-client.title": "Enhanced Workbenches Configuration",
+  "text.autoconfig.enhancedworkbenches-client.title": "Enhanced Workbenches Configuração",
 
   "configOption.enhancedworkbenches.renderInput": "Renderizar Input?",
   "configOption.enhancedworkbenches.renderInput.tooltip": "Determina se é possível ver o conteúdo do input em cima dde ambas Bancadas de Projeto e Estações de Trabalho.",
