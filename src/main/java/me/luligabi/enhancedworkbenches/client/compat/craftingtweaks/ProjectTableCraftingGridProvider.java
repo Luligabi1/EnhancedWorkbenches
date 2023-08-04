@@ -35,8 +35,12 @@ public class ProjectTableCraftingGridProvider implements CraftingGridProvider {
                     .clearHandler(new GridClearHandler<>() {
                         @Override
                         public void clearGrid(CraftingGrid craftingGrid, PlayerEntity playerEntity, ScreenHandler handler, boolean b) {
-                            (new DefaultGridClearHandler()).clearGrid(craftingGrid, playerEntity, handler, b);
+                            // Put items from the crafting grid to the inventory of the table and only then to inventory.
+                            for (int i = 1; i < 10; i++) {
+                                screenHandler.transferSlot(playerEntity, i);
+                            }
 
+                            (new DefaultGridClearHandler()).clearGrid(craftingGrid, playerEntity, handler, b);
                             // Uuh, seems updating client render data not helps, so I need to mark the slot so it gets updated?
                             // Probably needs a better solution, but... ok, this works.
                             screenHandler.getSlot(1).markDirty();
