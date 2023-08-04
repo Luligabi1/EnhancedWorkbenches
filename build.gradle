@@ -3,10 +3,19 @@ plugins {
     id 'maven-publish'
 }
 
+loom {
+    accessWidenerPath = file("src/main/resources/enhancedworkbenches.accesswidener")
+    interfaceInjection {
+        // When enabled injected interfaces from dependecies will be applied.
+        enableDependencyInterfaceInjection = true
+    }
+}
+
 version = project.mod_version
 group = project.maven_group
 
 repositories {
+
     maven {
         name = "isXander (YACL)"
         url = "https://maven.isxander.dev/releases/"
@@ -32,19 +41,24 @@ dependencies {
 
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-    include modImplementation("dev.isxander.yacl:yet-another-config-lib-fabric:${project.yacl_version}") {
-        transitive(false)
-    }
+    // YACL was removed in 1.19.2 version, so for now it uses cloth-config instead. If you feel that it is needed, feel free to uncomment this.
+    // include modImplementation("dev.isxander.yacl:yet-another-config-lib-fabric:${project.yacl_version}") {
+    //        transitive(false)
+    //    }
 
     modCompileOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
+
     modRuntimeOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
 
-    modImplementation "me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}"
+    modCompileOnly "me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}"
+    modCompileOnly "me.shedaniel:RoughlyEnoughItems-api-fabric:${project.rei_version}"
 
-/*
     modImplementation "curse.maven:balm-fabric-500525:${project.balm_file_id}"
     modImplementation "curse.maven:crafting-tweaks-fabric-502516:${project.craftingtweaks_file_id}"
-*/
+
+    include modApi("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config_api_version}") {
+        exclude(group: "net.fabricmc.fabric-api")
+    }
 }
 
 processResources {
@@ -80,5 +94,11 @@ java {
 jar {
     from("LICENSE") {
         rename { "${it}_${project.archivesBaseName}"}
+    }
+}
+
+configurations.all {
+    resolutionStrategy {
+        force("net.fabricmc:fabric-loader:$loader_version")
     }
 }

@@ -11,18 +11,16 @@ import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
+import net.minecraft.util.registry.Registry;
 
 public class BlockRegistry {
 
     public static void init() {
         initBlock("project_table", PROJECT_TABLE);
-        PROJECT_TABLE_ENTITY_TYPE = Registry.register(Registries.BLOCK_ENTITY_TYPE, EnhancedWorkbenches.id("project_table"), FabricBlockEntityTypeBuilder.create(ProjectTableBlockEntity::new, PROJECT_TABLE).build());
+        PROJECT_TABLE_ENTITY_TYPE = Registry.register(Registry.BLOCK_ENTITY_TYPE, EnhancedWorkbenches.id("project_table"), FabricBlockEntityTypeBuilder.create(ProjectTableBlockEntity::new, PROJECT_TABLE).build());
 
         initBlock("crafting_station", CRAFTING_STATION);
-        CRAFTING_STATION_ENTITY_TYPE = Registry.register(Registries.BLOCK_ENTITY_TYPE, EnhancedWorkbenches.id("crafting_station"), FabricBlockEntityTypeBuilder.create(CraftingStationBlockEntity::new, CRAFTING_STATION).build());
-
+        CRAFTING_STATION_ENTITY_TYPE = Registry.register(Registry.BLOCK_ENTITY_TYPE, EnhancedWorkbenches.id("crafting_station"), FabricBlockEntityTypeBuilder.create(CraftingStationBlockEntity::new, CRAFTING_STATION).build());
     }
 
 
@@ -34,8 +32,8 @@ public class BlockRegistry {
 
 
     private static void initBlock(String identifier, Block block) {
-        Registry.register(Registries.BLOCK, EnhancedWorkbenches.id(identifier), block);
-        Registry.register(Registries.ITEM, EnhancedWorkbenches.id(identifier), new BlockItem(block, new FabricItemSettings()));
+        Registry.register(Registry.BLOCK, EnhancedWorkbenches.id(identifier), block);
+        Registry.register(Registry.ITEM, EnhancedWorkbenches.id(identifier), new BlockItem(block, new FabricItemSettings().group(EnhancedWorkbenches.ENHANCED_WORKBENCHES_TAB)));
         EnhancedWorkbenches.ITEMS.add(new ItemStack(block));
     }
 

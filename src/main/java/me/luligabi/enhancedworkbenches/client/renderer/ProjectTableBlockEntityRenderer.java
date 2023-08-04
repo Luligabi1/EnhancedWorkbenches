@@ -5,7 +5,6 @@ import me.luligabi.enhancedworkbenches.common.block.projecttable.ProjectTableBlo
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
 
 public class ProjectTableBlockEntityRenderer extends CraftingBlockEntityRenderer<ProjectTableBlockEntity> {
-
     public ProjectTableBlockEntityRenderer(BlockEntityRendererFactory.Context context) {
         super(context);
     }

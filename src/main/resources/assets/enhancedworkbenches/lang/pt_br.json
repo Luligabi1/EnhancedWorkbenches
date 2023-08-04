@@ -2,7 +2,11 @@
   "block.enhancedworkbenches.project_table": "Bancada de Projeto",
   "block.enhancedworkbenches.crafting_station": "Estação de Trabalho",
 
+  "itemGroup.enhancedworkbenches.enhanced_workbenches_tab": "Enhanced Workbenches",
+
   "configCategory.enhancedworkbenches.rendering": "Renderização",
+
+  "text.autoconfig.enhancedworkbenches-client.title": "Enhanced Workbenches Configuração",
 
   "configOption.enhancedworkbenches.renderInput": "Renderizar Input?",
   "configOption.enhancedworkbenches.renderInput.tooltip": "Determina se é possível ver o conteúdo do input em cima dde ambas Bancadas de Projeto e Estações de Trabalho.",
@@ -17,5 +21,22 @@
   "configOption.enhancedworkbenches.renderInputOnProjectTable.tooltip": "Determina se o Input deve ser renderizado em Bancadas de Projeto",
 
   "configOption.enhancedworkbenches.renderInputOnCraftingStation": "Renderizar Input em Estações de Trabalho?",
-  "configOption.enhancedworkbenches.renderInputOnCraftingStation.tooltip": "Determina se o Input deve ser renderizado em Estações de Trabalho"
+  "configOption.enhancedworkbenches.renderInputOnCraftingStation.tooltip": "Determina se o Input deve ser renderizado em Estações de Trabalho",
+
+  "text.autoconfig.enhancedworkbenches-client.option.renderInput": "Renderizar Input?",
+  "text.autoconfig.enhancedworkbenches-client.option.renderInput.@Tooltip[0]": "Determina se é possível ver o conteúdo do input em cima",
+  "text.autoconfig.enhancedworkbenches-client.option.renderInput.@Tooltip[1]": "dde ambas Bancadas de Projeto e Estações de Trabalho.",
+
+  "text.autoconfig.enhancedworkbenches-client.option.renderInputDistance": "Distância de Renderização de Input",
+  "text.autoconfig.enhancedworkbenches-client.option.renderInputDistance.@Tooltip": "Quão longe, em chunks (16 blocos), você é capaz de ver o conteúdo do input.",
+
+  "text.autoconfig.enhancedworkbenches-client.option.renderInputRequireFancy": "Renderização de Input requer 'Bonitos'?",
+  "text.autoconfig.enhancedworkbenches-client.option.renderInputRequireFancy.@Tooltip[0]": "Determina se o input deve ser renderizado",
+  "text.autoconfig.enhancedworkbenches-client.option.renderInputRequireFancy.@Tooltip[1]": "somente se você está usando gráficos 'Bonitos' ou acima.",
+
+  "text.autoconfig.enhancedworkbenches-client.option.renderInputOnProjectTable": "Renderizar Input em Bancadas de Projeto?",
+  "text.autoconfig.enhancedworkbenches-client.option.renderInputOnProjectTable.@Tooltip": "Determina se o Input deve ser renderizado em Bancadas de Projeto.",
+
+  "text.autoconfig.enhancedworkbenches-client.option.renderInputOnCraftingStation": "Renderizar Input em Estações de Trabalho?",
+  "text.autoconfig.enhancedworkbenches-client.option.renderInputOnCraftingStation.@Tooltip": "Determina se o Input deve ser renderizado em Estações de Trabalho."
 }

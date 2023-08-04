@@ -3,6 +3,7 @@ package me.luligabi.enhancedworkbenches.common.screenhandler;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.inventory.CraftingResultInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
@@ -24,8 +25,7 @@ import java.util.Optional;
 
 public abstract class CraftingBlockScreenHandler extends ScreenHandler {
 
-
-    protected CraftingBlockScreenHandler(@Nullable ScreenHandlerType<?> type, int syncId, PlayerInventory playerInventory, SimpleRecipeInputInventory input, ScreenHandlerContext context) {
+    protected CraftingBlockScreenHandler(@Nullable ScreenHandlerType<?> type, int syncId, PlayerInventory playerInventory, CraftingInventory input, ScreenHandlerContext context) {
         super(type, syncId);
         this.input = input;
         this.context = context;
@@ -37,23 +37,28 @@ public abstract class CraftingBlockScreenHandler extends ScreenHandler {
     }
 
     @SuppressWarnings("ConstantConditions")
-    protected static void updateResult(ScreenHandler handler, World world, PlayerEntity player, SimpleRecipeInputInventory input, CraftingResultInventory output) {
-        if(world.isClient()) return;
-        ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity)player;
-        ItemStack itemStack = ItemStack.EMPTY;
-        Optional<CraftingRecipe> recipeOptional = world.getServer().getRecipeManager().getFirstMatch(RecipeType.CRAFTING, input, world);
-        if(recipeOptional.isPresent()) {
-            CraftingRecipe recipe = recipeOptional.get();
-            if(output.shouldCraftRecipe(world, serverPlayerEntity, recipe)) {
-                ItemStack itemStack2 = recipe.craft(input, world.getRegistryManager());
-                if(itemStack2.isItemEnabled(world.getEnabledFeatures())) {
-                    itemStack = itemStack2;
-                }
-            }
+    protected static void updateResult(ScreenHandler handler, World world, PlayerEntity player, CraftingInventory craftingInventory, CraftingResultInventory resultInventory) {
+        CraftingRecipe craftingRecipe;
+
+        if (world.isClient) {
+            return;
         }
-        output.setStack(0, itemStack);
+
+        ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) player;
+        ItemStack itemStack = ItemStack.EMPTY;
+        Optional<CraftingRecipe> optional = world.getServer().getRecipeManager().getFirstMatch(RecipeType.CRAFTING, craftingInventory, world);
+
+        if (optional.isPresent() && resultInventory.shouldCraftRecipe(world, serverPlayerEntity, craftingRecipe = optional.get())) {
+            itemStack = craftingRecipe.craft(craftingInventory);
+        }
+
+        resultInventory.setStack(0, itemStack);
         handler.setPreviousTrackedSlot(0, itemStack);
         serverPlayerEntity.networkHandler.sendPacket(new ScreenHandlerSlotUpdateS2CPacket(handler.syncId, handler.nextRevision(), 0, itemStack));
+
+        if (itemStack.isEmpty()) {
+            craftingInventory.markDirty();
+        }
     }
 
     @Override
@@ -72,15 +77,13 @@ public abstract class CraftingBlockScreenHandler extends ScreenHandler {
         input.provideRecipeInputs(matcher);
     }
 
-
     protected abstract Block getBlock();
 
     protected final BlockPos blockPos;
     protected final PlayerEntity player;
     protected final ScreenHandlerContext context;
-    protected final SimpleRecipeInputInventory input;
+    protected final CraftingInventory input;
     protected final CraftingResultInventory result = new CraftingResultInventory() /*{
-
         @Override
         public void markDirty() {
             super.markDirty();
@@ -95,7 +98,6 @@ public abstract class CraftingBlockScreenHandler extends ScreenHandler {
     }*/;
 
     protected class CraftingSlot extends Slot {
-
         public CraftingSlot(int index, int x, int y) {
             super(input, index, x, y);
         }
@@ -108,7 +110,6 @@ public abstract class CraftingBlockScreenHandler extends ScreenHandler {
     }
 
     protected class CraftingOutputSlot extends CraftingResultSlot {
-
         public CraftingOutputSlot(PlayerEntity player, int index, int x, int y) {
             super(player, CraftingBlockScreenHandler.this.input, CraftingBlockScreenHandler.this.result, index, x, y);
         }
@@ -150,5 +151,10 @@ public abstract class CraftingBlockScreenHandler extends ScreenHandler {
             markDirty();
         }
 
+        @Override
+        public void onQuickTransfer(ItemStack newItem, ItemStack original) {
+            super.onQuickTransfer(newItem, original);
+            markDirty();
+        }
     }
 }

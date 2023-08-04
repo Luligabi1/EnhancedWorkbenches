@@ -1,23 +1,24 @@
 package me.luligabi.enhancedworkbenches.common.block;
 
 import com.google.common.base.Preconditions;
-import me.luligabi.enhancedworkbenches.common.screenhandler.SimpleRecipeInputInventory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.inventory.Inventories;
-import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.network.Packet;
 import net.minecraft.network.listener.ClientPlayPacketListener;
-import net.minecraft.network.packet.Packet;
+
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
@@ -28,7 +29,18 @@ public abstract class CraftingBlockEntity extends BlockEntity implements NamedSc
 
     protected CraftingBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
-        input = new SimpleRecipeInputInventory(3*3) {
+
+        input = new CraftingInventory(new ScreenHandler(ScreenHandlerType.CRAFTING, -1) {
+            @Override
+            public ItemStack transferSlot(PlayerEntity player, int index) {
+                return this.transferSlot(player, index);
+            }
+
+            @Override
+            public boolean canUse(PlayerEntity player) {
+                return true;
+            }
+        }, 3, 3) {
 
             @Override
             public void markDirty() {
@@ -50,7 +62,6 @@ public abstract class CraftingBlockEntity extends BlockEntity implements NamedSc
     public Text getDisplayName() {
         return getContainerName();
     }
-
 
     @Override
     protected final void writeNbt(NbtCompound nbt) {
@@ -132,7 +143,7 @@ public abstract class CraftingBlockEntity extends BlockEntity implements NamedSc
 
     protected abstract Text getContainerName();
 
-    public SimpleInventory getInput() {
+    public CraftingInventory getInput() {
         return input;
     }
 
@@ -150,11 +161,9 @@ public abstract class CraftingBlockEntity extends BlockEntity implements NamedSc
         }
 
         nbt.put("Items", nbtList);
-
         return nbt;
     }
 
-
-    protected SimpleRecipeInputInventory input;
+    protected CraftingInventory input;
     private boolean shouldClientRemesh = true;
 }

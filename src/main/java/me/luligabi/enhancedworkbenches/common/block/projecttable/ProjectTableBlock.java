@@ -12,11 +12,9 @@ import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("deprecation")
 public class ProjectTableBlock extends CraftingBlock {
-
     public ProjectTableBlock() {
         super(FabricBlockSettings.copy(Blocks.CRAFTING_TABLE));
     }
-
 
     @Nullable
     @Override

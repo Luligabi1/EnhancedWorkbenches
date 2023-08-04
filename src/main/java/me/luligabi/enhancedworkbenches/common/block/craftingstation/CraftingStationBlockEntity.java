@@ -11,11 +11,9 @@ import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 
 public class CraftingStationBlockEntity extends CraftingBlockEntity {
-
     public CraftingStationBlockEntity(BlockPos pos, BlockState state) {
         super(BlockRegistry.CRAFTING_STATION_ENTITY_TYPE, pos, state);
     }
-
 
     @Override
     protected ScreenHandler createScreenHandler(int syncId, PlayerInventory playerInventory) {

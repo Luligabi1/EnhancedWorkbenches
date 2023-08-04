@@ -8,7 +8,6 @@ import me.shedaniel.rei.api.common.transfer.info.simple.SimpleMenuInfoProvider;
 import me.shedaniel.rei.plugin.common.BuiltinPlugin;
 
 public class CommonREIPlugin implements REIServerPlugin {
-
     @Override
     public void registerMenuInfo(MenuInfoRegistry registry) {
         registry.register(BuiltinPlugin.CRAFTING, ProjectTableScreenHandler.class, SimpleMenuInfoProvider.of(ProjectTableMenuInfo::new));

@@ -3,12 +3,16 @@ package me.luligabi.enhancedworkbenches.client;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParser;
+import me.luligabi.enhancedworkbenches.client.compat.modmenu.ClothConfiguration;
+import me.luligabi.enhancedworkbenches.client.compat.modmenu.ConfigManager;
 import me.luligabi.enhancedworkbenches.client.renderer.CraftingStationBlockEntityRenderer;
 import me.luligabi.enhancedworkbenches.client.renderer.ProjectTableBlockEntityRenderer;
 import me.luligabi.enhancedworkbenches.client.screen.CraftingStationScreen;
 import me.luligabi.enhancedworkbenches.client.screen.ProjectTableScreen;
 import me.luligabi.enhancedworkbenches.common.block.BlockRegistry;
 import me.luligabi.enhancedworkbenches.common.screenhandler.ScreenHandlingRegistry;
+import me.shedaniel.autoconfig.AutoConfig;
+import me.shedaniel.autoconfig.ConfigData;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
@@ -30,20 +34,31 @@ public class EnhancedWorkbenchesClient implements ClientModInitializer {
 
         BlockEntityRendererFactories.register(BlockRegistry.CRAFTING_STATION_ENTITY_TYPE, CraftingStationBlockEntityRenderer::new);
         BlockEntityRendererFactories.register(BlockRegistry.PROJECT_TABLE_ENTITY_TYPE, ProjectTableBlockEntityRenderer::new);
+
+        // Check if cloth-config is loaded to load Mod Menu integration, so the configuration will be available out of the Mod Menu button.
+        if (FabricLoader.getInstance().isModLoaded("cloth-config") && FabricLoader.getInstance().isModLoaded("modmenu")) {
+            ConfigManager.registerAutoConfig();
+            ClothConfiguration config = AutoConfig.getConfigHolder(ClothConfiguration.class).getConfig();
+            try {
+                config.validatePostLoad();
+            } catch (ConfigData.ValidationException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
-    private static ClientConfig createConfig() {
-        ClientConfig finalConfig;
+    private static ClothConfiguration createConfig() {
+        ClothConfiguration finalConfig;
         LOGGER.info("Trying to read config file...");
         try {
             if(CONFIG_FILE.createNewFile()) {
                 LOGGER.info("No config file found, creating a new one...");
-                writeConfig(GSON.toJson(JsonParser.parseString(GSON.toJson(new ClientConfig()))));
-                finalConfig = new ClientConfig();
+                writeConfig(GSON.toJson(JsonParser.parseString(GSON.toJson(new ClothConfiguration()))));
+                finalConfig = new ClothConfiguration();
                 LOGGER.info("Successfully created default config file.");
             } else {
                 LOGGER.info("A config file was found, loading it..");
-                finalConfig = GSON.fromJson(new String(Files.readAllBytes(CONFIG_FILE.toPath())), ClientConfig.class);
+                finalConfig = GSON.fromJson(new String(Files.readAllBytes(CONFIG_FILE.toPath())), ClothConfiguration.class);
                 if(finalConfig == null) {
                     throw new NullPointerException("The config file was empty.");
                 } else {
@@ -52,13 +67,13 @@ public class EnhancedWorkbenchesClient implements ClientModInitializer {
             }
         } catch(Exception e) {
             LOGGER.error("There was an error creating/loading the config file!", e);
-            finalConfig = new ClientConfig();
+            finalConfig = new ClothConfiguration();
             LOGGER.warn("Defaulting to original config.");
         }
         return finalConfig;
     }
 
-    public static void saveConfig(ClientConfig modConfig) {
+    public static void saveConfig(ClothConfiguration modConfig) {
         try {
             writeConfig(GSON.toJson(JsonParser.parseString(GSON.toJson(modConfig))));
             LOGGER.info("Saved new config file.");
@@ -80,13 +95,13 @@ public class EnhancedWorkbenchesClient implements ClientModInitializer {
 
     private static final Gson GSON;
     private static final File CONFIG_FILE;
-    public static final ClientConfig CLIENT_CONFIG;
+    public static final ClothConfiguration CLIENT_CONFIG;
 
     static {
-        LOGGER = LoggerFactory.getLogger("Project Table Mod");
+        LOGGER = LoggerFactory.getLogger("Enhanced Workbenches");
 
         GSON = new GsonBuilder().setPrettyPrinting().create();
-        CONFIG_FILE = new File(String.format("%s%sprojecttablemod-client.json", FabricLoader.getInstance().getConfigDir(), File.separator));
+        CONFIG_FILE = new File(String.format("%s%senhancedworkbenches-client.json", FabricLoader.getInstance().getConfigDir(), File.separator));
         CLIENT_CONFIG = createConfig();
     }
 }

@@ -26,19 +26,21 @@ public abstract class CraftingBlock extends BlockWithEntity {
 
     protected CraftingBlock(Settings settings) {
         super(settings);
+
         setDefaultState(getDefaultState().with(FACING, Direction.NORTH));
     }
 
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if(world.isClient) return ActionResult.SUCCESS;
+        if (world.isClient) return ActionResult.SUCCESS;
         BlockEntity blockEntity = world.getBlockEntity(pos);
-        if(blockEntity instanceof CraftingBlockEntity) {
+
+        if (blockEntity instanceof CraftingBlockEntity) {
             player.openHandledScreen((NamedScreenHandlerFactory) blockEntity);
         }
+
         return ActionResult.CONSUME;
     }
-
 
     @Override
     public BlockRenderType getRenderType(BlockState state) {
@@ -47,7 +49,7 @@ public abstract class CraftingBlock extends BlockWithEntity {
 
     @Override
     public BlockState getPlacementState(ItemPlacementContext ctx) {
-        return getDefaultState().with(FACING, ctx.getHorizontalPlayerFacing().getOpposite());
+        return getDefaultState().with(FACING, ctx.getPlayerFacing().getOpposite());
     }
 
     @Override

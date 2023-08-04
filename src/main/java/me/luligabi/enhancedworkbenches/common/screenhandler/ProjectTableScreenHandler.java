@@ -4,20 +4,32 @@ import me.luligabi.enhancedworkbenches.common.block.BlockRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
+import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.Slot;
 
 public class ProjectTableScreenHandler extends CraftingBlockScreenHandler {
-
-
     public ProjectTableScreenHandler(int syncId, PlayerInventory playerInventory) {
-        this(syncId, playerInventory, new SimpleRecipeInputInventory(3*3), new SimpleInventory(2*9), ScreenHandlerContext.EMPTY);
+        this(syncId, playerInventory, new CraftingInventory((new ScreenHandler(ScreenHandlerType.CRAFTING, syncId) {
+            @Override
+            public ItemStack transferSlot(PlayerEntity player, int index) {
+                return this.transferSlot(player, index);
+            }
+
+            @Override
+            public boolean canUse(PlayerEntity player) {
+
+                return true;
+            }
+        }),3,3), new SimpleInventory(2 * 9), ScreenHandlerContext.EMPTY);
     }
 
-    public ProjectTableScreenHandler(int syncId, PlayerInventory playerInventory, SimpleRecipeInputInventory input, Inventory inventory, ScreenHandlerContext context) {
+    public ProjectTableScreenHandler(int syncId, PlayerInventory playerInventory, CraftingInventory input, Inventory inventory, ScreenHandlerContext context) {
         super(ScreenHandlingRegistry.PROJECT_TABLE_SCREEN_HANDLER, syncId, playerInventory, input, context);
         this.inventory = inventory;
         checkSize(inventory, 18);
@@ -57,13 +69,14 @@ public class ProjectTableScreenHandler extends CraftingBlockScreenHandler {
     }
 
     @Override
-    public ItemStack quickMove(PlayerEntity player, int index) {
+    public ItemStack transferSlot(PlayerEntity player, int index) {
         ItemStack itemStack = ItemStack.EMPTY;
         Slot slot = slots.get(index);
 
-        if(slot != null && slot.hasStack()) {
+        if (slot.hasStack()) {
             ItemStack itemStack2 = slot.getStack();
             itemStack = itemStack2.copy();
+
             if(index == 0) {
                 context.run((world, pos) -> {
                     itemStack2.getItem().onCraft(itemStack2, world, player);
@@ -72,40 +85,41 @@ public class ProjectTableScreenHandler extends CraftingBlockScreenHandler {
                     return ItemStack.EMPTY;
                 }
                 slot.onQuickTransfer(itemStack2, itemStack);
-            } else if(index >= 1 && index < 10) {
-                if(!insertItem(itemStack2, 10, 64, false)) {
+            } else if (index >= 1 && index < 10) {
+                if (!insertItem(itemStack2, 10, 64, false)) {
                     return ItemStack.EMPTY;
                 }
-            } else if(index >= 10 && index < 28) {
-                if(!insertItem(itemStack2, 1, 10, false)) {
+            } else if (index >= 10 && index < 28) {
+                if (!insertItem(itemStack2, 1, 10, false)) {
                     if (!insertItem(itemStack2, 28, 64, false)) {
                         return ItemStack.EMPTY;
                     }
                 }
-            } else if(index >= 28 && index < 64) {
-                if(!insertItem(itemStack2, 1, 28, false)) {
-                    if(index < 55) {
-                        if(!insertItem(itemStack2, 55, 64, false)) {
+            } else if (index >= 28 && index < 64) {
+                if (!insertItem(itemStack2, 1, 28, false)) {
+                    if (index < 55) {
+                        if (!insertItem(itemStack2, 55, 64, false)) {
                             return ItemStack.EMPTY;
                         }
-                    } else if(!insertItem(itemStack2, 28, 55, false)) {
+                    } else if (!insertItem(itemStack2, 28, 55, false)) {
                         return ItemStack.EMPTY;
                     }
                 }
-            } else if(!insertItem(itemStack2, 28, 64, false)) {
+            } else if (!insertItem(itemStack2, 28, 64, false)) {
                 return ItemStack.EMPTY;
             }
 
-            if(itemStack2.isEmpty()) {
+            if (itemStack2.isEmpty()) {
                 slot.setStack(ItemStack.EMPTY);
             } else {
                 slot.markDirty();
             }
 
-            if(itemStack2.getCount() == itemStack.getCount()) return ItemStack.EMPTY;
+            if (itemStack2.getCount() == itemStack.getCount()) return ItemStack.EMPTY;
 
             slot.onTakeItem(player, itemStack2);
-            if(index == 0) player.dropItem(itemStack2, false);
+
+            if (index == 0) player.dropItem(itemStack2, false);
         }
 
         return itemStack;
@@ -117,5 +131,4 @@ public class ProjectTableScreenHandler extends CraftingBlockScreenHandler {
     }
 
     private final Inventory inventory;
-
 }
