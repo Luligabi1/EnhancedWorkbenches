@@ -7,6 +7,7 @@ import me.luligabi.enhancedworkbenches.client.screen.ProjectTableScreen;
 import me.luligabi.enhancedworkbenches.common.block.BlockRegistry;
 import me.luligabi.enhancedworkbenches.common.screenhandler.ScreenHandlingRegistry;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 import org.slf4j.Logger;
@@ -32,5 +33,14 @@ public class EnhancedWorkbenchesClient implements ClientModInitializer {
 
         ClientConfig.HANDLER.load();
         CLIENT_CONFIG = ClientConfig.HANDLER.instance();
+
+        if (FabricLoader.getInstance().isModLoaded("craftingtweaks")) {
+            try {
+                Class.forName("me.luligabi.enhancedworkbenches.client.compat.craftingtweaks.ProjectTableCraftingGridProvider").getConstructor().newInstance();
+                Class.forName("me.luligabi.enhancedworkbenches.client.compat.craftingtweaks.CraftingStationCraftingGridProvider").getConstructor().newInstance();
+            } catch (Throwable e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
