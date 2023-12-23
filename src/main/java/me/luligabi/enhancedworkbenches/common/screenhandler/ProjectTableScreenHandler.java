@@ -6,11 +6,15 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.slot.Slot;
 
-public class ProjectTableScreenHandler extends CraftingBlockScreenHandler {
+import java.util.Set;
+import java.util.function.Predicate;
+
+public class ProjectTableScreenHandler extends CraftingBlockScreenHandler implements Inventory {
 
 
     public ProjectTableScreenHandler(int syncId, PlayerInventory playerInventory) {
@@ -118,4 +122,92 @@ public class ProjectTableScreenHandler extends CraftingBlockScreenHandler {
 
     private final Inventory inventory;
 
+
+
+    //--- Inventory overrides ---//
+
+    @Override
+    public int getMaxCountPerStack() {
+        return inventory.getMaxCountPerStack();
+    }
+
+    @Override
+    public void onOpen(PlayerEntity player) {
+        inventory.onOpen(player);
+    }
+
+    @Override
+    public void onClose(PlayerEntity player) {
+        inventory.onClose(player);
+    }
+
+    @Override
+    public boolean isValid(int slot, ItemStack stack) {
+        return inventory.isValid(slot, stack);
+    }
+
+    @Override
+    public boolean canTransferTo(Inventory hopperInventory, int slot, ItemStack stack) {
+        return inventory.canTransferTo(hopperInventory, slot, stack);
+    }
+
+    @Override
+    public int count(Item item) {
+        return inventory.count(item);
+    }
+
+    @Override
+    public boolean containsAny(Set<Item> items) {
+        return inventory.containsAny(items);
+    }
+
+    @Override
+    public boolean containsAny(Predicate<ItemStack> predicate) {
+        return inventory.containsAny(predicate);
+    }
+
+    @Override
+    public int size() {
+        return inventory.size();
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return inventory.isEmpty();
+    }
+
+    @Override
+    public ItemStack getStack(int slot) {
+        return inventory.getStack(slot);
+    }
+
+    @Override
+    public ItemStack removeStack(int slot, int amount) {
+        return inventory.removeStack(slot, amount);
+    }
+
+    @Override
+    public ItemStack removeStack(int slot) {
+        return inventory.removeStack(slot);
+    }
+
+    @Override
+    public void setStack(int slot, ItemStack stack) {
+        inventory.setStack(slot, stack);
+    }
+
+    @Override
+    public void markDirty() {
+        inventory.markDirty();
+    }
+
+    @Override
+    public boolean canPlayerUse(PlayerEntity player) {
+        return inventory.canPlayerUse(player);
+    }
+
+    @Override
+    public void clear() {
+        inventory.clear();
+    }
 }

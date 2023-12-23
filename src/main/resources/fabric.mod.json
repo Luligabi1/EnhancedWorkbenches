@@ -28,9 +28,6 @@
     "modmenu": [
       "me.luligabi.enhancedworkbenches.client.compat.modmenu.ConfigScreenEntrypoint"
     ],
-    "rei_common": [
-      "me.luligabi.enhancedworkbenches.common.compat.rei.CommonREIPlugin"
-    ],
     "rei_client": [
       "me.luligabi.enhancedworkbenches.client.compat.rei.ClientREIPlugin"
     ]
