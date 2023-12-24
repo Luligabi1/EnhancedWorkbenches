@@ -3,6 +3,7 @@ package me.luligabi.enhancedworkbenches.common.block.projecttable;
 import me.luligabi.enhancedworkbenches.common.block.BlockRegistry;
 import me.luligabi.enhancedworkbenches.common.block.CraftingBlockEntity;
 import me.luligabi.enhancedworkbenches.common.screenhandler.ProjectTableScreenHandler;
+import net.fabricmc.fabric.api.transfer.v1.item.InventoryStorage;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
@@ -15,17 +16,19 @@ import net.minecraft.util.math.BlockPos;
 
 public class ProjectTableBlockEntity extends CraftingBlockEntity {
 
+    private final SimpleInventory inventory = new SimpleInventory(2*9) {
+        @Override
+        public void markDirty() {
+            super.markDirty();
+            ProjectTableBlockEntity.this.markDirty();
+            sync();
+        }
+    };
+
+    public final InventoryStorage inventoryWrapper = InventoryStorage.of(inventory, null);
+
     public ProjectTableBlockEntity(BlockPos pos, BlockState state) {
         super(BlockRegistry.PROJECT_TABLE_ENTITY_TYPE, pos, state);
-        inventory = new SimpleInventory(2*9) {
-
-            @Override
-            public void markDirty() {
-                super.markDirty();
-                ProjectTableBlockEntity.this.markDirty();
-                sync();
-            }
-        };
     }
 
 
@@ -63,7 +66,4 @@ public class ProjectTableBlockEntity extends CraftingBlockEntity {
     public SimpleInventory getInventory() {
         return inventory;
     }
-
-
-    protected SimpleInventory inventory;
 }

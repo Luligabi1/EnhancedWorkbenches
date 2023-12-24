@@ -7,6 +7,7 @@ import me.luligabi.enhancedworkbenches.common.block.projecttable.ProjectTableBlo
 import me.luligabi.enhancedworkbenches.common.block.projecttable.ProjectTableBlockEntity;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.BlockItem;
@@ -22,6 +23,8 @@ public class BlockRegistry {
 
         initBlock("crafting_station", CRAFTING_STATION);
         CRAFTING_STATION_ENTITY_TYPE = Registry.register(Registries.BLOCK_ENTITY_TYPE, EnhancedWorkbenches.id("crafting_station"), FabricBlockEntityTypeBuilder.create(CraftingStationBlockEntity::new, CRAFTING_STATION).build());
+
+        ItemStorage.SIDED.registerForBlockEntity((blockEntity, direction) -> blockEntity.inventoryWrapper, PROJECT_TABLE_ENTITY_TYPE);
 
     }
 
