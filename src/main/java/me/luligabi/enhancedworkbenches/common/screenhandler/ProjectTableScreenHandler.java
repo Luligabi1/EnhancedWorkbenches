@@ -117,5 +117,4 @@ public class ProjectTableScreenHandler extends CraftingBlockScreenHandler {
     }
 
     private final Inventory inventory;
-
 }
