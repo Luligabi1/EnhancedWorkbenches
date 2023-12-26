@@ -1,0 +1,21 @@
+{
+  "block.enhancedworkbenches.project_table": "Проєктувальний стіл",
+  "block.enhancedworkbenches.crafting_station": "Ремісничий стіл",
+
+  "configCategory.enhancedworkbenches.rendering": "Візуалізація",
+
+  "configOption.enhancedworkbenches.renderInput": "Візуалізувати інгредієнти?",
+  "configOption.enhancedworkbenches.renderInput.tooltip": "Чи зможете ви бачити інгредієнти зверху проєктувального чи ремісничого стола.",
+
+  "configOption.enhancedworkbenches.renderInputDistance": "Дистанція візуалізації інгредієнтів",
+  "configOption.enhancedworkbenches.renderInputDistance.tooltip": "Як далеко, в чанках (16 блоків), ви зможете бачити інгредієнти.",
+
+  "configOption.enhancedworkbenches.renderInputRequireFancy": "Візуалізація інгредієнтів вимагає «Красиву»",
+  "configOption.enhancedworkbenches.renderInputRequireFancy.tooltip": "Чи повинні інгредієнти візуалізуватися лише якщо ви використовуєте графічні налаштування «красива» або вище.",
+
+  "configOption.enhancedworkbenches.renderInputOnProjectTable": "Візуалізувати інгредієнти на проєктувальних столах?",
+  "configOption.enhancedworkbenches.renderInputOnProjectTable.tooltip": "Чи повинні інгредієнти візуалізуватися на проєктувальних столах",
+
+  "configOption.enhancedworkbenches.renderInputOnCraftingStation": "Візуалізувати інгредієнти на ремісничих столах?",
+  "configOption.enhancedworkbenches.renderInputOnCraftingStation.tooltip": "Чи повинні інгредієнти візуалізуватися на ремісничих столах"
+}
