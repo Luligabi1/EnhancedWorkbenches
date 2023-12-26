@@ -24,6 +24,14 @@ repositories {
         url = "https://maven.isxander.dev/releases/"
     }
     maven {
+        name = "SonaType" // YACL dependency
+        url = "https://oss.sonatype.org/content/repositories/snapshots"
+    }
+    maven {
+        name = "QuiltMC" // YACL dependency
+        url = "https://maven.quiltmc.org/repository/release"
+    }
+    maven {
         name = "TerraformersMC" // Mod Menu
         url = "https://maven.terraformersmc.com/releases/"
     }
@@ -47,9 +55,8 @@ dependencies {
 
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-    modImplementation include("dev.isxander.yacl:yet-another-config-lib-fabric:${project.yacl_version}") {
-        transitive = false
-    }
+    modImplementation "dev.isxander.yacl:yet-another-config-lib-fabric:${project.yacl_version}"
+    include "dev.isxander.yacl:yet-another-config-lib-fabric:${project.yacl_version}"
 
     modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
 
@@ -84,22 +91,5 @@ java {
 jar {
     from("LICENSE") {
         rename { "${it}_${project.base.archivesName.get()}" }
-    }
-}
-
-// Configure the maven publication
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
-        }
-    }
-
-    // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
-    repositories {
-        // Add repositories to publish to here.
-        // Notice: This block does NOT have the same function as the block in the top level.
-        // The repositories here will be used for publishing your artifact, not for
-        // retrieving dependencies.
     }
 }
