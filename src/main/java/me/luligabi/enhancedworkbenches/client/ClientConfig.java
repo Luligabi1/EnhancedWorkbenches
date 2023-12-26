@@ -15,7 +15,7 @@ public class ClientConfig {
     public static final ConfigClassHandler<ClientConfig> HANDLER = ConfigClassHandler.createBuilder(ClientConfig.class)
             .id(new Identifier("enhancedworkbenches", "client"))
             .serializer(config -> GsonConfigSerializerBuilder.create(config)
-                    .setPath(FabricLoader.getInstance().getConfigDir().resolve("projecttablemod-client.json"))
+                    .setPath(FabricLoader.getInstance().getConfigDir().resolve("enhancedworkbenches-client.json"))
                     .build())
             .build();
 
