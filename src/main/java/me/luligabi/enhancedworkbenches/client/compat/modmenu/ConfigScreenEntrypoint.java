@@ -12,9 +12,9 @@ public class ConfigScreenEntrypoint implements ModMenuApi {
     @Override
     public ConfigScreenFactory<Screen> getModConfigScreenFactory() {
         return parent -> {
-            if (screen == null)
+            if (screen == null) {
                 screen = ClientConfig.HANDLER.generateGui().generateScreen(null);
-
+            }
             return screen;
         };
     }
