@@ -27,15 +27,8 @@ public abstract class CraftingBlockEntity extends BlockEntity implements NamedSc
 
     protected CraftingBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
-        input = new SimpleInventory(3*3) {
-
-            @Override
-            public void markDirty() {
-                super.markDirty();
-                CraftingBlockEntity.this.markDirty();
-                sync();
-            }
-        };
+        input = new SimpleInventory(3*3);
+        input.addListener(i -> { markDirty(); sync(); });
     }
 
     @Nullable
