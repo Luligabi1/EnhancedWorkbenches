@@ -19,7 +19,6 @@ public class ProjectTableScreenHandler extends CraftingBlockScreenHandler {
 
     public ProjectTableScreenHandler(int syncId, PlayerInventory playerInventory, SimpleRecipeInputInventory input, Inventory inventory, ScreenHandlerContext context) {
         super(ScreenHandlingRegistry.PROJECT_TABLE_SCREEN_HANDLER, syncId, playerInventory, input, context);
-        this.inventory = inventory;
         checkSize(inventory, 18);
         inventory.onOpen(player);
 
@@ -111,10 +110,4 @@ public class ProjectTableScreenHandler extends CraftingBlockScreenHandler {
         return itemStack;
     }
 
-
-    public Inventory getInventory() {
-        return inventory;
-    }
-
-    private final Inventory inventory;
 }

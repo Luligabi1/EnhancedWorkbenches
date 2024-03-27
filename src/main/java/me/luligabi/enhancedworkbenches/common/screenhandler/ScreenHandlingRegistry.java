@@ -1,7 +1,6 @@
 package me.luligabi.enhancedworkbenches.common.screenhandler;
 
 import me.luligabi.enhancedworkbenches.common.EnhancedWorkbenches;
-import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.resource.featuretoggle.FeatureSet;
@@ -29,10 +28,6 @@ public class ScreenHandlingRegistry {
     );
 
     public static void init() {
-        // NO-OP
-    }
-
-    private ScreenHandlingRegistry() {
         // NO-OP
     }
 }
