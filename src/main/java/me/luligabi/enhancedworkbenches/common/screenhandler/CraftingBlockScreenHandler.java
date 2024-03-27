@@ -1,5 +1,6 @@
 package me.luligabi.enhancedworkbenches.common.screenhandler;
 
+import me.luligabi.enhancedworkbenches.common.EnhancedWorkbenches;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -19,6 +20,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+import tfar.fastbench.MixinHooks;
 
 import java.util.Optional;
 
@@ -59,7 +61,11 @@ public abstract class CraftingBlockScreenHandler extends ScreenHandler {
     @Override
     public void onContentChanged(Inventory inventory) {
         context.run((world, pos) -> {
-            updateResult(this, world, player, input, result);
+            if (EnhancedWorkbenches.QUICKBENCH) {
+                MixinHooks.slotChangedCraftingGrid(world, input, result);
+            } else {
+                updateResult(this, world, player, input, result);
+            }
         });
     }
 

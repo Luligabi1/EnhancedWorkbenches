@@ -34,6 +34,9 @@
       "me.luligabi.enhancedworkbenches.client.compat.rei.ClientREIPlugin"
     ]
   },
+  "mixins": [
+    "enhancedworkbenches.mixins.json"
+  ],
   "depends": {
     "fabricloader": "*",
     "minecraft": ">=1.20",

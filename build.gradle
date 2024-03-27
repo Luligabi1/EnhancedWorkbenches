@@ -67,6 +67,8 @@ dependencies {
 
     modImplementation "maven.modrinth:balm:${project.balm_version}"
     modImplementation "maven.modrinth:crafting-tweaks:${project.craftingtweaks_version}"
+
+    modImplementation "maven.modrinth:quickbench:${project.quickbench_version}"
 }
 
 processResources {

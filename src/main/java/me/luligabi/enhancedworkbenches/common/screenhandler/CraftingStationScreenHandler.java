@@ -1,5 +1,6 @@
 package me.luligabi.enhancedworkbenches.common.screenhandler;
 
+import me.luligabi.enhancedworkbenches.common.EnhancedWorkbenches;
 import me.luligabi.enhancedworkbenches.common.block.BlockRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
@@ -7,6 +8,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.slot.Slot;
+import tfar.fastbench.MixinHooks;
 
 public class CraftingStationScreenHandler extends CraftingBlockScreenHandler {
 
@@ -47,6 +49,10 @@ public class CraftingStationScreenHandler extends CraftingBlockScreenHandler {
 
     @Override
     public ItemStack quickMove(PlayerEntity player, int index) {
+        if (EnhancedWorkbenches.QUICKBENCH && index == 0) {
+            return MixinHooks.handleShiftCraft(player, this, slots.get(index), input, result, 10, 46);
+        }
+
         ItemStack itemStack = ItemStack.EMPTY;
         Slot slot = slots.get(index);
         if (slot != null && slot.hasStack()) {
