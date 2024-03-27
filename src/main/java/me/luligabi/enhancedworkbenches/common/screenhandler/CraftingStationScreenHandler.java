@@ -5,6 +5,8 @@ import me.luligabi.enhancedworkbenches.common.block.BlockRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.slot.Slot;
@@ -14,10 +16,10 @@ public class CraftingStationScreenHandler extends CraftingBlockScreenHandler {
 
 
     public CraftingStationScreenHandler(int syncId, PlayerInventory playerInventory) {
-        this(syncId, playerInventory, new SimpleRecipeInputInventory(3*3), ScreenHandlerContext.EMPTY);
+        this(syncId, playerInventory, new SimpleInventory(3*3), ScreenHandlerContext.EMPTY);
     }
 
-    public CraftingStationScreenHandler(int syncId, PlayerInventory playerInventory, SimpleRecipeInputInventory input, ScreenHandlerContext context) {
+    public CraftingStationScreenHandler(int syncId, PlayerInventory playerInventory, Inventory input, ScreenHandlerContext context) {
         super(ScreenHandlingRegistry.CRAFTING_STATION_SCREEN_HANDLER, syncId, playerInventory, input, context);
 
 

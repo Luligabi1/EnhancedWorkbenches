@@ -16,10 +16,10 @@ public class ProjectTableScreenHandler extends CraftingBlockScreenHandler {
 
 
     public ProjectTableScreenHandler(int syncId, PlayerInventory playerInventory) {
-        this(syncId, playerInventory, new SimpleRecipeInputInventory(3*3), new SimpleInventory(2*9), ScreenHandlerContext.EMPTY);
+        this(syncId, playerInventory, new SimpleInventory(3*3), new SimpleInventory(2*9), ScreenHandlerContext.EMPTY);
     }
 
-    public ProjectTableScreenHandler(int syncId, PlayerInventory playerInventory, SimpleRecipeInputInventory input, Inventory inventory, ScreenHandlerContext context) {
+    public ProjectTableScreenHandler(int syncId, PlayerInventory playerInventory, Inventory input, Inventory inventory, ScreenHandlerContext context) {
         super(ScreenHandlingRegistry.PROJECT_TABLE_SCREEN_HANDLER, syncId, playerInventory, input, context);
         checkSize(inventory, 18);
         inventory.onOpen(player);

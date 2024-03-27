@@ -1,7 +1,6 @@
 package me.luligabi.enhancedworkbenches.common.block;
 
 import com.google.common.base.Preconditions;
-import me.luligabi.enhancedworkbenches.common.screenhandler.SimpleRecipeInputInventory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
@@ -28,7 +27,7 @@ public abstract class CraftingBlockEntity extends BlockEntity implements NamedSc
 
     protected CraftingBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
-        input = new SimpleRecipeInputInventory(3*3) {
+        input = new SimpleInventory(3*3) {
 
             @Override
             public void markDirty() {
@@ -38,7 +37,6 @@ public abstract class CraftingBlockEntity extends BlockEntity implements NamedSc
             }
         };
     }
-    
 
     @Nullable
     @Override
@@ -155,6 +153,6 @@ public abstract class CraftingBlockEntity extends BlockEntity implements NamedSc
     }
 
 
-    protected SimpleRecipeInputInventory input;
+    protected SimpleInventory input;
     private boolean shouldClientRemesh = true;
 }
