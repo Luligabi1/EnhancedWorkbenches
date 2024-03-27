@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '1.4-SNAPSHOT'
+    id 'fabric-loom' version '1.5-SNAPSHOT'
     id 'me.modmuss50.mod-publish-plugin' version '0.4.5'
     id 'maven-publish'
 }
@@ -26,11 +26,11 @@ repositories {
     }
     maven {
         name = "SonaType" // YACL dependency
-        url = "https://oss.sonatype.org/content/repositories/snapshots"
+        url = "https://oss.sonatype.org/content/repositories/snapshots/"
     }
     maven {
         name = "QuiltMC" // YACL dependency
-        url = "https://maven.quiltmc.org/repository/release"
+        url = "https://maven.quiltmc.org/repository/release/"
     }
     maven {
         name = "TerraformersMC" // Mod Menu
@@ -42,7 +42,7 @@ repositories {
     }
     maven {
         name = "Modrinth" // Balm + Crafting Tweaks
-        url = "https://api.modrinth.com/maven"
+        url = "https://api.modrinth.com/maven/"
         content {
             includeGroup "maven.modrinth"
         }
@@ -67,6 +67,8 @@ dependencies {
 
     modImplementation "maven.modrinth:balm:${project.balm_version}"
     modImplementation "maven.modrinth:crafting-tweaks:${project.craftingtweaks_version}"
+
+    modImplementation "maven.modrinth:quickbench:${project.quickbench_version}"
 }
 
 processResources {

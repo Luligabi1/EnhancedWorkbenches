@@ -1,5 +1,6 @@
 package me.luligabi.enhancedworkbenches.common.screenhandler;
 
+import me.luligabi.enhancedworkbenches.common.EnhancedWorkbenches;
 import me.luligabi.enhancedworkbenches.common.block.BlockRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
@@ -9,17 +10,17 @@ import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.slot.Slot;
+import tfar.fastbench.MixinHooks;
 
 public class ProjectTableScreenHandler extends CraftingBlockScreenHandler {
 
 
     public ProjectTableScreenHandler(int syncId, PlayerInventory playerInventory) {
-        this(syncId, playerInventory, new SimpleRecipeInputInventory(3*3), new SimpleInventory(2*9), ScreenHandlerContext.EMPTY);
+        this(syncId, playerInventory, new SimpleInventory(3*3), new SimpleInventory(2*9), ScreenHandlerContext.EMPTY);
     }
 
-    public ProjectTableScreenHandler(int syncId, PlayerInventory playerInventory, SimpleRecipeInputInventory input, Inventory inventory, ScreenHandlerContext context) {
+    public ProjectTableScreenHandler(int syncId, PlayerInventory playerInventory, Inventory input, Inventory inventory, ScreenHandlerContext context) {
         super(ScreenHandlingRegistry.PROJECT_TABLE_SCREEN_HANDLER, syncId, playerInventory, input, context);
-        this.inventory = inventory;
         checkSize(inventory, 18);
         inventory.onOpen(player);
 
@@ -58,6 +59,10 @@ public class ProjectTableScreenHandler extends CraftingBlockScreenHandler {
 
     @Override
     public ItemStack quickMove(PlayerEntity player, int index) {
+        if (EnhancedWorkbenches.QUICKBENCH && index == 0) {
+            return MixinHooks.handleShiftCraft(player, this, slots.get(index), input, result, 10, 64);
+        }
+
         ItemStack itemStack = ItemStack.EMPTY;
         Slot slot = slots.get(index);
 
@@ -111,10 +116,4 @@ public class ProjectTableScreenHandler extends CraftingBlockScreenHandler {
         return itemStack;
     }
 
-
-    public Inventory getInventory() {
-        return inventory;
-    }
-
-    private final Inventory inventory;
 }

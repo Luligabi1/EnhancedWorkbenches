@@ -29,7 +29,7 @@ public class EnhancedWorkbenchesClient implements ClientModInitializer {
     public static final ClientConfig CLIENT_CONFIG;
 
     static {
-        LOGGER = LoggerFactory.getLogger("Project Table Mod");
+        LOGGER = LoggerFactory.getLogger("Enhanced Workbenches");
 
         ClientConfig.HANDLER.load();
         CLIENT_CONFIG = ClientConfig.HANDLER.instance();

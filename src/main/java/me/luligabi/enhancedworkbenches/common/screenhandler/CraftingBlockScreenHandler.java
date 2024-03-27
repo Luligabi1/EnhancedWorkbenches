@@ -1,5 +1,6 @@
 package me.luligabi.enhancedworkbenches.common.screenhandler;
 
+import me.luligabi.enhancedworkbenches.common.EnhancedWorkbenches;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -19,15 +20,16 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+import tfar.fastbench.MixinHooks;
 
 import java.util.Optional;
 
 public abstract class CraftingBlockScreenHandler extends ScreenHandler {
 
 
-    protected CraftingBlockScreenHandler(@Nullable ScreenHandlerType<?> type, int syncId, PlayerInventory playerInventory, SimpleRecipeInputInventory input, ScreenHandlerContext context) {
+    protected CraftingBlockScreenHandler(@Nullable ScreenHandlerType<?> type, int syncId, PlayerInventory playerInventory, Inventory input, ScreenHandlerContext context) {
         super(type, syncId);
-        this.input = input;
+        this.input = new DelegateCraftingInventory(this, input);
         this.context = context;
         this.player = playerInventory.player;
         this.blockPos = context.get((world, pos) -> pos).orElse(BlockPos.ORIGIN);
@@ -37,7 +39,7 @@ public abstract class CraftingBlockScreenHandler extends ScreenHandler {
     }
 
     @SuppressWarnings("ConstantConditions")
-    protected static void updateResult(ScreenHandler handler, World world, PlayerEntity player, SimpleRecipeInputInventory input, CraftingResultInventory output) {
+    protected static void updateResult(ScreenHandler handler, World world, PlayerEntity player, DelegateCraftingInventory input, CraftingResultInventory output) {
         if(world.isClient()) return;
         ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity)player;
         ItemStack itemStack = ItemStack.EMPTY;
@@ -59,7 +61,11 @@ public abstract class CraftingBlockScreenHandler extends ScreenHandler {
     @Override
     public void onContentChanged(Inventory inventory) {
         context.run((world, pos) -> {
-            updateResult(this, world, player, input, result);
+            if (EnhancedWorkbenches.QUICKBENCH) {
+                MixinHooks.slotChangedCraftingGrid(world, input, result);
+            } else {
+                updateResult(this, world, player, input, result);
+            }
         });
     }
 
@@ -78,7 +84,7 @@ public abstract class CraftingBlockScreenHandler extends ScreenHandler {
     protected final BlockPos blockPos;
     protected final PlayerEntity player;
     protected final ScreenHandlerContext context;
-    protected final SimpleRecipeInputInventory input;
+    protected final DelegateCraftingInventory input;
     protected final CraftingResultInventory result = new CraftingResultInventory() /*{
 
         @Override
