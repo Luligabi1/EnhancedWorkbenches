@@ -5,6 +5,10 @@
   "container.enhancedworkbenches.project_table": "Project Table",
   "container.enhancedworkbenches.crafting_station": "Crafting Station",
 
+  "title.enhancedworkbenches.history": "History",
+  "tooltip.enhancedworkbenches.history.lock": "CTRL + Click to lock this recipe",
+  "tooltip.enhancedworkbenches.history.unlock": "CTRL + Click to unlock this recipe",
+
   "yacl3.config.enhancedworkbenches:client_config.category.rendering": "Rendering",
 
   "yacl3.config.enhancedworkbenches:client_config.category.rendering.group.rendering": "Rendering",

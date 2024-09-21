@@ -5,6 +5,10 @@
   "container.enhancedworkbenches.project_table": "Bancada de Projeto",
   "container.enhancedworkbenches.crafting_station": "Estação de Trabalho",
 
+  "title.enhancedworkbenches.history": "Histórico",
+  "tooltip.enhancedworkbenches.history.lock": "CTRL + Clique para trancar esta receita",
+  "tooltip.enhancedworkbenches.history.unlock": "CTRL + Clique para destrancar esta receita",
+
   "yacl3.config.enhancedworkbenches:client_config.category.rendering": "Renderização",
 
   "yacl3.config.enhancedworkbenches:client_config.category.rendering.group.rendering": "Renderização",

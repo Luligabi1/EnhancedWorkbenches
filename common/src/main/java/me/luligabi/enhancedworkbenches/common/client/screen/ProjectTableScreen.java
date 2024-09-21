@@ -29,6 +29,8 @@ public class ProjectTableScreen extends CraftingBlockScreen<ProjectTableMenu> im
     private final ProjectTableBlockEntity blockEntity;
     private int recipeHistoryX;
     private int recipeHistoryY;
+    private int recipeHistoryTitleX;
+    private final Component recipeHistoryTitle = Component.translatable("title.enhancedworkbenches.history");
     private final ProjectTableRecipeBookComponent recipeBookComponent = new ProjectTableRecipeBookComponent();
 
     public ProjectTableScreen(ProjectTableMenu abstractContainerMenu, Inventory inventory, Component title) {
@@ -49,6 +51,7 @@ public class ProjectTableScreen extends CraftingBlockScreen<ProjectTableMenu> im
         setCoordinates();
         recipeHistoryX = leftPos - 60;
         recipeHistoryY = topPos + 14;
+        recipeHistoryTitleX = ((-72 - font.width(recipeHistoryTitle)) / 2);
         recipeBookComponent.init(width, height, minecraft, true, menu);
         addWidget(recipeBookComponent);
         recipeBookComponent.toggleVisibility();
@@ -63,14 +66,20 @@ public class ProjectTableScreen extends CraftingBlockScreen<ProjectTableMenu> im
     public void render(GuiGraphics gui, int mouseX, int mouseY, float delta) {
         super.render(gui, mouseX, mouseY, delta);
         recipeBookComponent.renderGhostRecipe(gui, leftPos, topPos, true, delta);
-        this.recipeBookComponent.renderTooltip(gui, leftPos, topPos, mouseX, mouseY);
+        recipeBookComponent.renderTooltip(gui, leftPos, topPos, mouseX, mouseY);
     }
 
     @Override
     protected void renderBg(GuiGraphics gui, float delta, int mouseX, int mouseY) {
         super.renderBg(gui, delta, mouseX, mouseY);
-        gui.blit(RECIPE_HISTORY_BG, leftPos - 68, topPos, 0, 0, 64, 77, 64, 77);
+        gui.blit(RECIPE_HISTORY_BG, leftPos - 68, topPos, 0, 0, 64, 79, 64, 79);
         renderRecipeHistory(gui, mouseX, mouseY);
+    }
+
+    @Override
+    protected void renderLabels(GuiGraphics guiGraphics, int i, int j) {
+        super.renderLabels(guiGraphics, i, j);
+        guiGraphics.drawString(font, recipeHistoryTitle, recipeHistoryTitleX, titleLabelY, 0x404040, false);
     }
 
     protected void renderTooltip(GuiGraphics gui, int mouseX, int mouseY) {
@@ -129,7 +138,7 @@ public class ProjectTableScreen extends CraftingBlockScreen<ProjectTableMenu> im
             if(entry == null) continue;
             int p = recipeHistoryX + i % 3 * 16;
             int q = i / 3;
-            int r = recipeHistoryY + q * 18 + 2;
+            int r = recipeHistoryY + q * 18 + 4;
             ResourceLocation resourceLocation = RECIPE_SPRITE;
             if(mouseX >= p && mouseY >= r && mouseX < p + 16 && mouseY < r + 18) {
                 resourceLocation = RECIPE_HIGHLIGHTED_SPRITE;
