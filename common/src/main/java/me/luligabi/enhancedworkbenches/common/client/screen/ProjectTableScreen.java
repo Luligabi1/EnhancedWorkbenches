@@ -104,10 +104,11 @@ public class ProjectTableScreen extends CraftingBlockScreen<ProjectTableMenu> im
             double heightRange = mouseY - (double)(recipeHistoryY + i / 3 * 18);
             int index = Screen.hasControlDown() ? i + 10 : i;
             if(widthRange >= 0.0 && heightRange >= 0.0 && widthRange < 16.0 && heightRange < 18.0 && menu.clickMenuButton(minecraft.player, index)) {
+                minecraft.gameMode.handleInventoryButtonClick(menu.containerId, index);
+                minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_STONECUTTER_SELECT_RECIPE, 1.0F));
                 if(index >= 0 && index <= 8) {
                     recipeBookComponent.clearGhostRecipe();
                     minecraft.player.connection.send(new ServerboundPlaceRecipePacket(menu.containerId, blockEntity.recipeHistory.list.get(i).toRecipeHolder(minecraft.player.level()), Screen.hasShiftDown()));
-                    minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_STONECUTTER_SELECT_RECIPE, 1.0F));
                 }
                 return true;
             }

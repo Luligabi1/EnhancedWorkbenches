@@ -18,7 +18,9 @@ public class ProjectTableRecipeHistory extends AbstractList<ProjectTableRecipeHi
 
     @Override
     public boolean add(RecipeHistoryEntry entry) {
-        //list.forEach(p -> System.out.println("ProjectTableRecipeHistory | " + p.getId()));
+        RecipeHistoryEntry toggledEntry = new RecipeHistoryEntry(entry.id, !entry.locked);
+        if(list.contains(toggledEntry)) return false;
+
         if(list.contains(entry)) {
             if(entry.locked) return false;
             list.remove(entry);
@@ -27,20 +29,13 @@ public class ProjectTableRecipeHistory extends AbstractList<ProjectTableRecipeHi
         }
         if(list.size() >= MAX_SIZE) {
             if(list.getLast() instanceof RecipeHistoryEntry entry1 && entry1.locked) return false;
-            RecipeHistoryEntry entry2 = list.removeLast();
-            if(entry2 != null) {
-                System.out.println("removed " + entry2.id);
-            } else {
-                System.out.println("removed null element");
-            }
-
+            list.removeLast();
         }
         if(list.isEmpty()) {
             list.add(entry);
         } else {
             addToFirstAvailableIndex(entry);
         }
-        System.out.println("added " + entry.id);
         return true;
     }
 
@@ -49,7 +44,7 @@ public class ProjectTableRecipeHistory extends AbstractList<ProjectTableRecipeHi
             if(entry.locked) {
                 list.remove(entry);
                 entry.locked = false;
-                list.addLast(entry);
+                addToFirstAvailableIndex(entry);
             } else {
                 for(int i = 0; i < size(); i++) {
                     if(!list.get(i).locked) {
@@ -79,14 +74,21 @@ public class ProjectTableRecipeHistory extends AbstractList<ProjectTableRecipeHi
     }
 
     private void addToFirstAvailableIndex(RecipeHistoryEntry entry) {
+        if(list.isEmpty()) {
+            list.add(entry);
+            return;
+        }
+
         for(int i = 0; i < size(); i++) {
             RecipeHistoryEntry currentEntry = list.get(i);
-            if(currentEntry == null || !list.get(i).locked) {
+            if(currentEntry == null || !currentEntry.locked) {
                 list.add(i, entry);
-                break;
+                return;
             }
         }
+        list.add(entry);
     }
+
 
     public void fromTag(CompoundTag compoundTag) {
         list.clear();

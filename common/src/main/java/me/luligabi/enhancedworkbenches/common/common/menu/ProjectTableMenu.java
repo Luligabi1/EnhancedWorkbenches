@@ -21,7 +21,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ProjectTableMenu extends CraftingBlockMenu {
 
@@ -77,40 +76,34 @@ public class ProjectTableMenu extends CraftingBlockMenu {
             Optional<RecipeHolder<CraftingRecipe>> resultRecipe = updateResult(this, level, player, input, result);
             if(resultRecipe.isEmpty() || isOutputtingRecipe) return;
             lastRecipe = resultRecipe.get();
-            System.out.println("slotsChanged | " + lastRecipe.id());
         });
     }
 
     @Override
-    public boolean clickMenuButton(Player player, int i) {
-        if(i >= 0 && i <= 8) {
-            System.out.println("clickMenuButton | " + i);
+    public boolean clickMenuButton(Player player, int index) {
+        if(index >= 0 && index <= 8) {
+            /*System.out.println("clickMenuButton | " + i);
             AtomicBoolean canCraft = new AtomicBoolean(false);
 
             access.execute((level, pos) -> {
                 if(level.getBlockEntity(pos) instanceof ProjectTableBlockEntity projectTable) {
-                    projectTable.recipeHistory.list.forEach(aa -> {
-                        if(aa != null) {
-                            System.out.println("id " + aa + ": " + aa.getId());
-                        }
-                    });
                     canCraft.set(projectTable.recipeHistory.get(i) != null);
                 }
             });
-            System.out.println("clickMenuButton | " + canCraft.get());
+            System.out.println("clickMenuButton | " + canCraft.get());*/
             return true; //canCraft.get();
-        } else if(i >= 10 && i <= 18) {
-            System.out.println("clickMenuButton CTRL | " + i);
+        } else if(index >= 10 && index <= 18) {
+            System.out.println("clickMenuButton CTRL | " + index);
             access.execute((level, pos) -> {
                 if(level.getBlockEntity(pos) instanceof ProjectTableBlockEntity projectTable) {
-                    projectTable.recipeHistory.toggleLock(i - 10);
+                    projectTable.recipeHistory.toggleLock(index - 10);
                     projectTable.setChanged();
                     projectTable.sync();
                 }
             });
             return true;
         }
-        return super.clickMenuButton(player, i);
+        return super.clickMenuButton(player, index);
     }
 
 
@@ -250,7 +243,7 @@ public class ProjectTableMenu extends CraftingBlockMenu {
             isOutputtingRecipe = false;
             access.execute((level, pos) -> {
                 BlockEntity blockEntity = level.getBlockEntity(pos);
-                if(blockEntity instanceof ProjectTableBlockEntity projectTable) {
+                if(blockEntity instanceof ProjectTableBlockEntity projectTable && !lastRecipe.value().isSpecial()) {
                     projectTable.recipeHistory.add(new ProjectTableRecipeHistory.RecipeHistoryEntry(lastRecipe.id()));
                     projectTable.setChanged();
                     projectTable.sync();
