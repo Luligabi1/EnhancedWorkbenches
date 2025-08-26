@@ -106,9 +106,15 @@ public abstract class CraftingBlockMenu extends AbstractContainerMenu {
     }
 
     protected class CraftingOutputSlot extends ResultSlot {
+        protected Container craftingInventoryRef = null;
 
         public CraftingOutputSlot(Player player, int index, int x, int y) {
             super(player, CraftingBlockMenu.this.input, CraftingBlockMenu.this.result, index, x, y);
+        }
+
+        public CraftingOutputSlot(Player player, Container craftingInventory, int index, int x, int y) {
+            this(player, index, x, y);
+            this.craftingInventoryRef = craftingInventory;
         }
 
         @Override
@@ -137,9 +143,31 @@ public abstract class CraftingBlockMenu extends AbstractContainerMenu {
 
         @Override
         public void onTake(Player player, ItemStack stack) {
+            tryRefillFromInventory();
             super.onTake(player, stack);
             setChanged();
         }
 
+        protected void tryRefillFromInventory() {
+            if (craftingInventoryRef == null) {
+                return;
+            }
+
+            var craftSlots = CraftingBlockMenu.this.input;
+
+            for (int i = 0; i < craftSlots.getContainerSize(); i++) {
+                ItemStack stack = craftSlots.getItem(i);
+                if (!stack.isEmpty()) {
+                    for (int j = 0; j < craftingInventoryRef.getContainerSize(); j++) {
+                        ItemStack inventoryStack = craftingInventoryRef.getItem(j);
+                        if (inventoryStack.getItem() == stack.getItem() && inventoryStack.getCount() > 0) {
+                            inventoryStack.setCount(inventoryStack.getCount() - 1);
+                            stack.setCount(stack.getCount() + 1);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
     }
 }

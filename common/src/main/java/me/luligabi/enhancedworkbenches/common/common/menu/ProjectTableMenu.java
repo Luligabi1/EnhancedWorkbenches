@@ -23,7 +23,7 @@ public class ProjectTableMenu extends CraftingBlockMenu {
         checkContainerSize(inventory, 18);
         inventory.startOpen(player);
 
-        addSlot(new CraftingOutputSlot(player, 0, 124, 35));
+        addSlot(new CraftingOutputSlot(player, inventory, 0, 124, 35));
 
         for(int i = 0; i < 3; ++i) {
             for(int j = 0; j < 3; ++j) {
