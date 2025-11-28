@@ -1,17 +1,22 @@
 modLoader = "javafml"
 loaderVersion = "[2,)"
-#issueTrackerURL = ""
-license = "Insert License Here"
+issueTrackerURL="https://github.com/Luligabi1/EnhancedWorkbenches/issues"
+license = "Apache 2.0"
 
 [[mods]]
 modId = "enhancedworkbenches"
 version = "${version}"
 displayName = "Enhanced Workbenches"
-authors = "Me!"
-description = '''
-This is an example description! Tell everyone what your mod is about!
-'''
-#logoFile = ""
+authors = "Luligabi1"
+credits="""
+Assets by gonsawa_
+
+Translations and improvements by DenisMasterHerobrine, VeiTr, unroman, unilock, Abbie5, neofuchsy, ProdOrDev
+"""
+description ="""
+Better crafting solutions through the ages brought onto Modern Minecraft.
+"""
+logoFile = "icon.png"
 
 [[dependencies.enhancedworkbenches]]
 modId = "architectury"
