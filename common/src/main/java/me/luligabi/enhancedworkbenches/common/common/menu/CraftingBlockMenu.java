@@ -18,8 +18,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 
 public abstract class CraftingBlockMenu extends AbstractContainerMenu {
-
-
     protected CraftingBlockMenu(@Nullable MenuType<?> type, int syncId, Inventory playerInventory, Container input, ContainerLevelAccess levelAccess) {
         super(type, syncId);
         this.input = new DelegateCraftingInventory(this, input);
@@ -52,6 +50,11 @@ public abstract class CraftingBlockMenu extends AbstractContainerMenu {
     }
 
     @Override
+    public boolean canTakeItemForPickAll(ItemStack stack, Slot slot) {
+        return slot.container != this.getSlot(0).container && super.canTakeItemForPickAll(stack, slot);
+    }
+    
+    @Override
     public void slotsChanged(Container container) {
         context.execute((world, pos) -> {
             updateResult(this, world, player, input, result);
@@ -69,7 +72,6 @@ public abstract class CraftingBlockMenu extends AbstractContainerMenu {
     public boolean stillValid(Player player) {
         return stillValid(context, player, getBlock());
     }
-
 
     protected abstract Block getBlock();
 
@@ -93,7 +95,6 @@ public abstract class CraftingBlockMenu extends AbstractContainerMenu {
     }*/;
 
     protected class CraftingSlot extends Slot {
-
         public CraftingSlot(int index, int x, int y) {
             super(input, index, x, y);
         }
