@@ -1,29 +1,48 @@
 package me.luligabi.enhancedworkbenches.common.common.menu;
 
 import me.luligabi.enhancedworkbenches.common.common.block.BlockRegistry;
+import me.luligabi.enhancedworkbenches.common.common.block.projecttable.ProjectTableBlockEntity;
+import me.luligabi.enhancedworkbenches.common.common.util.ProjectTableRecipeHistory;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.StackedContents;
 import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.inventory.ResultSlot;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingRecipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ProjectTableMenu extends CraftingBlockMenu {
 
+    public BlockPos clientPos;
+    private boolean isOutputtingRecipe = false;
+    private RecipeHolder<CraftingRecipe> lastRecipe = null;
+    public final SimpleContainer container;
 
-    public ProjectTableMenu(int syncId, Inventory playerInventory) {
-        this(syncId, playerInventory, new SimpleContainer(3*3), new SimpleContainer(2*9), ContainerLevelAccess.NULL);
+    public ProjectTableMenu(int syncId, Inventory playerInventory, FriendlyByteBuf buf) {
+        this(syncId, playerInventory, new SimpleContainer(3*3), new SimpleContainer(2*9), ContainerLevelAccess.NULL, buf);
+        clientPos = buf.readBlockPos();
     }
 
-    public ProjectTableMenu(int syncId, Inventory playerInventory, Container input, Container inventory, ContainerLevelAccess levelAccess) {
+    public ProjectTableMenu(int syncId, Inventory playerInventory, Container input, SimpleContainer container, ContainerLevelAccess levelAccess, FriendlyByteBuf buf) {
         super(MenuTypeRegistry.PROJECT_TABLE.get(), syncId, playerInventory, input, levelAccess);
-        checkContainerSize(inventory, 18);
-        inventory.startOpen(player);
+        clientPos = BlockPos.ZERO;
+        checkContainerSize(container, 18);
+        container.startOpen(player);
+        this.container = container;
 
-        addSlot(new CraftingOutputSlot(player, inventory, 0, 124, 35));
+        addSlot(new ProjectTableOutputSlot(player, container, 0, 124, 35));
 
         for(int i = 0; i < 3; ++i) {
             for(int j = 0; j < 3; ++j) {
@@ -33,7 +52,7 @@ public class ProjectTableMenu extends CraftingBlockMenu {
 
         for(int i = 0; i < 2; ++i) {
             for(int j = 0; j < 9; ++j) {
-                addSlot(new Slot(inventory, j + i * 9, 8 + j * 18, 77 + i * 18));
+                addSlot(new Slot(container, j + i * 9, 8 + j * 18, 77 + i * 18));
             }
         }
 
@@ -49,6 +68,79 @@ public class ProjectTableMenu extends CraftingBlockMenu {
         }
 
         slotsChanged(input);
+    }
+
+    @Override
+    public void slotsChanged(Container container) {
+        if(isOutputtingRecipe) return;
+        access.execute((level, pos) -> {
+            Optional<RecipeHolder<CraftingRecipe>> resultRecipe = updateResult(this, level, player, input, result);
+            if(resultRecipe.isEmpty() || isOutputtingRecipe) return;
+            lastRecipe = resultRecipe.get();
+            System.out.println("slotsChanged | " + lastRecipe.id());
+        });
+    }
+
+    @Override
+    public boolean clickMenuButton(Player player, int i) {
+        if(i >= 0 && i <= 8) {
+            System.out.println("clickMenuButton | " + i);
+            AtomicBoolean canCraft = new AtomicBoolean(false);
+
+            access.execute((level, pos) -> {
+                if(level.getBlockEntity(pos) instanceof ProjectTableBlockEntity projectTable) {
+                    projectTable.recipeHistory.list.forEach(aa -> {
+                        if(aa != null) {
+                            System.out.println("id " + aa + ": " + aa.getId());
+                        }
+                    });
+                    canCraft.set(projectTable.recipeHistory.get(i) != null);
+                }
+            });
+            System.out.println("clickMenuButton | " + canCraft.get());
+            return true; //canCraft.get();
+        } else if(i >= 10 && i <= 18) {
+            System.out.println("clickMenuButton CTRL | " + i);
+            access.execute((level, pos) -> {
+                if(level.getBlockEntity(pos) instanceof ProjectTableBlockEntity projectTable) {
+                    projectTable.recipeHistory.toggleLock(i - 10);
+                    projectTable.setChanged();
+                    projectTable.sync();
+                }
+            });
+            return true;
+        }
+        return super.clickMenuButton(player, i);
+    }
+
+
+
+    @Override
+    public void fillCraftSlotsStackedContents(StackedContents content) {
+        super.fillCraftSlotsStackedContents(content);
+        container.fillStackedContents(content);
+
+        content.contents.forEach((i, i2) -> {
+            System.out.println("fillCraftSlotsStackedContents | " + BuiltInRegistries.ITEM.byId(i).arch$registryName() + "/" + i2);
+        });
+    }
+
+    @Override
+    protected void beginPlacingRecipe() {
+        isOutputtingRecipe = true;
+    }
+
+    @Override
+    protected void finishPlacingRecipe(RecipeHolder recipeHolder) {
+        isOutputtingRecipe = false;
+        access.execute((level, pos) -> {
+            updateResult(this, level, player, input, result);
+        });
+    }
+
+    @Override
+    public int getSize() {
+        return super.getSize();
     }
 
     @Override
@@ -70,7 +162,7 @@ public class ProjectTableMenu extends CraftingBlockMenu {
             ItemStack itemStack2 = slot.getItem();
             itemStack = itemStack2.copy();
             if(index == 0) {
-                context.execute((world, pos) -> {
+                access.execute((world, pos) -> {
                     itemStack2.getItem().onCraftedBy(itemStack2, world, player);
                 });
                 if(!moveItemStackTo(itemStack2, 10, 64, true)) {
@@ -115,5 +207,58 @@ public class ProjectTableMenu extends CraftingBlockMenu {
 
         return itemStack;
     }
+
+    private class ProjectTableOutputSlot extends ResultSlot {
+
+        public ProjectTableOutputSlot(Player player, int index, int x, int y) {
+            super(player, ProjectTableMenu.this.input, ProjectTableMenu.this.result, index, x, y);
+        }
+
+        @Override
+        public void setChanged() {
+            super.setChanged();
+            ProjectTableMenu.this.slotsChanged(container);
+        }
+
+        @Override
+        public ItemStack remove(int amount) {
+            setChanged();
+            return super.remove(amount);
+        }
+
+        @Override
+        protected void checkTakeAchievements(ItemStack stack) {
+            super.checkTakeAchievements(stack);
+            setChanged();
+        }
+
+        @Override
+        protected void onSwapCraft(int amount) {
+            super.onSwapCraft(amount);
+            setChanged();
+        }
+
+        @Override
+        public void onTake(Player player, ItemStack stack) {
+            /*
+             * Prevents slotsChanged from running while items
+             * are being removed from the input as that adds
+             * non-intended recipes to the history
+             */
+            isOutputtingRecipe = true;
+            super.onTake(player, stack);
+            isOutputtingRecipe = false;
+            access.execute((level, pos) -> {
+                BlockEntity blockEntity = level.getBlockEntity(pos);
+                if(blockEntity instanceof ProjectTableBlockEntity projectTable) {
+                    projectTable.recipeHistory.add(new ProjectTableRecipeHistory.RecipeHistoryEntry(lastRecipe.id()));
+                    projectTable.setChanged();
+                    projectTable.sync();
+                }
+            });
+            setChanged();
+        }
+    }
+
 
 }
