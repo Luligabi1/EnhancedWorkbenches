@@ -208,10 +208,10 @@ public class ProjectTableMenu extends CraftingBlockMenu {
         return itemStack;
     }
 
-    private class ProjectTableOutputSlot extends ResultSlot {
+    private class ProjectTableOutputSlot extends CraftingOutputSlot {
 
-        public ProjectTableOutputSlot(Player player, int index, int x, int y) {
-            super(player, ProjectTableMenu.this.input, ProjectTableMenu.this.result, index, x, y);
+        public ProjectTableOutputSlot(Player player, Container container, int index, int x, int y) {
+            super(player, container, index, x, y);
         }
 
         @Override
