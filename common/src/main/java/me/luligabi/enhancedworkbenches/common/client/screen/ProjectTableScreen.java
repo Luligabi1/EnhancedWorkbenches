@@ -4,6 +4,7 @@ import me.luligabi.enhancedworkbenches.common.common.EnhancedWorkbenches;
 import me.luligabi.enhancedworkbenches.common.common.block.projecttable.ProjectTableBlockEntity;
 import me.luligabi.enhancedworkbenches.common.common.menu.ProjectTableMenu;
 import me.luligabi.enhancedworkbenches.common.common.util.ProjectTableRecipeHistory;
+import me.luligabi.enhancedworkbenches.common.mixin.StonecutterScreenAccessor;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
@@ -11,6 +12,7 @@ import net.minecraft.client.gui.screens.recipebook.RecipeBookComponent;
 import net.minecraft.client.gui.screens.recipebook.RecipeUpdateListener;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 import net.minecraft.network.protocol.game.ServerboundPlaceRecipePacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
@@ -92,14 +94,19 @@ public class ProjectTableScreen extends CraftingBlockScreen<ProjectTableMenu> im
             int q = recipeHistoryY + i / 3 * 18 + 2;
             if(mouseX >= p && mouseX < p + 16 && mouseY >= q && mouseY < q + 18) {
                 ItemStack stack = entry.toRecipeHolder(minecraft.level).value().getResultItem(minecraft.level.registryAccess());
-                List<Component> text = List.of(
-                    stack.getHoverName(),
-                    Component.translatable(
-                        entry.isLocked() ?
-                            "tooltip.enhancedworkbenches.history.unlock" :
-                            "tooltip.enhancedworkbenches.history.lock"
-                    ).withStyle(ChatFormatting.GRAY)
-                );
+                List<Component> text = new ArrayList<>(List.of(
+                        stack.getHoverName(),
+                        Component.translatable(
+                                entry.isPinned() ?
+                                        "tooltip.enhancedworkbenches.history.unpin" :
+                                        "tooltip.enhancedworkbenches.history.pin"
+                        ).withStyle(ChatFormatting.GRAY)
+                ));
+                if (!entry.isPinned()) {
+                    text.add(Component.translatable("tooltip.enhancedworkbenches.history.pin.2")
+                            .withStyle(Style.EMPTY.withColor(ChatFormatting.DARK_GRAY).withItalic(true)));
+                }
+
                 gui.renderComponentTooltip(font, text, mouseX, mouseY);
             }
         }
@@ -139,24 +146,18 @@ public class ProjectTableScreen extends CraftingBlockScreen<ProjectTableMenu> im
             int p = recipeHistoryX + i % 3 * 16;
             int q = i / 3;
             int r = recipeHistoryY + q * 18 + 4;
-            ResourceLocation resourceLocation = RECIPE_SPRITE;
+            ResourceLocation resourceLocation = entry.isPinned() ? PINNED_RECIPE_SPRITE : StonecutterScreenAccessor.getRecipeSprite();
             if(mouseX >= p && mouseY >= r && mouseX < p + 16 && mouseY < r + 18) {
-                resourceLocation = RECIPE_HIGHLIGHTED_SPRITE;
+                resourceLocation = entry.isPinned() ? PINNED_RECIPE_HIGHLIGHTED_SPRITE : StonecutterScreenAccessor.getRecipeHighlightedSprite();
             }
 
             gui.blitSprite(resourceLocation, p, r - 1, 16, 18);
             gui.renderItem(entry.toRecipeHolder(minecraft.level).value().getResultItem(minecraft.level.registryAccess()), p, r);
-            if(entry.isLocked()) {
-                gui.pose().pushPose();
-                gui.pose().translate(0F, 0F, 400F);
-                gui.blitSprite(RECIPE_LOCKED_OVERLAY_SPRITE, p, r - 1, 16, 18);
-                gui.pose().popPose();
-            }
         }
     }
 
     @Override
-    public RecipeBookComponent getRecipeBookComponent() {
+    public @NotNull RecipeBookComponent getRecipeBookComponent() {
         return recipeBookComponent;
     }
 
@@ -165,8 +166,7 @@ public class ProjectTableScreen extends CraftingBlockScreen<ProjectTableMenu> im
     }
 
     private static final ResourceLocation RECIPE_HISTORY_BG = EnhancedWorkbenches.id("textures/gui/project_table/recipe_history.png");
-    private static final ResourceLocation RECIPE_SPRITE = ResourceLocation.withDefaultNamespace("container/stonecutter/recipe");
-    private static final ResourceLocation RECIPE_HIGHLIGHTED_SPRITE = ResourceLocation.withDefaultNamespace("container/stonecutter/recipe_highlighted");
-    private static final ResourceLocation RECIPE_LOCKED_OVERLAY_SPRITE = EnhancedWorkbenches.id("container/project_table/recipe_locked_overlay");
+    private static final ResourceLocation PINNED_RECIPE_SPRITE = EnhancedWorkbenches.id("container/project_table/pinned_recipe");
+    private static final ResourceLocation PINNED_RECIPE_HIGHLIGHTED_SPRITE = EnhancedWorkbenches.id("container/project_table/pinned_recipe_highlighted");
 
 }

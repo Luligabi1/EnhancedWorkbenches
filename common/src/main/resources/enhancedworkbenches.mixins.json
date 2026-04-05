@@ -4,11 +4,11 @@
   "compatibilityLevel": "JAVA_21",
   "minVersion": "0.8",
   "mixins": [
-    "ServerPlaceRecipeMixin"
   ],
   "client": [
     "AbstractContainerScreenAccessor",
-    "RecipeBookComponentInvoker"
+    "RecipeBookComponentInvoker",
+    "StonecutterScreenAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

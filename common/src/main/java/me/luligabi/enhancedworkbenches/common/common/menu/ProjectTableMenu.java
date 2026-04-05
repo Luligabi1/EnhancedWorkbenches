@@ -1,25 +1,29 @@
 package me.luligabi.enhancedworkbenches.common.common.menu;
 
+import com.google.common.collect.Lists;
 import me.luligabi.enhancedworkbenches.common.common.block.BlockRegistry;
 import me.luligabi.enhancedworkbenches.common.common.block.projecttable.ProjectTableBlockEntity;
 import me.luligabi.enhancedworkbenches.common.common.util.ProjectTableRecipeHistory;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.game.ClientboundPlaceGhostRecipePacket;
+import net.minecraft.recipebook.ServerPlaceRecipe;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.player.StackedContents;
 import net.minecraft.world.inventory.ContainerLevelAccess;
-import net.minecraft.world.inventory.ResultSlot;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.Optional;
 
 public class ProjectTableMenu extends CraftingBlockMenu {
@@ -82,21 +86,12 @@ public class ProjectTableMenu extends CraftingBlockMenu {
     @Override
     public boolean clickMenuButton(Player player, int index) {
         if(index >= 0 && index <= 8) {
-            /*System.out.println("clickMenuButton | " + i);
-            AtomicBoolean canCraft = new AtomicBoolean(false);
-
-            access.execute((level, pos) -> {
-                if(level.getBlockEntity(pos) instanceof ProjectTableBlockEntity projectTable) {
-                    canCraft.set(projectTable.recipeHistory.get(i) != null);
-                }
-            });
-            System.out.println("clickMenuButton | " + canCraft.get());*/
-            return true; //canCraft.get();
+            return true;
         } else if(index >= 10 && index <= 18) {
             System.out.println("clickMenuButton CTRL | " + index);
             access.execute((level, pos) -> {
                 if(level.getBlockEntity(pos) instanceof ProjectTableBlockEntity projectTable) {
-                    projectTable.recipeHistory.toggleLock(index - 10);
+                    projectTable.recipeHistory.togglePin(index - 10);
                     projectTable.setChanged();
                     projectTable.sync();
                 }
@@ -106,16 +101,15 @@ public class ProjectTableMenu extends CraftingBlockMenu {
         return super.clickMenuButton(player, index);
     }
 
-
-
     @Override
-    public void fillCraftSlotsStackedContents(StackedContents content) {
-        super.fillCraftSlotsStackedContents(content);
-        container.fillStackedContents(content);
+    public void handlePlacement(boolean bl, RecipeHolder recipeHolder, ServerPlayer serverPlayer) {
+        this.beginPlacingRecipe();
 
-        content.contents.forEach((i, i2) -> {
-            System.out.println("fillCraftSlotsStackedContents | " + BuiltInRegistries.ITEM.byId(i).arch$registryName() + "/" + i2);
-        });
+        try {
+            (new PlaceRecipe(this)).recipeClicked(serverPlayer, recipeHolder, bl);
+        } finally {
+            this.finishPlacingRecipe(recipeHolder);
+        }
     }
 
     @Override
@@ -142,7 +136,7 @@ public class ProjectTableMenu extends CraftingBlockMenu {
     }
 
     @Override
-    public ItemStack quickMoveStack(Player player, int index) {
+    public @NotNull ItemStack quickMoveStack(Player player, int index) {
         // FIXME quickbench
         /*if(EnhancedWorkbenches.QUICKBENCH && index == 0) {
             return MixinHooks.handleShiftCraft(player, this, slots.get(index), input, result, 10, 64);
@@ -151,51 +145,53 @@ public class ProjectTableMenu extends CraftingBlockMenu {
         ItemStack itemStack = ItemStack.EMPTY;
         Slot slot = slots.get(index);
 
-        if(slot != null && slot.hasItem()) {
+        if (slot != null && slot.hasItem()) {
             ItemStack itemStack2 = slot.getItem();
             itemStack = itemStack2.copy();
-            if(index == 0) {
-                access.execute((world, pos) -> {
-                    itemStack2.getItem().onCraftedBy(itemStack2, world, player);
-                });
-                if(!moveItemStackTo(itemStack2, 10, 64, true)) {
+
+            if (index == 0) {
+                access.execute((world, pos) -> itemStack2.getItem().onCraftedBy(itemStack2, world, player));
+                if (!moveItemStackTo(itemStack2, 10, 28, false) &&
+                        !moveItemStackTo(itemStack2, 28, 64, true)) {
                     return ItemStack.EMPTY;
                 }
                 slot.onQuickCraft(itemStack2, itemStack);
-            } else if(index >= 1 && index < 10) {
-                if(!moveItemStackTo(itemStack2, 10, 64, false)) {
+
+            } else if (index >= 1 && index < 10) {
+                if (!moveItemStackTo(itemStack2, 10, 28, false) &&
+                        !moveItemStackTo(itemStack2, 28, 64, false)) {
                     return ItemStack.EMPTY;
                 }
-            } else if(index >= 10 && index < 28) {
-                if(!moveItemStackTo(itemStack2, 1, 10, false)) {
-                    if(!moveItemStackTo(itemStack2, 28, 64, false)) {
-                        return ItemStack.EMPTY;
-                    }
+
+            } else if (index >= 10 && index < 28) {
+                if (!moveItemStackTo(itemStack2, 28, 64, false)) {
+                    return ItemStack.EMPTY;
                 }
-            } else if(index >= 28 && index < 64) {
-                if(!moveItemStackTo(itemStack2, 1, 28, false)) {
-                    if(index < 55) {
-                        if(!moveItemStackTo(itemStack2, 55, 64, false)) {
+            } else if (index >= 28 && index < 64) {
+                if (!moveItemStackTo(itemStack2, 10, 28, false) &&
+                        !moveItemStackTo(itemStack2, 1, 10, false)) {
+                    if (index < 55) {
+                        if (!moveItemStackTo(itemStack2, 55, 64, false)) {
                             return ItemStack.EMPTY;
                         }
-                    } else if(!moveItemStackTo(itemStack2, 28, 55, false)) {
-                        return ItemStack.EMPTY;
+                    } else {
+                        if (!moveItemStackTo(itemStack2, 28, 55, false)) {
+                            return ItemStack.EMPTY;
+                        }
                     }
                 }
-            } else if(!moveItemStackTo(itemStack2, 28, 64, false)) {
-                return ItemStack.EMPTY;
             }
 
-            if(itemStack2.isEmpty()) {
+            if (itemStack2.isEmpty()) {
                 slot.set(ItemStack.EMPTY);
             } else {
                 slot.setChanged();
             }
 
-            if(itemStack2.getCount() == itemStack.getCount()) return ItemStack.EMPTY;
+            if (itemStack2.getCount() == itemStack.getCount()) return ItemStack.EMPTY;
 
             slot.onTake(player, itemStack2);
-            if(index == 0) player.drop(itemStack2, false);
+            if (index == 0) player.drop(itemStack2, false);
         }
 
         return itemStack;
@@ -251,6 +247,142 @@ public class ProjectTableMenu extends CraftingBlockMenu {
             });
             setChanged();
         }
+    }
+
+    private static class PlaceRecipe extends ServerPlaceRecipe {
+
+        private final SimpleContainer container;
+
+        public PlaceRecipe(ProjectTableMenu tableMenu) {
+            super(tableMenu);
+            this.container = tableMenu.container;
+        }
+
+
+        @Override
+        public void recipeClicked(ServerPlayer serverPlayer, @Nullable RecipeHolder recipeHolder, boolean bl) {
+            if (recipeHolder != null && serverPlayer.getRecipeBook().contains(recipeHolder)) {
+                this.inventory = serverPlayer.getInventory();
+                if (this.testClearGrid() || serverPlayer.isCreative()) {
+                    this.stackedContents.clear();
+                    serverPlayer.getInventory().fillStackedContents(this.stackedContents);
+                    this.container.fillStackedContents(this.stackedContents);
+                    this.menu.fillCraftSlotsStackedContents(this.stackedContents);
+                    if (this.stackedContents.canCraft(recipeHolder.value(), null)) {
+                        this.handleRecipeClicked(recipeHolder, bl);
+                    } else {
+                        this.clearGrid();
+                        serverPlayer.connection.send(new ClientboundPlaceGhostRecipePacket(serverPlayer.containerMenu.containerId, recipeHolder));
+                    }
+
+                    serverPlayer.getInventory().setChanged();
+                    container.setChanged();
+                }
+            }
+        }
+
+        private boolean testClearGrid() {
+            List<ItemStack> list = Lists.newArrayList();
+            int i = this.getAmountOfFreeSlotsInInventory();
+
+            for (int j = 0; j < this.menu.getGridWidth() * this.menu.getGridHeight() + 1; ++j) {
+                if (j != this.menu.getResultSlotIndex()) {
+                    ItemStack itemStack = this.menu.getSlot(j).getItem().copy();
+                    if (!itemStack.isEmpty()) {
+                        int k = this.inventory.getSlotWithRemainingSpace(itemStack);
+                        if (k == -1) k = findContainerSlotWithRemainingSpace(itemStack);
+
+                        if (k == -1 && list.size() <= i) {
+                            for (ItemStack itemStack2 : list) {
+                                if (ItemStack.isSameItem(itemStack2, itemStack)
+                                        && itemStack2.getCount() != itemStack2.getMaxStackSize()
+                                        && itemStack2.getCount() + itemStack.getCount() <= itemStack2.getMaxStackSize()) {
+                                    itemStack2.grow(itemStack.getCount());
+                                    itemStack.setCount(0);
+                                    break;
+                                }
+                            }
+                            if (!itemStack.isEmpty()) {
+                                if (list.size() >= i) return false;
+                                list.add(itemStack);
+                            }
+                        } else if (k == -1) {
+                            return false;
+                        }
+                    }
+                }
+            }
+            return true;
+        }
+
+        private int findContainerSlotWithRemainingSpace(ItemStack itemStack) {
+            for (int i = 0; i < this.container.getContainerSize(); i++) {
+                ItemStack stored = this.container.getItem(i);
+                if (stored.isEmpty()) return i;
+                if (ItemStack.isSameItemSameComponents(stored, itemStack)
+                        && stored.getCount() < stored.getMaxStackSize()) {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        private int getAmountOfFreeSlotsInInventory() {
+            int i = 0;
+
+            for (ItemStack itemStack : this.inventory.items) {
+                if (itemStack.isEmpty()) {
+                    ++i;
+                }
+            }
+            for (ItemStack itemStack : this.container.getItems()) {
+                if (itemStack.isEmpty()) {
+                    ++i;
+                }
+            }
+
+            return i;
+        }
+
+        @Override
+        protected int moveItemToGrid(Slot slot, ItemStack itemStack, int i) {
+            int remaining = super.moveItemToGrid(slot, itemStack, i);
+            if (remaining == 0) return 0;
+
+            int toTake = (remaining == -1) ? i : remaining;
+
+            int j = findSlotMatchingUnusedItem(itemStack);
+            if (j == -1) return remaining;
+
+            ItemStack stored = this.container.getItem(j);
+            int k;
+            if (toTake < stored.getCount()) {
+                this.container.removeItem(j, toTake);
+                k = toTake;
+            } else {
+                this.container.removeItemNoUpdate(j);
+                k = stored.getCount();
+            }
+
+            if (slot.getItem().isEmpty()) {
+                slot.set(stored.copyWithCount(k));
+            } else {
+                slot.getItem().grow(k);
+            }
+
+            return toTake - k;
+        }
+
+        private int findSlotMatchingUnusedItem(ItemStack template) {
+            for (int i = 0; i < this.container.getContainerSize(); i++) {
+                ItemStack stack = this.container.getItem(i);
+                if (!stack.isEmpty() && ItemStack.isSameItemSameComponents(stack, template)) {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
     }
 
 

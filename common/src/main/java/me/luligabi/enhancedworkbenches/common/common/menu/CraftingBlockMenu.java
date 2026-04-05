@@ -19,11 +19,13 @@ import java.util.Optional;
 
 public abstract class CraftingBlockMenu<I extends CraftingInput> extends RecipeBookMenu<I, Recipe<I>> {
 
+    protected Inventory playerInventory;
 
     protected CraftingBlockMenu(@Nullable MenuType<?> type, int syncId, Inventory playerInventory, Container input, ContainerLevelAccess access) {
         super(type, syncId);
         this.input = new DelegateCraftingInventory(this, input);
         this.access = access;
+        this.playerInventory = playerInventory;
         this.player = playerInventory.player;
         this.blockPos = access.evaluate((world, pos) -> pos).orElse(BlockPos.ZERO);
 

@@ -18,17 +18,17 @@ public class ProjectTableRecipeHistory extends AbstractList<ProjectTableRecipeHi
 
     @Override
     public boolean add(RecipeHistoryEntry entry) {
-        RecipeHistoryEntry toggledEntry = new RecipeHistoryEntry(entry.id, !entry.locked);
+        RecipeHistoryEntry toggledEntry = new RecipeHistoryEntry(entry.id, !entry.pinned);
         if(list.contains(toggledEntry)) return false;
 
         if(list.contains(entry)) {
-            if(entry.locked) return false;
+            if(entry.pinned) return false;
             list.remove(entry);
             addToFirstAvailableIndex(entry);
             return true;
         }
         if(list.size() >= MAX_SIZE) {
-            if(list.getLast() instanceof RecipeHistoryEntry entry1 && entry1.locked) return false;
+            if(list.getLast() instanceof RecipeHistoryEntry entry1 && entry1.pinned) return false;
             list.removeLast();
         }
         if(list.isEmpty()) {
@@ -39,17 +39,17 @@ public class ProjectTableRecipeHistory extends AbstractList<ProjectTableRecipeHi
         return true;
     }
 
-    public void toggleLock(int index) {
+    public void togglePin(int index) {
         if(list.get(index) instanceof RecipeHistoryEntry entry) {
-            if(entry.locked) {
+            if(entry.pinned) {
                 list.remove(entry);
-                entry.locked = false;
+                entry.pinned = false;
                 addToFirstAvailableIndex(entry);
             } else {
                 for(int i = 0; i < size(); i++) {
-                    if(!list.get(i).locked) {
+                    if(!list.get(i).pinned) {
                         list.remove(entry);
-                        entry.locked = true;
+                        entry.pinned = true;
                         list.add(i, entry);
                         break;
                     }
@@ -81,7 +81,7 @@ public class ProjectTableRecipeHistory extends AbstractList<ProjectTableRecipeHi
 
         for(int i = 0; i < size(); i++) {
             RecipeHistoryEntry currentEntry = list.get(i);
-            if(currentEntry == null || !currentEntry.locked) {
+            if(currentEntry == null || !currentEntry.pinned) {
                 list.add(i, entry);
                 return;
             }
@@ -102,8 +102,8 @@ public class ProjectTableRecipeHistory extends AbstractList<ProjectTableRecipeHi
             CompoundTag entryTag = listTag.getCompound(i);
             int index = entryTag.getByte("Index") & 255;
             ResourceLocation id = ResourceLocation.parse(entryTag.getString("Id"));
-            boolean locked = entryTag.getBoolean("Locked");
-            RecipeHistoryEntry entry = new RecipeHistoryEntry(id, locked);
+            boolean pinned = entryTag.getBoolean("Pinned");
+            RecipeHistoryEntry entry = new RecipeHistoryEntry(id, pinned);
             list.set(index, entry);
         }
     }
@@ -117,7 +117,7 @@ public class ProjectTableRecipeHistory extends AbstractList<ProjectTableRecipeHi
             CompoundTag entryTag = new CompoundTag();
             entryTag.putByte("Index", (byte) i);
             entryTag.putString("Id", entry.id.toString());
-            entryTag.putBoolean("Locked", entry.locked);
+            entryTag.putBoolean("Pinned", entry.pinned);
             historyList.add(entryTag);
         }
 
@@ -130,15 +130,15 @@ public class ProjectTableRecipeHistory extends AbstractList<ProjectTableRecipeHi
     public static class RecipeHistoryEntry {
 
         protected final ResourceLocation id;
-        protected boolean locked;
+        protected boolean pinned;
 
         public RecipeHistoryEntry(ResourceLocation id) {
             this(id, false);
         }
 
-        public RecipeHistoryEntry(ResourceLocation id, boolean locked) {
+        public RecipeHistoryEntry(ResourceLocation id, boolean pinned) {
             this.id = id;
-            this.locked = locked;
+            this.pinned = pinned;
         }
 
         public RecipeHolder<?> toRecipeHolder(Level level) {
@@ -151,8 +151,8 @@ public class ProjectTableRecipeHistory extends AbstractList<ProjectTableRecipeHi
             return id;
         }
 
-        public boolean isLocked() {
-            return locked;
+        public boolean isPinned() {
+            return pinned;
         }
 
         @Override
@@ -160,12 +160,12 @@ public class ProjectTableRecipeHistory extends AbstractList<ProjectTableRecipeHi
             if(this == o) return true;
             if(o == null || getClass() != o.getClass()) return false;
             RecipeHistoryEntry entry = (RecipeHistoryEntry) o;
-            return locked == entry.locked && Objects.equals(id, entry.id);
+            return pinned == entry.pinned && Objects.equals(id, entry.id);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(id, locked);
+            return Objects.hash(id, pinned);
         }
     }
 }

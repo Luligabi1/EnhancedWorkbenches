@@ -6,8 +6,9 @@
   "container.enhancedworkbenches.crafting_station": "Crafting Station",
 
   "title.enhancedworkbenches.history": "History",
-  "tooltip.enhancedworkbenches.history.lock": "CTRL + Click to lock this recipe",
-  "tooltip.enhancedworkbenches.history.unlock": "CTRL + Click to unlock this recipe",
+  "tooltip.enhancedworkbenches.history.pin": "CTRL + Click to pin this recipe",
+  "tooltip.enhancedworkbenches.history.pin.2": "Pinned recipes won't ever leave history",
+  "tooltip.enhancedworkbenches.history.unpin": "CTRL + Click to unpin this recipe",
 
   "yacl3.config.enhancedworkbenches:client_config.category.rendering": "Rendering",
 
