@@ -87,7 +87,7 @@ publishMods {
 
     def optionsModrinth = modrinthOptions {
         accessToken = providers.environmentVariable("MODRINTH_TOKEN")
-        projectId = "ZmRxbKUp"
+        projectId = "IhBYAM6m"
         minecraftVersions.add("${rootProject.minecraft_version}")
     }
 
