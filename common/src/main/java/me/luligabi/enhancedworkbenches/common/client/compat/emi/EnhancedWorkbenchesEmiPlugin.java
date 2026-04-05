@@ -21,6 +21,15 @@ public class EnhancedWorkbenchesEmiPlugin implements EmiPlugin {
 
         registry.addRecipeHandler(MenuTypeRegistry.PROJECT_TABLE.get(), PROJECT_TABLE_HANDLER);
         registry.addRecipeHandler(MenuTypeRegistry.CRAFTING_STATION.get(), CRAFTING_STATION_HANDLER);
+
+        registry.addExclusionArea(ProjectTableScreen.class, (screen, consumer) -> {
+            consumer.accept(new Bounds(
+                ((AbstractContainerScreenAccessor) screen).getX() - 68,
+                ((AbstractContainerScreenAccessor) screen).getY(),
+                64,
+                79
+            ));
+        });
     }
 
     public static final CraftingStationRecipeHandler CRAFTING_STATION_HANDLER = new CraftingStationRecipeHandler();

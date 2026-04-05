@@ -3,10 +3,12 @@
   "package": "me.luligabi.enhancedworkbenches.common.mixin",
   "compatibilityLevel": "JAVA_21",
   "minVersion": "0.8",
-  "mixins": [],
+  "mixins": [
+  ],
   "client": [
     "AbstractContainerScreenAccessor",
-    "RecipeBookComponentInvoker"
+    "RecipeBookComponentInvoker",
+    "StonecutterScreenAccessor"
   ],
   "injectors": {
     "defaultRequire": 1
