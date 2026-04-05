@@ -60,7 +60,7 @@ public class CraftingStationMenu extends CraftingBlockMenu {
             ItemStack itemStack2 = slot.getItem();
             itemStack = itemStack2.copy();
             if(index == 0) {
-                context.execute((world, pos) -> {
+                access.execute((world, pos) -> {
                     itemStack2.getItem().onCraftedBy(itemStack2, world, player);
                 });
                 if(!moveItemStackTo(itemStack2, 10, 46, true)) {

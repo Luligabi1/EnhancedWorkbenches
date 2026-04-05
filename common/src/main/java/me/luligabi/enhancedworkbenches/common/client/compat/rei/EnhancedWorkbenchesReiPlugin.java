@@ -65,4 +65,15 @@ public class EnhancedWorkbenchesReiPlugin implements REIClientPlugin {
         });
     }
 
+    @Override
+    public void registerExclusionZones(ExclusionZones zones) {
+        zones.register(ProjectTableScreen.class, screen -> {
+            return List.of(new Rectangle(
+                ((AbstractContainerScreenAccessor) screen).getX() - 68,
+                ((AbstractContainerScreenAccessor) screen).getY(),
+                64,
+                79
+            ));
+        });
+    }
 }

@@ -1,5 +1,6 @@
 package me.luligabi.enhancedworkbenches.common.common.menu;
 
+import dev.architectury.registry.menu.MenuRegistry;
 import dev.architectury.registry.registries.RegistrySupplier;
 import me.luligabi.enhancedworkbenches.common.common.EnhancedWorkbenches;
 import net.minecraft.world.flag.FeatureFlags;
@@ -10,7 +11,7 @@ public class MenuTypeRegistry {
 
     public static final RegistrySupplier<MenuType<ProjectTableMenu>> PROJECT_TABLE = EnhancedWorkbenches.MENU_TYPES.register(
         EnhancedWorkbenches.id("project_table"),
-        () -> new MenuType<>(ProjectTableMenu::new, FeatureFlags.VANILLA_SET)
+        () -> MenuRegistry.ofExtended(ProjectTableMenu::new)
     );
 
     public static final RegistrySupplier<MenuType<CraftingStationMenu>> CRAFTING_STATION = EnhancedWorkbenches.MENU_TYPES.register(

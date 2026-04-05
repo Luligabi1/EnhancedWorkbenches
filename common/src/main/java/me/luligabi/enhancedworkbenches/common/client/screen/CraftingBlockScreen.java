@@ -9,8 +9,8 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 
 public abstract class CraftingBlockScreen<T extends AbstractContainerMenu> extends AbstractContainerScreen<T> {
 
-    public CraftingBlockScreen(T abstractContainerMenu, Inventory inventory, Component component) {
-        super(abstractContainerMenu, inventory, component);
+    public CraftingBlockScreen(T abstractContainerMenu, Inventory inventory, Component title) {
+        super(abstractContainerMenu, inventory, title);
     }
 
     @Override

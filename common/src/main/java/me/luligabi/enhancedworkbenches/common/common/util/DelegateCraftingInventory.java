@@ -1,5 +1,4 @@
-package me.luligabi.enhancedworkbenches.common.common.menu;
-
+package me.luligabi.enhancedworkbenches.common.common.util;
 
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
@@ -8,11 +7,10 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.TransientCraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingInput;
-import net.minecraft.world.item.crafting.RecipeInput;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class DelegateCraftingInventory extends TransientCraftingContainer {
 
@@ -27,6 +25,10 @@ public class DelegateCraftingInventory extends TransientCraftingContainer {
 
     public CraftingInput toCraftingInput() {
         return CraftingInput.of(3, 3, getItems());
+    }
+
+    public CraftingInput toPositionedCraftingInput() {
+        return CraftingInput.ofPositioned(3, 3, getItems()).input();
     }
 
     @Override
@@ -89,7 +91,7 @@ public class DelegateCraftingInventory extends TransientCraftingContainer {
     }
 
     @Override
-    public List<ItemStack> getItems() {
+    public @NotNull List<ItemStack> getItems() {
         List<ItemStack> stacks = new ArrayList<>(9);
         for(int i = 0; i < 9; i++) {
             stacks.add(getItem(i));

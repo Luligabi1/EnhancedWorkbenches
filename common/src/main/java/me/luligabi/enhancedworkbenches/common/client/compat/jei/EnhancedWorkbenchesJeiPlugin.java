@@ -1,7 +1,5 @@
 package me.luligabi.enhancedworkbenches.common.client.compat.jei;
 
-import net.minecraft.resources.ResourceLocation;
-
 import me.luligabi.enhancedworkbenches.common.client.screen.CraftingStationScreen;
 import me.luligabi.enhancedworkbenches.common.client.screen.ProjectTableScreen;
 import me.luligabi.enhancedworkbenches.common.common.EnhancedWorkbenches;
@@ -15,6 +13,7 @@ import mezz.jei.api.constants.RecipeTypes;
 import mezz.jei.api.registration.IGuiHandlerRegistration;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeTransferRegistration;
+import net.minecraft.resources.ResourceLocation;
 
 @JeiPlugin
 public class EnhancedWorkbenchesJeiPlugin implements IModPlugin {
@@ -45,6 +44,11 @@ public class EnhancedWorkbenchesJeiPlugin implements IModPlugin {
                 ProjectTableScreen.class,
                 88, 32, 28, 23,
                 RecipeTypes.CRAFTING
+        );
+
+        registration.addGuiContainerHandler(
+                ProjectTableScreen.class,
+                new ProjectTableGuiHandler()
         );
     }
 

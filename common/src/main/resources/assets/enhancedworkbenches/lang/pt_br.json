@@ -5,6 +5,11 @@
   "container.enhancedworkbenches.project_table": "Bancada de Projeto",
   "container.enhancedworkbenches.crafting_station": "Estação de Trabalho",
 
+  "title.enhancedworkbenches.history": "Histórico",
+  "tooltip.enhancedworkbenches.history.pin": "CTRL + Clique para fixar esta receita",
+  "tooltip.enhancedworkbenches.history.pin.2": "Receitas fixadas jamais sairão do histórico",
+  "tooltip.enhancedworkbenches.history.unpin": "CTRL + Clique para desfixar esta receita",
+
   "yacl3.config.enhancedworkbenches:client_config.category.rendering": "Renderização",
 
   "yacl3.config.enhancedworkbenches:client_config.category.rendering.group.rendering": "Renderização",
