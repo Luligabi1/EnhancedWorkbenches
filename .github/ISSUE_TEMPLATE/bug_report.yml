@@ -1,0 +1,49 @@
+name: Bug Report
+description: Report an issue
+labels: ["bug"]
+body:
+  - type: input
+    id: mod-version
+    attributes:
+      label: Enhanced Workbenches version
+      placeholder: eg. 2.2+1.21.1
+    validations:
+      required: true
+  - type: dropdown
+    id: modloader
+    attributes:
+      label: Mod Loader
+      options:
+        - NeoForge
+        - Fabric
+    validations:
+      required: true
+  - type: input
+    id: modloader-version
+    attributes:
+      label: Modloader version
+      description: |
+        Specify your mod loader's version. This can be seen on the bottom left corner of the title screen.
+        If on Fabric, also add the version of Fabric API used.
+      placeholder: "eg. Neoforge 20.4.233 | Fabric Loader 0.15.10 with API 0.97.7"
+    validations:
+      required: true
+  - type: input
+    id: mc-version
+    attributes:
+      label: Minecraft Version
+      placeholder: eg. 1.20.5
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: "The latest.log file"
+      description: "Do not attempt to paste it below; use a paste site like [pastebin](https://pastebin.com/) or [gist](https://gist.github.com/)."
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Describe your issue
+      description: Explain how and/or when the issue occurs
+    validations:
+      required: true
